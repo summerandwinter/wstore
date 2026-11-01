@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "version": "23d6e03956c9",
+  "months": [
+    {
+      "month": "2026-10",
+      "version": "7e48dca9edf4",
+      "url": "months/2026-10.7e48dca9edf4.json"
+    },
+    {
+      "month": "2026-11",
+      "version": "f2067b361e2a",
+      "url": "months/2026-11.f2067b361e2a.json"
+    },
+    {
+      "month": "2026-12",
+      "version": "ffd5adbe7ce7",
+      "url": "months/2026-12.ffd5adbe7ce7.json"
+    },
+    {
+      "month": "2027-01",
+      "version": "44aaab8acc68",
+      "url": "months/2027-01.44aaab8acc68.json"
+    },
+    {
+      "month": "2027-02",
+      "version": "60492dc8f86f",
+      "url": "months/2027-02.60492dc8f86f.json"
+    },
+    {
+      "month": "2027-03",
+      "version": "435624634273",
+      "url": "months/2027-03.435624634273.json"
+    },
+    {
+      "month": "2027-04",
+      "version": "5c884ca5589a",
+      "url": "months/2027-04.5c884ca5589a.json"
+    },
+    {
+      "month": "2027-05",
+      "version": "703088674b9a",
+      "url": "months/2027-05.703088674b9a.json"
+    },
+    {
+      "month": "2027-06",
+      "version": "1feb75f9d739",
+      "url": "months/2027-06.1feb75f9d739.json"
+    },
+    {
+      "month": "2027-07",
+      "version": "1fbe4e83b9ff",
+      "url": "months/2027-07.1fbe4e83b9ff.json"
+    },
+    {
+      "month": "2027-08",
+      "version": "33bb77d979ce",
+      "url": "months/2027-08.33bb77d979ce.json"
+    },
+    {
+      "month": "2027-09",
+      "version": "aee647393773",
+      "url": "months/2027-09.aee647393773.json"
+    },
+    {
+      "month": "2027-10",
+      "version": "0b7a8f5277a0",
+      "url": "months/2027-10.0b7a8f5277a0.json"
+    }
+  ]
+}
