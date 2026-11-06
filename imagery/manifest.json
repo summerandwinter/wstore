@@ -1,20 +1,22 @@
 {
   "schemaVersion": 1,
-  "version": "7e6323c2013b",
+  "version": "d5a0cc3a857c",
   "assets": [
     {
       "id": "gen-1793799217632",
       "file": "gen-1793799217632-19fcfd1f0f6f.png",
+      "bytes": 143095,
       "sha256": "19fcfd1f0f6fd68c49f3dff0aafcfefd5582f7cbbd2f15664968c679ab9d1d99",
       "deliveryUrl": "https://p.ipic.vip/XpE0IA.png",
       "updatedAt": "2026-11-06T07:20:49.241Z"
     },
     {
       "id": "gen-gap-40",
-      "file": "gen-gap-40-cd7f5d98f5b6.png",
-      "sha256": "cd7f5d98f5b6d10ad7e6be1530e5014147075fa540673850550dcaff69b0a1cc",
-      "deliveryUrl": "https://p.ipic.vip/Reo9qA.png",
-      "updatedAt": "2026-11-06T07:18:39.942Z"
+      "file": "gen-gap-40-056916f9a682.jpg",
+      "bytes": 74243,
+      "sha256": "056916f9a682cf57821c875ebd68ce2ebbad5112d1dfb8e3c2de19227bccc7d3",
+      "deliveryUrl": "https://p.ipic.vip/HGskxw.jpg",
+      "updatedAt": "2026-11-06T09:06:54.689Z"
     }
   ]
 }
