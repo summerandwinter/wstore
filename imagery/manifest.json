@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "version": "8f22e383766b",
+  "assets": [
+    {
+      "id": "gen-1793799217632",
+      "file": "gen-1793799217632-19fcfd1f0f6f.png",
+      "sha256": "19fcfd1f0f6fd68c49f3dff0aafcfefd5582f7cbbd2f15664968c679ab9d1d99",
+      "deliveryUrl": "https://sunapi.5201201314.top/files/gen-1.png",
+      "updatedAt": "2026-11-04T13:49:04.931Z"
+    },
+    {
+      "id": "gen-gap-40",
+      "file": "gen-gap-40-cd7f5d98f5b6.png",
+      "sha256": "cd7f5d98f5b6d10ad7e6be1530e5014147075fa540673850550dcaff69b0a1cc",
+      "deliveryUrl": "",
+      "updatedAt": "2026-11-04T10:44:17.730Z"
+    }
+  ]
+}
