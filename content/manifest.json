@@ -1,28 +1,28 @@
 {
   "schemaVersion": 1,
-  "version": "8d700d1a6d13",
+  "version": "d86144f98aca",
   "coverageStart": "2026-09-17",
   "coverageEnd": "2026-12-26",
   "months": [
     {
       "month": "2026-09",
-      "version": "6fb7e2d5364f",
-      "url": "months/2026-09.6fb7e2d5364f.json"
+      "version": "46f55c4d4dca",
+      "url": "months/2026-09.46f55c4d4dca.json"
     },
     {
       "month": "2026-10",
-      "version": "0b19b995d557",
-      "url": "months/2026-10.0b19b995d557.json"
+      "version": "671b044241a9",
+      "url": "months/2026-10.671b044241a9.json"
     },
     {
       "month": "2026-11",
-      "version": "4bcabda863cb",
-      "url": "months/2026-11.4bcabda863cb.json"
+      "version": "ade2af2fbc0e",
+      "url": "months/2026-11.ade2af2fbc0e.json"
     },
     {
       "month": "2026-12",
-      "version": "e78e0f98658d",
-      "url": "months/2026-12.e78e0f98658d.json"
+      "version": "dce0701595c3",
+      "url": "months/2026-12.dce0701595c3.json"
     }
   ]
 }
