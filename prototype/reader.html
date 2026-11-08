@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>拾光撷语 · 阅读端设计资源</title><link rel="stylesheet" href="./shared/design.css"><link rel="stylesheet" href="./reader.css"><script type="module" src="./reader.js"></script></head>
+<body>
+<nav class="resource-nav" aria-label="项目设计资源"><strong>设计资源</strong><a href="./cards.html">卡片与字体</a><a href="./reader.html" aria-current="page">阅读端</a><a href="./studio.html">管理端</a><button class="theme-button" data-theme-toggle aria-pressed="false">浅色 / 深色</button></nav>
+<main class="reader-workspace">
+<section class="reader-notes"><p class="eyebrow">DAYLIGHT / READER</p><h1>每天一页，<br>把喜欢留下。</h1><p>单页阅读与底部面板。沿用当前页面行为，保留纸色、留白和安静的阅读节奏。</p><label class="field">阅读状态示意<select id="reader-scenario"><option value="normal">常规短句</option><option value="long">长文与全文入口</option><option value="empty">这一天暂无内容</option><option value="image-error">配图不可用</option></select></label><div class="notice">只使用公开诗句与原创样例。翻日、创作、保存、隐私授权均是本页内存演示，不请求内容服务，不写入相册。</div><ul><li>上滑前一天，下滑较新一天。</li><li>「翻到某一天」使用日期选择器与最近几日。</li><li>创作限制为正文 240、作者 45、出处 45。</li><li>制卡布局和字体选项来自统一生产目录。</li></ul><p class="caption">历史提案只在本地归档保留，不进入公开活动包；当前原型使用统一生产TTF与绘图器。</p></section>
+<section class="reader-phone" id="reader-phone" aria-label="阅读端交互设计">
+<div class="reader-underlay" id="reader-underlay"><div class="phone-top"><span>09:41</span><span aria-hidden="true">▥　▰</span></div><header class="reader-appbar"><button class="reader-brand quiet" type="button" data-action="about" aria-label="关于拾光撷语">拾光撷语</button><span class="capsule" aria-label="微信菜单示意">···　◉</span></header><div id="reader-daily" class="reader-daily" tabindex="0" aria-label="每日阅读，上下滑动或使用方向键切换日期"></div><footer class="reader-actions"><div class="row"><button type="button" data-action="create">＋ 写一张</button><button type="button" class="primary" data-action="export-daily">保存卡片</button></div><button class="quiet swipe-hint" type="button" data-action="older">↑　上滑 · 看看前一天</button></footer><div class="homebar" aria-hidden="true"></div></div>
+<div class="reader-overlay" id="reader-overlay" hidden><button class="reader-scrim" data-action="close" tabindex="-1" aria-label="关闭面板"></button><section class="reader-sheet" role="dialog" aria-modal="true" aria-labelledby="reader-sheet-title"><div class="sheet-grip" aria-hidden="true"></div><header class="reader-sheet-head"><h2 id="reader-sheet-title"></h2><button class="quiet" type="button" data-action="close" aria-label="关闭">×</button></header><div class="reader-sheet-scroll" id="reader-sheet-body"></div></section></div>
+</section>
+</main><p class="reader-announcement" id="reader-announcement" role="status" aria-live="polite"></p>
+</body></html>

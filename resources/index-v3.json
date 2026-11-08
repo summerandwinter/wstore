@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 3,
+  "version": "resources-v3-74d457d5e052822c6727137c2e2a83736872ada17415c10a34df23c7237d57c2",
+  "contentVersion": "d86144f98aca",
+  "manifests": {
+    "content": {
+      "url": "content/manifest-8bf1806aaee5f787c9139b93354db8e2f7794e1ebfa4388adf7aeff1f26724e7.json",
+      "sha256": "8bf1806aaee5f787c9139b93354db8e2f7794e1ebfa4388adf7aeff1f26724e7",
+      "bytes": 616,
+      "version": "d86144f98aca"
+    },
+    "fonts": {
+      "url": "fonts/manifest-v5-bf301d9bcd774c23c548f67b3ef31e5129b084fdecb308701b611bff7b1bdea9.json",
+      "sha256": "bf301d9bcd774c23c548f67b3ef31e5129b084fdecb308701b611bff7b1bdea9",
+      "bytes": 108680,
+      "version": "font-v5-6efbef7e1a6600d58756a498a1f7fe419fe2917ab09cfefa95075f44a95abc54"
+    },
+    "imagery": {
+      "url": "imagery/manifest-d7eb0453a6b064e3fc4adc04b3b6edb21be80701728dd1ef1963ff5df1128a8f.json",
+      "sha256": "d7eb0453a6b064e3fc4adc04b3b6edb21be80701728dd1ef1963ff5df1128a8f",
+      "bytes": 12163,
+      "version": "5b4e10127e5e"
+    }
+  }
+}

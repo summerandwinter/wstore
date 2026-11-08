@@ -1,390 +1,390 @@
 {
   "schemaVersion": 1,
-  "version": "0a541d083574",
+  "version": "5b4e10127e5e",
   "assets": [
     {
       "id": "gen-1793792546422",
+      "label": "专属配图 · 变弱变强 22",
       "file": "gen-1793792546422-c9e41a48bcfe.jpg",
-      "bytes": 43548,
       "sha256": "c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-1793792546422-c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 43548,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-1793794949153",
+      "label": "专属配图 · 变弱变强 53",
       "file": "gen-1793794949153-9b1de62327d2.jpg",
-      "bytes": 53643,
       "sha256": "9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-1793794949153-9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 53643,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-1793799217632",
+      "label": "专属配图 · 变弱变强 32",
       "file": "gen-1793799217632-19fcfd1f0f6f.png",
-      "bytes": 143095,
       "sha256": "19fcfd1f0f6fd68c49f3dff0aafcfefd5582f7cbbd2f15664968c679ab9d1d99",
-      "deliveryUrl": "https://p.ipic.vip/XpE0IA.png",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 143095,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-db15182c6fa9fa6a99cdd24d6afe",
+      "label": "生成 · 苦难是一种命运，不应该被赞美，也不应",
       "file": "gen-db15182c6fa9fa6a99cdd24d6afe-0c9ad808e3ce.jpg",
-      "bytes": 122239,
       "sha256": "0c9ad808e3ce7bf7acfd95315759c4b9747ce48d38e2d7dead7372fe55143b9b",
-      "deliveryUrl": "https://p.ipic.vip/McLSaw.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 122239,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-01",
+      "label": "生成插画 1",
       "file": "gen-gap-01-6ec68b9d0eff.jpg",
-      "bytes": 140111,
       "sha256": "6ec68b9d0eff673728f7096efabfba6a53ccd409bd2662d185a657ad6be096b6",
-      "deliveryUrl": "https://p.ipic.vip/Sax5ZA.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 140111,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-02",
+      "label": "生成插画 2",
       "file": "gen-gap-02-376c7ef30818.jpg",
-      "bytes": 41671,
       "sha256": "376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-02-376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 41671,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-03",
+      "label": "生成插画 3",
       "file": "gen-gap-03-191610bad6e6.jpg",
-      "bytes": 45578,
       "sha256": "191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-03-191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 45578,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-04",
+      "label": "生成插画 4",
       "file": "gen-gap-04-c9553aae960f.png",
-      "bytes": 147388,
       "sha256": "c9553aae960fb6281e9f8b450cb3974ba2d1305812a3088fd89f28692ebea2ad",
-      "deliveryUrl": "https://p.ipic.vip/0PJtZg.png",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 147388,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-05",
+      "label": "生成插画 5",
       "file": "gen-gap-05-fe4876ecd44f.jpg",
-      "bytes": 52179,
       "sha256": "fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-05-fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 52179,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-06",
+      "label": "生成插画 6",
       "file": "gen-gap-06-9d70a16be0f2.jpg",
-      "bytes": 60396,
       "sha256": "9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-06-9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 60396,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-07",
+      "label": "生成插画 7",
       "file": "gen-gap-07-3ab21488c346.jpg",
-      "bytes": 46345,
       "sha256": "3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-07-3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 46345,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-08",
+      "label": "生成插画 8",
       "file": "gen-gap-08-db18bc0fd618.jpg",
-      "bytes": 45981,
       "sha256": "db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-08-db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 45981,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-09",
+      "label": "生成插画 9",
       "file": "gen-gap-09-adb42d1d6a79.jpg",
-      "bytes": 45641,
       "sha256": "adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-09-adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 45641,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-10",
+      "label": "生成插画 10",
       "file": "gen-gap-10-40d38b07205e.jpg",
-      "bytes": 43657,
       "sha256": "40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-10-40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 43657,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-11",
+      "label": "生成插画 11",
       "file": "gen-gap-11-99cc5057ba1c.jpg",
-      "bytes": 63226,
       "sha256": "99cc5057ba1c8595c123441d33ae65e7182e87d59bbddbb22048729fcc3e214f",
-      "deliveryUrl": "https://p.ipic.vip/PJrgbg.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 63226,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-12",
+      "label": "生成插画 12",
       "file": "gen-gap-12-6a0813dad293.jpg",
-      "bytes": 55269,
       "sha256": "6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-12-6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 55269,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-13",
+      "label": "生成插画 13",
       "file": "gen-gap-13-2e897a6be0bb.jpg",
-      "bytes": 36679,
       "sha256": "2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-13-2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 36679,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-14",
+      "label": "生成插画 14",
       "file": "gen-gap-14-1e15f145f007.jpg",
-      "bytes": 95530,
       "sha256": "1e15f145f0073d26f8959df239fe7b82bec759c9d666a42a7495e680cd81273e",
-      "deliveryUrl": "https://p.ipic.vip/15BUTw.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 95530,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-15",
+      "label": "生成插画 15",
       "file": "gen-gap-15-f672740d4a53.jpg",
-      "bytes": 113866,
       "sha256": "f672740d4a53814c087130c5e3056533464d1e881e03463ac064416e3b6b37d1",
-      "deliveryUrl": "https://p.ipic.vip/NkhyqQ.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 113866,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-16",
+      "label": "生成插画 16",
       "file": "gen-gap-16-0a6bf50b51b3.jpg",
-      "bytes": 44626,
       "sha256": "0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-16-0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 44626,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-17",
+      "label": "生成插画 17",
       "file": "gen-gap-17-d25f0ea7c076.jpg",
-      "bytes": 50566,
       "sha256": "d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-17-d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 50566,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-18",
+      "label": "生成插画 18",
       "file": "gen-gap-18-8b1ac50a83da.jpg",
-      "bytes": 56354,
       "sha256": "8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-18-8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 56354,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-19",
+      "label": "生成插画 19",
       "file": "gen-gap-19-8a2cc3e81e56.jpg",
-      "bytes": 45172,
       "sha256": "8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-19-8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 45172,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-20",
+      "label": "生成插画 20",
       "file": "gen-gap-20-0992c57e80e1.jpg",
-      "bytes": 69637,
       "sha256": "0992c57e80e1ac5ac15c760f4060ee980a585d4b90af66f11e5578e96d406b7a",
-      "deliveryUrl": "https://p.ipic.vip/xacMbg.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 69637,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-21",
+      "label": "生成插画 21",
       "file": "gen-gap-21-1956b10b25db.jpg",
-      "bytes": 45549,
       "sha256": "1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-21-1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 45549,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-22",
+      "label": "生成插画 22",
       "file": "gen-gap-22-5ea1c70e5f6d.jpg",
-      "bytes": 61386,
       "sha256": "5ea1c70e5f6d684a8ca4e79755e2ce64f40dd16766e01ea75e4653841b4ffc4b",
-      "deliveryUrl": "https://p.ipic.vip/CPlaMA.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 61386,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-23",
+      "label": "生成插画 23",
       "file": "gen-gap-23-607e48f065c5.jpg",
-      "bytes": 47477,
       "sha256": "607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-23-607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 47477,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-24",
+      "label": "生成插画 24",
       "file": "gen-gap-24-bfdf6de59e10.jpg",
-      "bytes": 109757,
       "sha256": "bfdf6de59e10c691c784eff61b149574075f7e8ca3618c019925d5cb1851bd46",
-      "deliveryUrl": "https://p.ipic.vip/vOaVeQ.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 109757,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-25",
+      "label": "生成插画 25",
       "file": "gen-gap-25-1fa767f961b7.jpg",
-      "bytes": 46650,
       "sha256": "1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-25-1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 46650,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-26",
+      "label": "生成插画 26",
       "file": "gen-gap-26-d62f6a4eed5c.jpg",
-      "bytes": 41609,
       "sha256": "d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-26-d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 41609,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-27",
+      "label": "生成插画 27",
       "file": "gen-gap-27-964c0f7e825c.jpg",
-      "bytes": 101815,
       "sha256": "964c0f7e825c9df1ed5d473c490cf4a7834bf77b5e8d1eccc69e0f15636bd48b",
-      "deliveryUrl": "https://p.ipic.vip/d2aoMA.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 101815,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-28",
+      "label": "生成插画 28",
       "file": "gen-gap-28-7e4f45fda232.jpg",
-      "bytes": 60203,
       "sha256": "7e4f45fda232c878b42c2a2487c95e4cb7c3abcdd23c4ead944f6e012a7b14ff",
-      "deliveryUrl": "https://p.ipic.vip/cDP0Kg.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 60203,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-29",
+      "label": "生成插画 29",
       "file": "gen-gap-29-bf7fd01a1797.jpg",
-      "bytes": 62434,
       "sha256": "bf7fd01a179706ca1163fb40fb31c0c6bd0fd320d3b33c74b9750c370eda8fc4",
-      "deliveryUrl": "https://p.ipic.vip/8biCMw.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 62434,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-30",
+      "label": "生成插画 30",
       "file": "gen-gap-30-5a5d37b056e3.jpg",
-      "bytes": 40390,
       "sha256": "5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-30-5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 40390,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-31",
+      "label": "生成插画 31",
       "file": "gen-gap-31-d6b6529e98f3.jpg",
-      "bytes": 44193,
       "sha256": "d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-31-d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 44193,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-32",
+      "label": "生成插画 32",
       "file": "gen-gap-32-45fcbca5f7e5.jpg",
-      "bytes": 64925,
       "sha256": "45fcbca5f7e5262d5a9865104304b3ea8c1e9db546e2cb130eda443bee3e7449",
-      "deliveryUrl": "https://p.ipic.vip/QUAm6g.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 64925,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-33",
+      "label": "生成插画 33",
       "file": "gen-gap-33-fc77866000c9.jpg",
-      "bytes": 38071,
       "sha256": "fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-33-fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 38071,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-34",
+      "label": "生成插画 34",
       "file": "gen-gap-34-8e2ad1d00d7e.jpg",
-      "bytes": 77088,
       "sha256": "8e2ad1d00d7e479df2378bdce30caa4e8c251fb57eeaff0f6c2afb8869bd7538",
-      "deliveryUrl": "https://p.ipic.vip/18Kl4w.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 77088,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-35",
+      "label": "生成插画 35",
       "file": "gen-gap-35-ac6534b5b791.jpg",
-      "bytes": 37588,
       "sha256": "ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89",
-      "deliveryUrl": "https://p.ipic.vip/light-gen-gap-35-ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89.jpg",
-      "updatedAt": "2026-11-07T09:43:56.188Z"
+      "bytes": 37588,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-36",
+      "label": "生成插画 36",
       "file": "gen-gap-36-b3a422a3f8d0.png",
-      "bytes": 150726,
       "sha256": "b3a422a3f8d0f87327009eb9b7c8b7fcd1e5d90438de2fc2f69a5b21d5203c54",
-      "deliveryUrl": "https://p.ipic.vip/KSIqEw.png",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 150726,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-37",
+      "label": "生成插画 37",
       "file": "gen-gap-37-b5b58258072a.jpg",
-      "bytes": 66076,
       "sha256": "b5b58258072ae4564fb740f89d54ef590778fa4b87cdfecea924dea8f5dc6d40",
-      "deliveryUrl": "https://p.ipic.vip/b4Cl7A.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 66076,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-38",
+      "label": "生成插画 38",
       "file": "gen-gap-38-e7a4cd9d235c.jpg",
-      "bytes": 57961,
       "sha256": "e7a4cd9d235cd9b2958abf257734608837fc466dd13efe1b05d6ca2bae3d9429",
-      "deliveryUrl": "https://p.ipic.vip/aEzPaA.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 57961,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-39",
+      "label": "生成插画 39",
       "file": "gen-gap-39-b218cd4d5171.jpg",
-      "bytes": 69799,
       "sha256": "b218cd4d51717b00b4dd6787b91369f603b9f36682040f796bc50909baac067d",
-      "deliveryUrl": "https://p.ipic.vip/LJea9A.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 69799,
+      "deliveryUrl": ""
     },
     {
       "id": "gen-gap-40",
+      "label": "生成插画 40",
       "file": "gen-gap-40-056916f9a682.jpg",
-      "bytes": 74243,
       "sha256": "056916f9a682cf57821c875ebd68ce2ebbad5112d1dfb8e3c2de19227bccc7d3",
-      "deliveryUrl": "https://p.ipic.vip/HGskxw.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 74243,
+      "deliveryUrl": ""
     },
     {
       "id": "mountain-path",
+      "label": "山路见光",
       "file": "mountain-path-8f42fd7e84d1.jpg",
-      "bytes": 23007,
       "sha256": "8f42fd7e84d19cbc5a369d6d13c7ae3a84fecc1e74dbdd254d97f3263b02e141",
-      "deliveryUrl": "https://p.ipic.vip/YP5pBA.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 23007,
+      "deliveryUrl": ""
     },
     {
       "id": "quiet-coast",
+      "label": "潮汐与远方",
       "file": "quiet-coast-09aa4adfcd5f.jpg",
-      "bytes": 25240,
       "sha256": "09aa4adfcd5fb0ef887d4964f2e7fb9452ea727453632bb3d83b9f5cc9e99e7a",
-      "deliveryUrl": "https://p.ipic.vip/SCJz1Q.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 25240,
+      "deliveryUrl": ""
     },
     {
       "id": "rain-window",
+      "label": "雨窗微光",
       "file": "rain-window-1880d108ec47.jpg",
-      "bytes": 42922,
       "sha256": "1880d108ec479b0dbfe7b13fe4df52d04faf4b68368f6f6b0cd5358243ac1170",
-      "deliveryUrl": "https://p.ipic.vip/KWlfaQ.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 42922,
+      "deliveryUrl": ""
     },
     {
       "id": "spring-hills",
+      "label": "柳岸春山",
       "file": "spring-hills-b45fb1070f09.jpg",
-      "bytes": 21076,
       "sha256": "b45fb1070f0999860ec58b3cbd9c8d85a8667ae6e4e4cff231eb5b04dbef08e9",
-      "deliveryUrl": "https://p.ipic.vip/mAiJog.jpg",
-      "updatedAt": "2026-11-06T14:09:12.626Z"
+      "bytes": 21076,
+      "deliveryUrl": ""
     }
   ]
 }

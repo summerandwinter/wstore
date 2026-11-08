@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>拾光撷语 · 卡片与字体设计资源</title>
+<link rel="stylesheet" href="./shared/design.css">
+<script type="module" src="./cards.js"></script>
+</head>
+<body>
+<nav class="resource-nav" aria-label="项目设计资源"><strong>设计资源</strong><a href="./cards.html" aria-current="page">卡片与字体</a><a href="./reader.html">阅读端</a><a href="./studio.html">管理端</a><a href="#archive">历史来源</a><button class="theme-button" data-theme-toggle aria-pressed="false">浅色 / 深色</button></nav>
+<main class="resource-frame" id="card-library">
+<header class="resource-header"><div class="brand"><span class="mark" aria-hidden="true">拾</span><div><h1>拾光撷语</h1><small>CARD & TYPE COLLECTION</small></div></div><span class="caption">项目内设计资源 · 只读素材 · 不连接业务</span></header>
+<nav class="resource-tabs" role="tablist" aria-label="卡片设计预览">
+<button id="tab-layouts" type="button" role="tab" aria-selected="true" aria-controls="pane-layouts" data-pane="layouts">01 版式方案</button>
+<button id="tab-fonts" type="button" role="tab" aria-selected="false" aria-controls="pane-fonts" data-pane="fonts">02 字体样张</button>
+<button id="tab-sync" type="button" role="tab" aria-selected="false" aria-controls="pane-sync" data-pane="sync">03 两端对照</button>
+<span class="caption" data-count>正在读取共享目录…</span>
+</nav>
+<section class="pane" id="pane-layouts" role="tabpanel" aria-labelledby="tab-layouts">
+<div class="section-heading"><h2>让每句话，有自己的留白。</h2><span class="caption">同句对照 / 3:4 卡片</span></div>
+<div class="toolbar"><label class="field">句子长度<select data-sample aria-label="版式预览句子"></select></label><label class="field">预览字体<select data-font aria-label="版式预览字体"></select></label><label class="field">配图<select data-art aria-label="版式预览配图"><option value="mist">雾野 · 山水</option><option value="sea">海风 · 晨光</option><option value="dusk">暮色 · 远山</option><optgroup label="共享图库（已审核）" data-art-library></optgroup></select></label><label class="row small"><input data-option="showDate" type="checkbox" checked>日期</label><label class="row small"><input data-option="showBrand" type="checkbox" checked>品牌落款</label></div>
+<div class="section-heading collection-heading"><div><span class="eyebrow">PRODUCTION · CARD COLLECTION</span><h2>十五种写法，同一套真实画布。</h2></div><span class="tag">正式版式 · 只读预览</span></div>
+<div class="toolbar collection-filters"><label class="field">版式分组<select data-group aria-label="按版式分组筛选"><option value="">全部分组</option><option value="text">文字</option><option value="nature">自然</option><option value="imagery">影像</option><option value="editorial">编辑</option></select></label><label class="field">适合分类<select data-category aria-label="按内容分类筛选"></select></label><span class="caption" data-collection-summary role="status"></span></div>
+<div class="layout-overview" role="group" aria-label="全部正式卡片版式" data-layout-overview></div>
+<div class="layout-stage"><section class="layout-spec" data-spec></section><figure><canvas class="preview-canvas" data-main-canvas width="1080" height="1440" role="img" aria-label="当前版式的同源画布预览"></canvas><figcaption class="preview-status" data-main-status role="status" aria-live="polite"></figcaption></figure><aside class="layout-spec" data-fit></aside></div>
+<div class="note-strip"><span>十五款正式版式统一展示</span><span>推荐字体来自统一生产注册表；候选字体不进入活动菜单</span><span>长文保全，失败明确提示</span></div>
+</section>
+<section class="pane" id="pane-fonts" role="tabpanel" aria-labelledby="tab-fonts" hidden>
+<div class="section-heading"><h2>字体不求多，气质要分明。</h2><span class="caption" data-font-count>原有字体与本轮新增</span></div>
+<div class="font-grid" data-font-grid></div><p class="preview-status" data-sample-status role="status" aria-live="polite">正在加载统一生产 TTF 字样…</p>
+<div class="notice">生产TTF随附完整 OFL 许可和版权。禁止单独售卖字体；再分发须附许可，改作字体须遵守保留名称条件。字体样张与卡片预览使用同一生产资源，加载失败与缺字回退会明确提示。</div>
+</section>
+<section class="pane" id="pane-sync" role="tabpanel" aria-labelledby="tab-sync" hidden>
+<div class="section-heading"><h2>一套参数，放到两端看。</h2><span class="caption">同一句 · 同一版式 · 同一字体</span></div>
+<div class="sync-grid"><section class="sync-admin"><div class="sync-head"><strong>内容工作台 / 卡片详情</strong><span class="muted">设计态 · 内存预览</span></div><div class="sync-body"><figure><canvas class="preview-canvas" data-admin-canvas width="1080" height="1440" role="img" aria-label="管理端同源卡片预览"></canvas><figcaption class="preview-status" data-admin-status role="status"></figcaption></figure><div class="sync-options"><div class="inspector-tabs"><span>内容</span><span class="active">版式</span><span>配图</span><span>标签</span></div><label class="field">卡片版式<select data-layout aria-label="同步预览版式"></select></label><label class="field">字体<select data-font aria-label="同步预览字体"></select></label><label class="field">句子<select data-sample aria-label="同步预览句子"></select></label><label class="field">配图<select data-art aria-label="同步预览配图"><option value="mist">雾野 · 山水</option><option value="sea">海风 · 晨光</option><option value="dusk">暮色 · 远山</option><optgroup label="共享图库（已审核）" data-art-library></optgroup></select></label><p class="caption" data-pairing></p></div></div><div class="sync-footer"><span>同一浏览器绘图器 · 不代替真机验收</span><a href="./reader.html">打开完整阅读端设计 →</a></div></section><section><div class="sync-phone"><div class="phone-top"><span>09:41</span><span aria-hidden="true">▥　▰</span></div><div class="row between"><span class="phone-brand">拾光撷语</span><span class="capsule" aria-label="微信菜单示意">···　◉</span></div><canvas class="preview-canvas" data-reader-canvas width="1080" height="1440" role="img" aria-label="阅读端制卡同源预览"></canvas><p class="caption">制卡面板效果对照</p><div class="row between"><a href="./reader.html?sheet=dates">翻到某一天</a><a href="./reader.html?sheet=export">保存卡片</a></div></div><p class="preview-status" data-reader-status role="status"></p></section></div>
+</section>
+<p class="notice" id="load-error" role="alert" hidden></p>
+</main>
+<footer class="archive-note" id="archive"><details><summary>资源边界与字体许可</summary><p>版式、活动字体与批准配图来自统一清单。字体样张和卡片预览使用同一生产TTF字节；许可入口随字体清单生成。候选字体、历史WOFF样张和提案保留在本地归档，不进入公开活动包。</p><p>所有交互只改变页面内存；不连接后台，不包含账号设置或私有来源路径，也不执行真实发布。实际导出仍需在小程序和后台分别验收。</p></details></footer>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "d86144f98aca",
+  "coverageStart": "2026-09-17",
+  "coverageEnd": "2026-12-26",
+  "months": [
+    {
+      "month": "2026-09",
+      "version": "46f55c4d4dca",
+      "url": "months/2026-09.46f55c4d4dca.json"
+    },
+    {
+      "month": "2026-10",
+      "version": "671b044241a9",
+      "url": "months/2026-10.671b044241a9.json"
+    },
+    {
+      "month": "2026-11",
+      "version": "ade2af2fbc0e",
+      "url": "months/2026-11.ade2af2fbc0e.json"
+    },
+    {
+      "month": "2026-12",
+      "version": "dce0701595c3",
+      "url": "months/2026-12.dce0701595c3.json"
+    }
+  ]
+}
