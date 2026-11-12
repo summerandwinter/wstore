@@ -1,4 +1,4 @@
-import { loadCatalog, loadPreviewFont, paintPreview, backgroundImage, resourceUrl, escapeHTML as h, bindTheme } from './shared/card-preview.js';
+import { loadCatalog, loadPreviewFont, paintPreview, previewFrame, cancelCardPreview, setCardPreviewPaused, resourceUrl, escapeHTML as h, bindTheme } from './shared/card-preview.js';
 import { proposalTemplates } from './shared/proposals.js';
 
 bindTheme();
@@ -40,27 +40,42 @@ function metadataChips(template) {
   return `<div class="metadata-chips"><span class="tag">${h(GROUPS[template.group] || '正式版式')}</span>${(template.categories || []).map(value => `<span class="tag historical">${h(value)}</span>`).join('')}<span class="tag historical">${h(lengthLabel(template))}</span><span class="tag historical">推荐 ${h(fontName(template.recommendedFont))}</span></div>`;
 }
 const query = new URLSearchParams(location.search);
-const state = { pane: ['layouts', 'fonts', 'sync'].includes(query.get('pane')) ? query.get('pane') : 'layouts', layout: 'window', font: 'auto', sample: 'poem', art: 'mist', group: '', category: '', showDate: true, showBrand: true };
+const motionPreference = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)');
+const state = {
+  pane: ['layouts', 'fonts', 'sync'].includes(query.get('pane')) ? query.get('pane') : 'layouts',
+  layout: 'window', font: 'auto', art: 'mist', category: '',
+  sample: samples.some(row => row.id === query.get('sample')) ? query.get('sample') : 'poem',
+  group: Object.hasOwn(GROUPS, query.get('group')) ? query.get('group') : '',
+  showDate: !['0', 'false'].includes(query.get('showDate')),
+  showBrand: !['0', 'false'].includes(query.get('showBrand')),
+  loadingMode: ['slow', 'error'].includes(query.get('loading')) ? query.get('loading') : 'auto',
+  playback: ['hold', 'replay', 'instant'].includes(query.get('preview')) ? query.get('preview') : 'auto',
+  reduceMotion: ['1', 'true'].includes(query.get('reduceMotion')),
+  loadingPaused: false,
+};
 let catalog;
 let sampleFontsLoaded = false;
-let artLibraryLoaded = false;
+let activePane;
+let selectionKey;
+let mainNeedsRetry = false;
+let referenceNeedsRetry = false;
+const previews = new WeakMap();
 const $ = selector => document.querySelector(selector);
+const reducedMotion = () => state.reduceMotion || Boolean(motionPreference?.matches);
+const playbackMode = () => ['hold', 'instant'].includes(state.playback) ? state.playback : state.loadingMode === 'auto' ? state.playback : state.loadingMode;
 
-async function loadArtLibrary() {
-  if (artLibraryLoaded) return;
-  artLibraryLoaded = true;
-  try {
-    const library = catalog.imagery;
-    if (!Array.isArray(library) || !library.length) return;
-    state.artLibrary = library.map(row => ({ value: `asset:${row.id}`, name: `${row.label} · 共享图库` }));
-    render();
-  } catch { /* 清单不可用时保留内置三图。 */ }
-}
+$('[data-skeleton-preview]').innerHTML = previewFrame('data-skeleton-canvas', '静态骨架参考');
+$('[data-main-preview]').innerHTML = previewFrame('data-main-canvas aria-describedby="main-preview-status"', '当前版式成品预览');
 
 function rememberLocation() {
   const url = new URL(location.href);
-  url.searchParams.set('pane', state.pane);
-  url.searchParams.set('variant', state.layout);
+  const values = { pane: state.pane, variant: state.layout, font: state.font, sample: state.sample, art: state.art,
+    group: state.group, category: state.category, showDate: state.showDate ? '1' : '0', showBrand: state.showBrand ? '1' : '0',
+    loading: state.loadingMode, preview: state.playback, reduceMotion: state.reduceMotion ? '1' : '0' };
+  for (const [key, value] of Object.entries(values)) {
+    if (value) url.searchParams.set(key, value);
+    else url.searchParams.delete(key);
+  }
   history.replaceState(null, '', url);
 }
 function selectedFont(template) {
@@ -71,58 +86,154 @@ function selectedFont(template) {
 function optionsList(rows, selected, auto = false) {
   return `${auto ? '<option value="auto">按版式推荐</option>' : ''}${rows.map(row => `<option value="${h(row.id)}"${row.id === selected ? ' selected' : ''}>${h(row.name)}</option>`).join('')}`;
 }
-function render() {
-  document.querySelectorAll('[data-pane]').forEach(button => button.setAttribute('aria-selected', String(button.dataset.pane === state.pane)));
+function updateRetry() {
+  $('[data-loading-action="retry"]').hidden = !mainNeedsRetry && !referenceNeedsRetry;
+}
+function cancelPreview(canvas) {
+  cancelCardPreview(canvas);
+  // 已完成的帧可以复用；离开标签页或筛掉的未完成任务必须重新请求。
+  if (!previews.get(canvas)?.settled) previews.delete(canvas);
+}
+function paintOnce(canvas, card, options, status, presentation, { force = false, start, done } = {}) {
+  const key = JSON.stringify([card, options, presentation]);
+  if (!force && previews.get(canvas)?.key === key) return;
+  const request = { key, settled: false };
+  previews.set(canvas, request);
+  start?.();
+  const viewOptions = presentation ? { ...presentation, paused: state.loadingPaused, onReady: result => {
+    if (previews.get(canvas) === request) done?.(result);
+  } } : undefined;
+  paintPreview(canvas, card, options, status, viewOptions).then(result => {
+    if (previews.get(canvas) !== request) return;
+    request.settled = true;
+    request.failed = !result;
+    done?.(result);
+  });
+}
+function resourceFallbacks(canvas, result) {
+  return [canvas.dataset.fontState === 'fallback' ? '字体回退' : canvas.dataset.fontState === 'partial' ? '部分字形回退' : '',
+    result?.imageState === 'failed' ? '配图回退' : ''].filter(Boolean);
+}
+function renderLoadingControls() {
+  const mode = playbackMode();
+  $('[data-loading-mode]').value = state.loadingMode;
+  $('[data-loading-action="hold"]').setAttribute('aria-pressed', String(mode === 'hold'));
+  $('[data-loading-action="instant"]').setAttribute('aria-pressed', String(mode === 'instant'));
+  const pause = $('[data-loading-action="pause"]');
+  pause.setAttribute('aria-pressed', String(state.loadingPaused));
+  pause.textContent = state.loadingPaused ? '继续交接' : '暂停交接';
+  $('[data-reduce-motion]').checked = reducedMotion();
+  $('[data-reduce-motion]').disabled = Boolean(motionPreference?.matches);
+  $('[data-reduce-motion]').title = motionPreference?.matches ? '已遵循系统的减少动态设置' : '关闭骨架呼吸与原版淡入覆盖';
+  const notes = {
+    auto: '正常加载：可见等待达到 900ms 先读系统文字；只有骨架到原版淡入 240ms，已可读文字到原版直接替换，不叠字；快速命中直接呈现。',
+    hold: '停留骨架 · 演示：右侧与下方总览停在各自骨架；左侧始终作为参照。点“重播切换”恢复成品。',
+    replay: '重播切换 · 演示：900ms 先读文字，原版就绪后一次不透明替换。仅重播当前选中预览，不重新加载整组字体。',
+    slow: '慢速等待 · 演示：人为延长骨架停留，不模拟真实网速；仍需真实字体与图片完成加载。',
+    error: '失败状态 · 演示：人为展示失败提示，保留可读正文；“重试预览”恢复正常加载，不代表真实故障。',
+    instant: '直接就绪：真实资源准备好后立即呈现，不播放过渡；不会跳过资源加载或掩盖回退。',
+  };
+  $('[data-loading-note]').textContent = notes[mode] + (state.loadingPaused ? ' DEMO · 交接已暂停；900ms 首读不受影响，继续后接续。' : '') + (motionPreference?.matches ? ' 已遵循系统减少动态设置。' : '');
+  $('[data-transition-note]').textContent = reducedMotion() ? '减少动态 · 无呼吸 / 无淡入' : mode === 'instant' ? '本次直接就绪 · 无过渡' : '过渡设定 · 骨架淡入 240 ms / 可读文字直接替换';
+}
+function renderSelected(template, font, sample, detail) {
+  const key = JSON.stringify([template.id, font.id, sample.id, state.art, state.showDate, state.showBrand]);
+  if (selectionKey === key) return;
+  selectionKey = key;
+  $('[data-selected-title]').textContent = `${template.name} · ${detail.title}`;
+  $('[data-selected-description]').textContent = `${detail.structure} · ${font.name} · ${sample.name}`;
+  $('[data-selected-index]').textContent = `已选 ${String(catalog.templates.indexOf(template) + 1).padStart(2, '0')} / ${catalog.templates.length}`;
+  $('[data-text-count]').textContent = `${Array.from(sample.text).length} 字 · 作者与出处完整保留`;
+  $('[data-skeleton-preview]').setAttribute('aria-label', `${template.name}版式的静态骨架参考，${sample.name}`);
+  $('[data-main-canvas]').setAttribute('aria-label', `${template.name}版式成品：${sample.text.replace(/\n/g, ' ')} ${sample.author} · ${sample.source}`);
+  $('[data-spec]').innerHTML = `<h3>${h(template.name)}</h3>${metadataChips(template)}<dl><dt>构图</dt><dd>${h(detail.structure)}</dd><dt>适合内容</dt><dd>${h(detail.scene)}</dd><dt>推荐字体</dt><dd>${h((template.recommendedFonts || [template.recommendedFont]).map(fontName).join(' / '))}</dd><dt>长文字体</dt><dd>${h(fontName(template.longTextFont || template.recommendedFont))}</dd><dt>语义偏好</dt><dd class="metadata-chips">${semanticChips(template) || '未指定偏好'}</dd></dl>`;
+  $('[data-fit]').innerHTML = `<p class="caption">当前字体</p><h3>${h(font.name)}</h3><dl><dt>适配规则</dt><dd>${h(detail.note)}</dd><dt>正文全文 · ${Array.from(sample.text).length} 字</dt><dd>${h(sample.text).replace(/\n/g, '<br>')}</dd><dt>作者与出处</dt><dd>${h(sample.author)} · ${h(sample.source)}</dd></dl>`;
+}
+function render({ replay = false, retry = false } = {}) {
+  if (activePane && activePane !== state.pane) {
+    const selector = activePane === 'layouts' ? '[data-main-canvas], [data-skeleton-canvas], [data-layout-canvas]' : activePane === 'sync' ? '[data-admin-canvas], [data-reader-canvas]' : null;
+    if (selector) document.querySelectorAll(selector).forEach(cancelPreview);
+  }
+  activePane = state.pane;
+  document.querySelectorAll('[data-pane]').forEach(button => {
+    button.setAttribute('aria-selected', String(button.dataset.pane === state.pane));
+    button.tabIndex = button.dataset.pane === state.pane ? 0 : -1;
+  });
   for (const pane of ['layouts', 'fonts', 'sync']) $(`#pane-${pane}`).hidden = pane !== state.pane;
   const template = catalog.templates.find(row => row.id === state.layout);
   const fontId = selectedFont(template);
   const font = catalog.fonts.find(row => row.id === fontId);
-  const detail = detailFor(template);
   const sample = samples.find(row => row.id === state.sample);
-  document.querySelectorAll('[data-font]').forEach(select => { select.innerHTML = optionsList(catalog.fonts, state.font, true); select.value = state.font; });
+  document.querySelectorAll('[data-font]').forEach(select => { select.innerHTML = optionsList(catalog.fonts, state.font, true); });
   document.querySelectorAll('[data-layout]').forEach(select => { select.innerHTML = optionsList(catalog.templates, state.layout); });
   document.querySelectorAll('[data-sample]').forEach(select => { select.innerHTML = optionsList(samples, state.sample); });
   document.querySelectorAll('[data-art]').forEach(select => {
-    select.value = state.art;
-    if (!state.artLibrary?.length || select.querySelector('[data-art-library]')?.children.length) return;
     const group = select.querySelector('[data-art-library]');
-    if (group) group.innerHTML = state.artLibrary.map(row => `<option value="${h(row.value)}">${h(row.name)}</option>`).join('');
+    if (group && !group.children.length) group.innerHTML = (catalog.imagery || []).map(row => `<option value="asset:${h(row.id)}">${h(row.label)} · 共享图库</option>`).join('');
+    select.value = state.art;
   });
+  document.querySelectorAll('[data-option]').forEach(input => { input.checked = state[input.dataset.option]; });
   $('[data-group]').value = state.group;
   $('[data-category]').value = state.category;
   const visible = catalog.templates.filter(row => (!state.group || row.group === state.group) && (!state.category || row.categories?.includes(state.category)));
+  const visibleIds = new Set(visible.map(row => row.id));
   document.querySelectorAll('[data-layout-choice]').forEach(button => {
-    button.hidden = !visible.some(row => row.id === button.dataset.layoutChoice);
+    const hidden = !visibleIds.has(button.dataset.layoutChoice);
+    if (hidden && !button.hidden) cancelPreview(button.querySelector('[data-layout-canvas]'));
+    button.hidden = hidden;
     button.setAttribute('aria-pressed', String(button.dataset.layoutChoice === state.layout));
   });
-  $('[data-collection-summary]').textContent = `${visible.length} / ${catalog.templates.length} 款 · 当前：${template.name}${font.proposal ? ' · 额外字体仅设计预览' : ''}`;
-  $('[data-spec]').innerHTML = `<span class="spec-index">${String(catalog.templates.indexOf(template) + 1).padStart(2, '0')}</span><h3>${h(template.name)}</h3><span class="tag">正式版式</span><p class="caption">${h(detail.title)}</p>${metadataChips(template)}<dl><dt>构图</dt><dd>${h(detail.structure)}</dd><dt>适合内容</dt><dd>${h(detail.scene)}</dd><dt>推荐字体</dt><dd>${h((template.recommendedFonts || [template.recommendedFont]).map(fontName).join(' / '))}</dd><dt>长文字体</dt><dd>${h(fontName(template.longTextFont || template.recommendedFont))}</dd><dt>语义偏好</dt><dd class="metadata-chips">${semanticChips(template) || '未指定偏好'}</dd></dl>`;
-  $('[data-fit]').innerHTML = `<p class="caption">当前字体</p><h3>${h(font.name)}</h3><div class="spec-font">山川有序<br>日月有常</div><dl><dt>目录说明</dt><dd>${h(template.description)}</dd><dt>适配规则</dt><dd>${h(detail.note)}</dd><dt>当前正文</dt><dd>${Array.from(sample.text).length} 字 · 作者和出处完整保留</dd></dl>`;
-  if (state.font === 'system') $('.spec-font').style.fontFamily = 'system-ui, sans-serif';
+  $('[data-collection-summary]').textContent = `${visible.length} / ${catalog.templates.length} 款 · 当前：${template.name}${visibleIds.has(state.layout) ? '' : '（不在筛选结果中）'}${state.playback === 'hold' ? ' · 骨架停留演示' : ''}`;
+  $('[data-clear-filters]').hidden = !state.group && !state.category;
+  $('[data-collection-empty]').hidden = visible.length > 0;
+  renderSelected(template, font, sample, detailFor(template));
+  renderLoadingControls();
   $('[data-pairing]').textContent = `当前搭配：${template.name} × ${font.name}`;
   document.querySelectorAll('[data-font-tile]').forEach(tile => tile.classList.toggle('selected', state.font === tile.dataset.fontTile));
-  // 配图只引用批准资产 ID，内置背景仍由共享解析器定位。
+  // 配图只引用批准资产 ID；正文、落款与布局仍直接交给同一生产绘图器。
   const card = { text: sample.text, author: sample.author, source: sample.source, date: '2026-11-05', background: state.art, ...(state.art.startsWith('asset:') ? { imageId: state.art.slice(6), background: 'mist' } : {}) };
   const options = { template: state.layout, fontId, showDate: state.showDate, showBrand: state.showBrand };
   if (state.pane === 'layouts') {
-    paintPreview($('[data-main-canvas]'), card, options, $('[data-main-status]'));
+    paintOnce($('[data-skeleton-canvas]'), card, options, null, { mode: 'hold', reduceMotion: true }, {
+      force: retry,
+      start() { referenceNeedsRetry = false; updateRetry(); $('#skeleton-preview-note').textContent = '浅绿标记图文位置；随版式与正文长度调整，不是成品图。'; },
+      done(result) { referenceNeedsRetry = !result; if (!result) $('#skeleton-preview-note').textContent = '骨架参考暂未就绪，可点击“重试预览”。'; updateRetry(); },
+    });
+    const main = $('[data-main-canvas]');
+    const mode = playbackMode();
+    paintOnce(main, card, options, $('[data-main-status]'), { mode, reduceMotion: reducedMotion() }, {
+      force: replay || retry,
+      start() {
+        mainNeedsRetry = false; updateRetry();
+        $('[data-playback-state]').textContent = ({ auto: '正在加载', hold: '骨架停留 · 演示', replay: '重播中 · 演示', slow: '慢速等待 · 演示', error: '失败演示准备中', instant: '等待资源就绪' })[mode];
+      },
+      done(result) {
+        const fallbacks = resourceFallbacks(main, result);
+        mainNeedsRetry = !result || main.dataset.fontState === 'fallback' || result.imageState === 'failed';
+        $('[data-playback-state]').textContent = !result ? mode === 'error' ? '失败状态 · 演示' : '预览未就绪' : !result.displayReady ? '骨架停留 · 演示' : fallbacks.length ? '已就绪 · 有回退' : '成品已就绪';
+        updateRetry();
+      },
+    });
+    // 每张缩略图按实际输入去重；选中项重播不会触发十五张缩略图或参照帧重绘。
     for (const row of visible) {
       const canvas = document.querySelector(`[data-layout-canvas="${row.id}"]`);
-      paintPreview(canvas, card, { ...options, template: row.id, fontId: selectedFont(row) });
+      const label = document.querySelector(`[data-layout-status="${row.id}"]`);
+      const mode = state.playback === 'hold' ? 'hold' : 'auto';
+      paintOnce(canvas, card, { ...options, template: row.id, fontId: selectedFont(row) }, null, { mode, reduceMotion: reducedMotion() }, {
+        force: retry && (row.id === state.layout || previews.get(canvas)?.failed),
+        start() { label.textContent = mode === 'hold' ? '骨架停留 · 演示' : '正在加载同源画布…'; },
+        done(result) {
+          const fallbacks = resourceFallbacks(canvas, result);
+          label.textContent = !result ? '预览未就绪 · 点选查看' : [result.displayReady ? '成品就绪' : '骨架停留 · 演示', ...fallbacks, result.fallback ? '长文已适配' : ''].filter(Boolean).join(' · ');
+        },
+      });
     }
   }
   if (state.pane === 'sync') {
-    paintPreview($('[data-admin-canvas]'), card, options, $('[data-admin-status]'));
-    paintPreview($('[data-reader-canvas]'), card, options, $('[data-reader-status]'));
+    paintOnce($('[data-admin-canvas]'), card, options, $('[data-admin-status]'));
+    paintOnce($('[data-reader-canvas]'), card, options, $('[data-reader-status]'));
   }
   if (state.pane === 'fonts' && !sampleFontsLoaded) loadSampleFonts();
-  const requestedFont = fontId;
-  loadPreviewFont(fontId, '山川有序日月有常').then(result => {
-    const current = catalog.templates.find(row => row.id === state.layout);
-    if (requestedFont !== selectedFont(current)) return;
-    const line = document.querySelector('.spec-font');
-    if (line && result.family) line.style.fontFamily = `"${result.family}", serif`;
-  });
   rememberLocation();
 }
 async function loadSampleFonts() {
@@ -144,11 +255,26 @@ function renderFontTiles() {
   }).join('');
 }
 function renderLayoutOverview() {
-  $('[data-layout-overview]').innerHTML = catalog.templates.map(row => `<button class="layout-card" type="button" data-choose-layout="${h(row.id)}" data-layout-choice="${h(row.id)}" aria-label="查看${h(row.name)}正式版式" aria-pressed="${row.id === state.layout}"><canvas width="1080" height="1440" data-layout-canvas="${h(row.id)}" aria-hidden="true"></canvas><span class="layout-card-title">${h(row.name)}<small>${h(GROUPS[row.group] || '正式')}</small></span><span class="caption">${h(row.description)}</span>${metadataChips(row)}<span class="metadata-chips">${semanticChips(row)}</span></button>`).join('');
+  $('[data-layout-overview]').innerHTML = catalog.templates.map(row => `<button class="layout-card" type="button" data-choose-layout="${h(row.id)}" data-layout-choice="${h(row.id)}" aria-label="查看${h(row.name)}正式版式" aria-pressed="${row.id === state.layout}" aria-controls="selected-preview">${previewFrame(`data-layout-canvas="${h(row.id)}"`, `${row.name}版式总览缩略预览`)}<span class="layout-card-title">${h(row.name)}<small>${h(GROUPS[row.group] || '正式')}</small></span><span class="caption">${h(row.description)}</span>${metadataChips(row)}<span class="caption" data-layout-status="${h(row.id)}">等待加载同源画布…</span></button>`).join('');
   $('[data-category]').innerHTML = '<option value="">全部分类</option>' + [...new Set(catalog.templates.flatMap(row => row.categories || []))].map(value => `<option value="${h(value)}">${h(value)}</option>`).join('');
 }
 document.addEventListener('click', event => {
   if (!catalog) return;
+  const action = event.target.closest('[data-loading-action]')?.dataset.loadingAction;
+  if (action) {
+    if (action === 'pause') {
+      state.loadingPaused = !state.loadingPaused;
+      document.querySelectorAll('[data-card-result]').forEach(canvas => setCardPreviewPaused(canvas, state.loadingPaused));
+      renderLoadingControls(); return;
+    }
+    state.loadingPaused = false;
+    document.querySelectorAll('[data-card-result]').forEach(canvas => setCardPreviewPaused(canvas, false));
+    if (action === 'retry') { state.loadingMode = 'auto'; state.playback = 'auto'; }
+    else state.playback = action;
+    render({ replay: action === 'replay', retry: action === 'retry' });
+    return;
+  }
+  if (event.target.closest('[data-clear-filters]')) { state.group = ''; state.category = ''; render(); return; }
   const pane = event.target.closest('[data-pane]');
   const layout = event.target.closest('[data-choose-layout]');
   const font = event.target.closest('[data-choose-font]');
@@ -157,6 +283,10 @@ document.addEventListener('click', event => {
   else if (font) { state.font = font.dataset.chooseFont; state.pane = 'layouts'; }
   else return;
   render();
+  if (layout || font) {
+    $('#selected-preview').scrollIntoView({ block: 'start', behavior: 'auto' });
+    $('#loading-selected-title').focus({ preventScroll: true });
+  }
 });
 document.addEventListener('change', event => {
   if (!catalog) return;
@@ -167,21 +297,38 @@ document.addEventListener('change', event => {
   else if (node.matches('[data-art]')) state.art = node.value;
   else if (node.matches('[data-group]')) state.group = node.value;
   else if (node.matches('[data-category]')) state.category = node.value;
-  else if (node.dataset.option) state[node.dataset.option] = node.checked;
+  else if (node.matches('[data-loading-mode]')) { state.loadingMode = node.value; state.playback = 'auto'; }
+  else if (node.matches('[data-reduce-motion]')) state.reduceMotion = node.checked;
+  else if (['showDate', 'showBrand'].includes(node.dataset.option)) state[node.dataset.option] = node.checked;
   else return;
   render();
 });
+document.addEventListener('keydown', event => {
+  if (!catalog || !event.target.matches('[data-pane]') || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+  const tabs = [...document.querySelectorAll('[data-pane]')];
+  const index = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (tabs.indexOf(event.target) + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+  event.preventDefault();
+  state.pane = tabs[index].dataset.pane;
+  render();
+  tabs[index].focus();
+});
+motionPreference?.addEventListener('change', () => { if (catalog) render(); });
+window.addEventListener('pagehide', () => document.querySelectorAll('[data-main-canvas], [data-skeleton-canvas], [data-layout-canvas], [data-admin-canvas], [data-reader-canvas]').forEach(cancelPreview));
+window.addEventListener('pageshow', event => { if (event.persisted && catalog) render(); });
 try {
   catalog = await loadCatalog();
   const requested = query.get('variant');
   const match = catalog.templates.find(row => row.id === requested || row.name === requested);
   if (match) state.layout = match.id;
-  $('[data-count]').textContent = `${catalog.templates.length} 款正式布局 · ${catalog.fonts.length} 种生产字体`;
-  $('[data-font-count]').textContent = `${catalog.fonts.length} 种生产字体 · 与小程序、后台使用同一 TTF`;
+  if (catalog.fonts.some(row => row.id === query.get('font'))) state.font = query.get('font');
+  if (['mist', 'sea', 'dusk', ...(catalog.imagery || []).map(row => `asset:${row.id}`)].includes(query.get('art'))) state.art = query.get('art');
+  if (catalog.templates.some(row => row.categories?.includes(query.get('category')))) state.category = query.get('category');
+  const productionFontCount = catalog.fonts.filter(row => row.id !== 'system').length;
+  $('[data-count]').textContent = `${catalog.templates.length} 款正式布局 · ${productionFontCount} 款生产 TTF`;
+  $('[data-font-count]').textContent = `${productionFontCount} 款生产 TTF + 系统字体 · 与小程序、后台同源`;
   renderFontTiles();
   renderLayoutOverview();
   render();
-  loadArtLibrary();
 } catch (error) {
   $('#load-error').hidden = false;
   $('#load-error').textContent = error.message;

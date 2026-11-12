@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "routing-v1-078c42f9469780d680894751c8f34f8c1fc0917c030abdd2af75121ff2e39ba1",
+  "version": "routing-v1-6267f9712175028c4498823a743c76614ee390383ac4955868a73317eded6860",
   "authorityRoot": "https://www.axxiu.cn/project/AWNgdZoT",
   "trustedOrigins": [
     "https://gh-proxy.com",
@@ -10,10 +10,10 @@
   ],
   "manifests": {
     "content": {
-      "url": "content/manifest-8bf1806aaee5f787c9139b93354db8e2f7794e1ebfa4388adf7aeff1f26724e7.json",
-      "sha256": "8bf1806aaee5f787c9139b93354db8e2f7794e1ebfa4388adf7aeff1f26724e7",
+      "url": "content/manifest-b546aac2fad4d2e2202c699e6d57fcde137ce909b12d1be4e942cb4d7fac846f.json",
+      "sha256": "b546aac2fad4d2e2202c699e6d57fcde137ce909b12d1be4e942cb4d7fac846f",
       "bytes": 616,
-      "version": "d86144f98aca"
+      "version": "929c44964677"
     },
     "fonts": {
       "url": "fonts/manifest-v5-bf301d9bcd774c23c548f67b3ef31e5129b084fdecb308701b611bff7b1bdea9.json",
@@ -22,10 +22,10 @@
       "version": "font-v5-6efbef7e1a6600d58756a498a1f7fe419fe2917ab09cfefa95075f44a95abc54"
     },
     "imagery": {
-      "url": "imagery/manifest-d7eb0453a6b064e3fc4adc04b3b6edb21be80701728dd1ef1963ff5df1128a8f.json",
-      "sha256": "d7eb0453a6b064e3fc4adc04b3b6edb21be80701728dd1ef1963ff5df1128a8f",
-      "bytes": 12163,
-      "version": "5b4e10127e5e"
+      "url": "imagery/manifest-54a3e62958fce4f677668601bc6b8c031073eaa026978e0122aadf6846fff79c.json",
+      "sha256": "54a3e62958fce4f677668601bc6b8c031073eaa026978e0122aadf6846fff79c",
+      "bytes": 12157,
+      "version": "e75a8e4ed8c4"
     }
   },
   "channels": {
@@ -67,7 +67,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-1793792546422-c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-1793792546422-c9e41a48bcfeffd5.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -76,8 +76,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793792546422-c9e41a48bcfe.jpg",
-        "https://p.ipic.vip/light-gen-1793792546422-c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793792546422-c9e41a48bcfe.jpg"
+        "https://p.ipic.vip/daylight-gen-1793792546422-c9e41a48bcfeffd5.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793792546422-c9e41a48bcfe.jpg",
+        "https://p.ipic.vip/light-gen-1793792546422-c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8.jpg"
       ]
     },
     {
@@ -92,7 +93,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-1793794949153-9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-1793794949153-9b1de62327d221e5.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -101,83 +102,84 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793794949153-9b1de62327d2.jpg",
-        "https://p.ipic.vip/light-gen-1793794949153-9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793794949153-9b1de62327d2.jpg"
+        "https://p.ipic.vip/daylight-gen-1793794949153-9b1de62327d221e5.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793794949153-9b1de62327d2.jpg",
+        "https://p.ipic.vip/light-gen-1793794949153-9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2.jpg"
       ]
     },
     {
       "id": "gen-1793799217632",
-      "artifactId": "sha256:19fcfd1f0f6fd68c49f3dff0aafcfefd5582f7cbbd2f15664968c679ab9d1d99:143095",
-      "sha256": "19fcfd1f0f6fd68c49f3dff0aafcfefd5582f7cbbd2f15664968c679ab9d1d99",
-      "bytes": 143095,
+      "artifactId": "sha256:a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547:36571",
+      "sha256": "a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547",
+      "bytes": 36571,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793799217632-19fcfd1f0f6f.png"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793799217632-a4e3566f87be.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/XpE0IA.png"
+          "url": "https://p.ipic.vip/daylight-gen-1793799217632-a4e3566f87be597b.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793799217632-19fcfd1f0f6f.png"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793799217632-a4e3566f87be.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793799217632-19fcfd1f0f6f.png",
-        "https://p.ipic.vip/XpE0IA.png",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793799217632-19fcfd1f0f6f.png"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793799217632-a4e3566f87be.jpg",
+        "https://p.ipic.vip/daylight-gen-1793799217632-a4e3566f87be597b.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793799217632-a4e3566f87be.jpg"
       ]
     },
     {
       "id": "gen-db15182c6fa9fa6a99cdd24d6afe",
-      "artifactId": "sha256:0c9ad808e3ce7bf7acfd95315759c4b9747ce48d38e2d7dead7372fe55143b9b:122239",
-      "sha256": "0c9ad808e3ce7bf7acfd95315759c4b9747ce48d38e2d7dead7372fe55143b9b",
-      "bytes": 122239,
+      "artifactId": "sha256:76b81f4453c1b960d4010a1568ec891332dc15c7295666250604d6eb6bcdc276:90397",
+      "sha256": "76b81f4453c1b960d4010a1568ec891332dc15c7295666250604d6eb6bcdc276",
+      "bytes": 90397,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-db15182c6fa9fa6a99cdd24d6afe-0c9ad808e3ce.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/McLSaw.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1b960.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-db15182c6fa9fa6a99cdd24d6afe-0c9ad808e3ce.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-db15182c6fa9fa6a99cdd24d6afe-0c9ad808e3ce.jpg",
-        "https://p.ipic.vip/McLSaw.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-db15182c6fa9fa6a99cdd24d6afe-0c9ad808e3ce.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1.jpg",
+        "https://p.ipic.vip/daylight-gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1b960.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1.jpg"
       ]
     },
     {
       "id": "gen-gap-01",
-      "artifactId": "sha256:6ec68b9d0eff673728f7096efabfba6a53ccd409bd2662d185a657ad6be096b6:140111",
-      "sha256": "6ec68b9d0eff673728f7096efabfba6a53ccd409bd2662d185a657ad6be096b6",
-      "bytes": 140111,
+      "artifactId": "sha256:c1df7d83a8b3e2964d56c400fb3a366b6f049979fdb420111ac8f21a2ce86e94:102265",
+      "sha256": "c1df7d83a8b3e2964d56c400fb3a366b6f049979fdb420111ac8f21a2ce86e94",
+      "bytes": 102265,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-01-6ec68b9d0eff.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-01-c1df7d83a8b3.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/Sax5ZA.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-01-c1df7d83a8b3e296.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-01-6ec68b9d0eff.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-01-c1df7d83a8b3.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-01-6ec68b9d0eff.jpg",
-        "https://p.ipic.vip/Sax5ZA.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-01-6ec68b9d0eff.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-01-c1df7d83a8b3.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-01-c1df7d83a8b3e296.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-01-c1df7d83a8b3.jpg"
       ]
     },
     {
@@ -192,7 +194,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-02-376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-02-376c7ef308187a9b.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -201,8 +203,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-02-376c7ef30818.jpg",
-        "https://p.ipic.vip/light-gen-gap-02-376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-02-376c7ef30818.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-02-376c7ef308187a9b.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-02-376c7ef30818.jpg",
+        "https://p.ipic.vip/light-gen-gap-02-376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119.jpg"
       ]
     },
     {
@@ -217,7 +220,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-03-191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-03-191610bad6e60cd6-f7ecd4f1.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -226,33 +229,34 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-03-191610bad6e6.jpg",
-        "https://p.ipic.vip/light-gen-gap-03-191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-03-191610bad6e6.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-03-191610bad6e60cd6-f7ecd4f1.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-03-191610bad6e6.jpg",
+        "https://p.ipic.vip/light-gen-gap-03-191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6.jpg"
       ]
     },
     {
       "id": "gen-gap-04",
-      "artifactId": "sha256:c9553aae960fb6281e9f8b450cb3974ba2d1305812a3088fd89f28692ebea2ad:147388",
-      "sha256": "c9553aae960fb6281e9f8b450cb3974ba2d1305812a3088fd89f28692ebea2ad",
-      "bytes": 147388,
+      "artifactId": "sha256:eb973fe22cf438e64b511282a37eb95a724972d920f1a5b39a11dd5942235a8c:36614",
+      "sha256": "eb973fe22cf438e64b511282a37eb95a724972d920f1a5b39a11dd5942235a8c",
+      "bytes": 36614,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-04-c9553aae960f.png"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-04-eb973fe22cf4.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/0PJtZg.png"
+          "url": "https://p.ipic.vip/daylight-gen-gap-04-eb973fe22cf438e6.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-04-c9553aae960f.png"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-04-eb973fe22cf4.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-04-c9553aae960f.png",
-        "https://p.ipic.vip/0PJtZg.png",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-04-c9553aae960f.png"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-04-eb973fe22cf4.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-04-eb973fe22cf438e6.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-04-eb973fe22cf4.jpg"
       ]
     },
     {
@@ -267,7 +271,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-05-fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-05-fe4876ecd44ff763.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -276,8 +280,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-05-fe4876ecd44f.jpg",
-        "https://p.ipic.vip/light-gen-gap-05-fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-05-fe4876ecd44f.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-05-fe4876ecd44ff763.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-05-fe4876ecd44f.jpg",
+        "https://p.ipic.vip/light-gen-gap-05-fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f.jpg"
       ]
     },
     {
@@ -292,7 +297,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-06-9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-06-9d70a16be0f2e66d.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -301,8 +306,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-06-9d70a16be0f2.jpg",
-        "https://p.ipic.vip/light-gen-gap-06-9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-06-9d70a16be0f2.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-06-9d70a16be0f2e66d.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-06-9d70a16be0f2.jpg",
+        "https://p.ipic.vip/light-gen-gap-06-9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb.jpg"
       ]
     },
     {
@@ -317,7 +323,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-07-3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-07-3ab21488c346cbe4.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -326,8 +332,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-07-3ab21488c346.jpg",
-        "https://p.ipic.vip/light-gen-gap-07-3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-07-3ab21488c346.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-07-3ab21488c346cbe4.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-07-3ab21488c346.jpg",
+        "https://p.ipic.vip/light-gen-gap-07-3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4.jpg"
       ]
     },
     {
@@ -342,7 +349,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-08-db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-08-db18bc0fd61849b8.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -351,8 +358,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-08-db18bc0fd618.jpg",
-        "https://p.ipic.vip/light-gen-gap-08-db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-08-db18bc0fd618.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-08-db18bc0fd61849b8.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-08-db18bc0fd618.jpg",
+        "https://p.ipic.vip/light-gen-gap-08-db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d.jpg"
       ]
     },
     {
@@ -367,7 +375,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-09-adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-09-adb42d1d6a794941.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -376,8 +384,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-09-adb42d1d6a79.jpg",
-        "https://p.ipic.vip/light-gen-gap-09-adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-09-adb42d1d6a79.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-09-adb42d1d6a794941.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-09-adb42d1d6a79.jpg",
+        "https://p.ipic.vip/light-gen-gap-09-adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0.jpg"
       ]
     },
     {
@@ -392,7 +401,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-10-40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-10-40d38b07205ec8d3.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -401,33 +410,34 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-10-40d38b07205e.jpg",
-        "https://p.ipic.vip/light-gen-gap-10-40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-10-40d38b07205e.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-10-40d38b07205ec8d3.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-10-40d38b07205e.jpg",
+        "https://p.ipic.vip/light-gen-gap-10-40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e.jpg"
       ]
     },
     {
       "id": "gen-gap-11",
-      "artifactId": "sha256:99cc5057ba1c8595c123441d33ae65e7182e87d59bbddbb22048729fcc3e214f:63226",
-      "sha256": "99cc5057ba1c8595c123441d33ae65e7182e87d59bbddbb22048729fcc3e214f",
-      "bytes": 63226,
+      "artifactId": "sha256:934654c7176cbf01f991421c627af9e3e59d209658326fa5c03592cdde3c61da:59156",
+      "sha256": "934654c7176cbf01f991421c627af9e3e59d209658326fa5c03592cdde3c61da",
+      "bytes": 59156,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-11-99cc5057ba1c.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-11-934654c7176c.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/PJrgbg.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-11-934654c7176cbf01.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-11-99cc5057ba1c.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-11-934654c7176c.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-11-99cc5057ba1c.jpg",
-        "https://p.ipic.vip/PJrgbg.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-11-99cc5057ba1c.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-11-934654c7176c.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-11-934654c7176cbf01.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-11-934654c7176c.jpg"
       ]
     },
     {
@@ -442,7 +452,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-12-6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-12-6a0813dad2938346.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -451,8 +461,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-12-6a0813dad293.jpg",
-        "https://p.ipic.vip/light-gen-gap-12-6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-12-6a0813dad293.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-12-6a0813dad2938346.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-12-6a0813dad293.jpg",
+        "https://p.ipic.vip/light-gen-gap-12-6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6.jpg"
       ]
     },
     {
@@ -467,7 +478,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-13-2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-13-2e897a6be0bb7295.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -476,58 +487,59 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-13-2e897a6be0bb.jpg",
-        "https://p.ipic.vip/light-gen-gap-13-2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-13-2e897a6be0bb.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-13-2e897a6be0bb7295.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-13-2e897a6be0bb.jpg",
+        "https://p.ipic.vip/light-gen-gap-13-2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430.jpg"
       ]
     },
     {
       "id": "gen-gap-14",
-      "artifactId": "sha256:1e15f145f0073d26f8959df239fe7b82bec759c9d666a42a7495e680cd81273e:95530",
-      "sha256": "1e15f145f0073d26f8959df239fe7b82bec759c9d666a42a7495e680cd81273e",
-      "bytes": 95530,
+      "artifactId": "sha256:9239114bdbb7bce7bcc5375aa4228959a61ddec185ae1899b61739b7e88c36c8:86502",
+      "sha256": "9239114bdbb7bce7bcc5375aa4228959a61ddec185ae1899b61739b7e88c36c8",
+      "bytes": 86502,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-14-1e15f145f007.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-14-9239114bdbb7.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/15BUTw.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-14-9239114bdbb7bce7.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-14-1e15f145f007.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-14-9239114bdbb7.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-14-1e15f145f007.jpg",
-        "https://p.ipic.vip/15BUTw.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-14-1e15f145f007.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-14-9239114bdbb7.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-14-9239114bdbb7bce7.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-14-9239114bdbb7.jpg"
       ]
     },
     {
       "id": "gen-gap-15",
-      "artifactId": "sha256:f672740d4a53814c087130c5e3056533464d1e881e03463ac064416e3b6b37d1:113866",
-      "sha256": "f672740d4a53814c087130c5e3056533464d1e881e03463ac064416e3b6b37d1",
-      "bytes": 113866,
+      "artifactId": "sha256:07b07fa91a94c41fd3c3efb7e61c7080d329aa47deeb206230422564cd38f53c:82518",
+      "sha256": "07b07fa91a94c41fd3c3efb7e61c7080d329aa47deeb206230422564cd38f53c",
+      "bytes": 82518,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-15-f672740d4a53.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-15-07b07fa91a94.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/NkhyqQ.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-15-07b07fa91a94c41f.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-15-f672740d4a53.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-15-07b07fa91a94.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-15-f672740d4a53.jpg",
-        "https://p.ipic.vip/NkhyqQ.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-15-f672740d4a53.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-15-07b07fa91a94.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-15-07b07fa91a94c41f.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-15-07b07fa91a94.jpg"
       ]
     },
     {
@@ -542,7 +554,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-16-0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-16-0a6bf50b51b39721.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -551,8 +563,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-16-0a6bf50b51b3.jpg",
-        "https://p.ipic.vip/light-gen-gap-16-0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-16-0a6bf50b51b3.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-16-0a6bf50b51b39721.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-16-0a6bf50b51b3.jpg",
+        "https://p.ipic.vip/light-gen-gap-16-0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83.jpg"
       ]
     },
     {
@@ -567,7 +580,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-17-d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-17-d25f0ea7c07638ce.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -576,8 +589,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-17-d25f0ea7c076.jpg",
-        "https://p.ipic.vip/light-gen-gap-17-d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-17-d25f0ea7c076.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-17-d25f0ea7c07638ce.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-17-d25f0ea7c076.jpg",
+        "https://p.ipic.vip/light-gen-gap-17-d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328.jpg"
       ]
     },
     {
@@ -592,7 +606,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-18-8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-18-8b1ac50a83dac4ef.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -601,8 +615,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-18-8b1ac50a83da.jpg",
-        "https://p.ipic.vip/light-gen-gap-18-8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-18-8b1ac50a83da.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-18-8b1ac50a83dac4ef.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-18-8b1ac50a83da.jpg",
+        "https://p.ipic.vip/light-gen-gap-18-8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e.jpg"
       ]
     },
     {
@@ -617,7 +632,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-19-8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-19-8a2cc3e81e566ae4.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -626,33 +641,34 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-19-8a2cc3e81e56.jpg",
-        "https://p.ipic.vip/light-gen-gap-19-8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-19-8a2cc3e81e56.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-19-8a2cc3e81e566ae4.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-19-8a2cc3e81e56.jpg",
+        "https://p.ipic.vip/light-gen-gap-19-8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090.jpg"
       ]
     },
     {
       "id": "gen-gap-20",
-      "artifactId": "sha256:0992c57e80e1ac5ac15c760f4060ee980a585d4b90af66f11e5578e96d406b7a:69637",
-      "sha256": "0992c57e80e1ac5ac15c760f4060ee980a585d4b90af66f11e5578e96d406b7a",
-      "bytes": 69637,
+      "artifactId": "sha256:6fd404b08f7d52ce486c5df48b638d88b3b643ba060d6a4e7266e031495dc7ea:66718",
+      "sha256": "6fd404b08f7d52ce486c5df48b638d88b3b643ba060d6a4e7266e031495dc7ea",
+      "bytes": 66718,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-20-0992c57e80e1.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-20-6fd404b08f7d.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/xacMbg.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-20-6fd404b08f7d52ce.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-20-0992c57e80e1.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-20-6fd404b08f7d.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-20-0992c57e80e1.jpg",
-        "https://p.ipic.vip/xacMbg.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-20-0992c57e80e1.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-20-6fd404b08f7d.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-20-6fd404b08f7d52ce.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-20-6fd404b08f7d.jpg"
       ]
     },
     {
@@ -667,7 +683,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-21-1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-21-1956b10b25db9fd7.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -676,33 +692,34 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-21-1956b10b25db.jpg",
-        "https://p.ipic.vip/light-gen-gap-21-1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-21-1956b10b25db.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-21-1956b10b25db9fd7.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-21-1956b10b25db.jpg",
+        "https://p.ipic.vip/light-gen-gap-21-1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47.jpg"
       ]
     },
     {
       "id": "gen-gap-22",
-      "artifactId": "sha256:5ea1c70e5f6d684a8ca4e79755e2ce64f40dd16766e01ea75e4653841b4ffc4b:61386",
-      "sha256": "5ea1c70e5f6d684a8ca4e79755e2ce64f40dd16766e01ea75e4653841b4ffc4b",
-      "bytes": 61386,
+      "artifactId": "sha256:69f7c4c0fae36100ea383ce9c9da745d3c7db262986b28e2930064d690cd1910:57776",
+      "sha256": "69f7c4c0fae36100ea383ce9c9da745d3c7db262986b28e2930064d690cd1910",
+      "bytes": 57776,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-22-5ea1c70e5f6d.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-22-69f7c4c0fae3.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/CPlaMA.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-22-69f7c4c0fae36100.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-22-5ea1c70e5f6d.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-22-69f7c4c0fae3.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-22-5ea1c70e5f6d.jpg",
-        "https://p.ipic.vip/CPlaMA.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-22-5ea1c70e5f6d.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-22-69f7c4c0fae3.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-22-69f7c4c0fae36100.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-22-69f7c4c0fae3.jpg"
       ]
     },
     {
@@ -717,7 +734,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-23-607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-23-607e48f065c57580.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -726,33 +743,34 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-23-607e48f065c5.jpg",
-        "https://p.ipic.vip/light-gen-gap-23-607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-23-607e48f065c5.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-23-607e48f065c57580.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-23-607e48f065c5.jpg",
+        "https://p.ipic.vip/light-gen-gap-23-607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434.jpg"
       ]
     },
     {
       "id": "gen-gap-24",
-      "artifactId": "sha256:bfdf6de59e10c691c784eff61b149574075f7e8ca3618c019925d5cb1851bd46:109757",
-      "sha256": "bfdf6de59e10c691c784eff61b149574075f7e8ca3618c019925d5cb1851bd46",
-      "bytes": 109757,
+      "artifactId": "sha256:0588c18096f1d5b3986ed9040458b666a035f63b2a6d24ba08cb1428f17d7a15:100146",
+      "sha256": "0588c18096f1d5b3986ed9040458b666a035f63b2a6d24ba08cb1428f17d7a15",
+      "bytes": 100146,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-24-bfdf6de59e10.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-24-0588c18096f1.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/vOaVeQ.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-24-0588c18096f1d5b3.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-24-bfdf6de59e10.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-24-0588c18096f1.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-24-bfdf6de59e10.jpg",
-        "https://p.ipic.vip/vOaVeQ.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-24-bfdf6de59e10.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-24-0588c18096f1.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-24-0588c18096f1d5b3.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-24-0588c18096f1.jpg"
       ]
     },
     {
@@ -767,7 +785,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-25-1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-25-1fa767f961b7d272.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -776,8 +794,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-25-1fa767f961b7.jpg",
-        "https://p.ipic.vip/light-gen-gap-25-1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-25-1fa767f961b7.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-25-1fa767f961b7d272.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-25-1fa767f961b7.jpg",
+        "https://p.ipic.vip/light-gen-gap-25-1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606.jpg"
       ]
     },
     {
@@ -792,7 +811,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-26-d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-26-d62f6a4eed5cfb41.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -801,83 +820,84 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-26-d62f6a4eed5c.jpg",
-        "https://p.ipic.vip/light-gen-gap-26-d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-26-d62f6a4eed5c.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-26-d62f6a4eed5cfb41.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-26-d62f6a4eed5c.jpg",
+        "https://p.ipic.vip/light-gen-gap-26-d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e.jpg"
       ]
     },
     {
       "id": "gen-gap-27",
-      "artifactId": "sha256:964c0f7e825c9df1ed5d473c490cf4a7834bf77b5e8d1eccc69e0f15636bd48b:101815",
-      "sha256": "964c0f7e825c9df1ed5d473c490cf4a7834bf77b5e8d1eccc69e0f15636bd48b",
-      "bytes": 101815,
+      "artifactId": "sha256:79c4f6e95d70ab549bdabac45272398f5399af3148811a8aface6b710786eb54:91294",
+      "sha256": "79c4f6e95d70ab549bdabac45272398f5399af3148811a8aface6b710786eb54",
+      "bytes": 91294,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-27-964c0f7e825c.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-27-79c4f6e95d70.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/d2aoMA.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-27-79c4f6e95d70ab54.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-27-964c0f7e825c.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-27-79c4f6e95d70.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-27-964c0f7e825c.jpg",
-        "https://p.ipic.vip/d2aoMA.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-27-964c0f7e825c.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-27-79c4f6e95d70.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-27-79c4f6e95d70ab54.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-27-79c4f6e95d70.jpg"
       ]
     },
     {
       "id": "gen-gap-28",
-      "artifactId": "sha256:7e4f45fda232c878b42c2a2487c95e4cb7c3abcdd23c4ead944f6e012a7b14ff:60203",
-      "sha256": "7e4f45fda232c878b42c2a2487c95e4cb7c3abcdd23c4ead944f6e012a7b14ff",
-      "bytes": 60203,
+      "artifactId": "sha256:2f01a92b9715dc5e152cacf84df2a5243f389dcb577d5a7f03aeee9d05899594:57239",
+      "sha256": "2f01a92b9715dc5e152cacf84df2a5243f389dcb577d5a7f03aeee9d05899594",
+      "bytes": 57239,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-28-7e4f45fda232.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-28-2f01a92b9715.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/cDP0Kg.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-28-2f01a92b9715dc5e.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-28-7e4f45fda232.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-28-2f01a92b9715.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-28-7e4f45fda232.jpg",
-        "https://p.ipic.vip/cDP0Kg.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-28-7e4f45fda232.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-28-2f01a92b9715.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-28-2f01a92b9715dc5e.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-28-2f01a92b9715.jpg"
       ]
     },
     {
       "id": "gen-gap-29",
-      "artifactId": "sha256:bf7fd01a179706ca1163fb40fb31c0c6bd0fd320d3b33c74b9750c370eda8fc4:62434",
-      "sha256": "bf7fd01a179706ca1163fb40fb31c0c6bd0fd320d3b33c74b9750c370eda8fc4",
-      "bytes": 62434,
+      "artifactId": "sha256:5c4af7e50936309e417a7b228830805c1ff2a6d9f5ae599560de2d9ee8711870:59406",
+      "sha256": "5c4af7e50936309e417a7b228830805c1ff2a6d9f5ae599560de2d9ee8711870",
+      "bytes": 59406,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-29-bf7fd01a1797.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-29-5c4af7e50936.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/8biCMw.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-29-5c4af7e50936309e.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-29-bf7fd01a1797.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-29-5c4af7e50936.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-29-bf7fd01a1797.jpg",
-        "https://p.ipic.vip/8biCMw.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-29-bf7fd01a1797.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-29-5c4af7e50936.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-29-5c4af7e50936309e.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-29-5c4af7e50936.jpg"
       ]
     },
     {
@@ -892,7 +912,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-30-5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-30-5a5d37b056e35d3f.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -901,8 +921,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-30-5a5d37b056e3.jpg",
-        "https://p.ipic.vip/light-gen-gap-30-5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-30-5a5d37b056e3.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-30-5a5d37b056e35d3f.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-30-5a5d37b056e3.jpg",
+        "https://p.ipic.vip/light-gen-gap-30-5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404.jpg"
       ]
     },
     {
@@ -917,7 +938,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-31-d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-31-d6b6529e98f3e4ca.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -926,33 +947,34 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-31-d6b6529e98f3.jpg",
-        "https://p.ipic.vip/light-gen-gap-31-d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-31-d6b6529e98f3.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-31-d6b6529e98f3e4ca.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-31-d6b6529e98f3.jpg",
+        "https://p.ipic.vip/light-gen-gap-31-d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd.jpg"
       ]
     },
     {
       "id": "gen-gap-32",
-      "artifactId": "sha256:45fcbca5f7e5262d5a9865104304b3ea8c1e9db546e2cb130eda443bee3e7449:64925",
-      "sha256": "45fcbca5f7e5262d5a9865104304b3ea8c1e9db546e2cb130eda443bee3e7449",
-      "bytes": 64925,
+      "artifactId": "sha256:a9f54f64fc47aa792cfb9dd76c8030fc9c4970417ce7706a84bd8d74285b3a73:61159",
+      "sha256": "a9f54f64fc47aa792cfb9dd76c8030fc9c4970417ce7706a84bd8d74285b3a73",
+      "bytes": 61159,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-32-45fcbca5f7e5.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-32-a9f54f64fc47.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/QUAm6g.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-32-a9f54f64fc47aa79.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-32-45fcbca5f7e5.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-32-a9f54f64fc47.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-32-45fcbca5f7e5.jpg",
-        "https://p.ipic.vip/QUAm6g.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-32-45fcbca5f7e5.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-32-a9f54f64fc47.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-32-a9f54f64fc47aa79.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-32-a9f54f64fc47.jpg"
       ]
     },
     {
@@ -967,7 +989,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-33-fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-33-fc77866000c93911.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -976,33 +998,34 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-33-fc77866000c9.jpg",
-        "https://p.ipic.vip/light-gen-gap-33-fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-33-fc77866000c9.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-33-fc77866000c93911.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-33-fc77866000c9.jpg",
+        "https://p.ipic.vip/light-gen-gap-33-fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be.jpg"
       ]
     },
     {
       "id": "gen-gap-34",
-      "artifactId": "sha256:8e2ad1d00d7e479df2378bdce30caa4e8c251fb57eeaff0f6c2afb8869bd7538:77088",
-      "sha256": "8e2ad1d00d7e479df2378bdce30caa4e8c251fb57eeaff0f6c2afb8869bd7538",
-      "bytes": 77088,
+      "artifactId": "sha256:cb88cc5f6e186cd505df3fc8801e5eaa58a21d6af016c028f3ea597820766d31:71501",
+      "sha256": "cb88cc5f6e186cd505df3fc8801e5eaa58a21d6af016c028f3ea597820766d31",
+      "bytes": 71501,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-34-8e2ad1d00d7e.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-34-cb88cc5f6e18.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/18Kl4w.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-34-cb88cc5f6e186cd5.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-34-8e2ad1d00d7e.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-34-cb88cc5f6e18.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-34-8e2ad1d00d7e.jpg",
-        "https://p.ipic.vip/18Kl4w.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-34-8e2ad1d00d7e.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-34-cb88cc5f6e18.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-34-cb88cc5f6e186cd5.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-34-cb88cc5f6e18.jpg"
       ]
     },
     {
@@ -1017,7 +1040,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/light-gen-gap-35-ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-35-ac6534b5b7913a42.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -1026,133 +1049,134 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-35-ac6534b5b791.jpg",
-        "https://p.ipic.vip/light-gen-gap-35-ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-35-ac6534b5b791.jpg"
+        "https://p.ipic.vip/daylight-gen-gap-35-ac6534b5b7913a42.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-35-ac6534b5b791.jpg",
+        "https://p.ipic.vip/light-gen-gap-35-ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89.jpg"
       ]
     },
     {
       "id": "gen-gap-36",
-      "artifactId": "sha256:b3a422a3f8d0f87327009eb9b7c8b7fcd1e5d90438de2fc2f69a5b21d5203c54:150726",
-      "sha256": "b3a422a3f8d0f87327009eb9b7c8b7fcd1e5d90438de2fc2f69a5b21d5203c54",
-      "bytes": 150726,
+      "artifactId": "sha256:1ee9856fc0b519601ce1b33e17907358d4e76b6cc0c7de4a2bf86bc96f4b7091:39494",
+      "sha256": "1ee9856fc0b519601ce1b33e17907358d4e76b6cc0c7de4a2bf86bc96f4b7091",
+      "bytes": 39494,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-36-b3a422a3f8d0.png"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-36-1ee9856fc0b5.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/KSIqEw.png"
+          "url": "https://p.ipic.vip/daylight-gen-gap-36-1ee9856fc0b51960.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-36-b3a422a3f8d0.png"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-36-1ee9856fc0b5.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-36-b3a422a3f8d0.png",
-        "https://p.ipic.vip/KSIqEw.png",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-36-b3a422a3f8d0.png"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-36-1ee9856fc0b5.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-36-1ee9856fc0b51960.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-36-1ee9856fc0b5.jpg"
       ]
     },
     {
       "id": "gen-gap-37",
-      "artifactId": "sha256:b5b58258072ae4564fb740f89d54ef590778fa4b87cdfecea924dea8f5dc6d40:66076",
-      "sha256": "b5b58258072ae4564fb740f89d54ef590778fa4b87cdfecea924dea8f5dc6d40",
-      "bytes": 66076,
+      "artifactId": "sha256:36a7325b4ca78ffe9c42c7cdbfbb4f8596cfc0491bac12f76da24ea954e62f7d:63279",
+      "sha256": "36a7325b4ca78ffe9c42c7cdbfbb4f8596cfc0491bac12f76da24ea954e62f7d",
+      "bytes": 63279,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-37-b5b58258072a.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-37-36a7325b4ca7.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/b4Cl7A.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-37-36a7325b4ca78ffe.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-37-b5b58258072a.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-37-36a7325b4ca7.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-37-b5b58258072a.jpg",
-        "https://p.ipic.vip/b4Cl7A.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-37-b5b58258072a.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-37-36a7325b4ca7.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-37-36a7325b4ca78ffe.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-37-36a7325b4ca7.jpg"
       ]
     },
     {
       "id": "gen-gap-38",
-      "artifactId": "sha256:e7a4cd9d235cd9b2958abf257734608837fc466dd13efe1b05d6ca2bae3d9429:57961",
-      "sha256": "e7a4cd9d235cd9b2958abf257734608837fc466dd13efe1b05d6ca2bae3d9429",
-      "bytes": 57961,
+      "artifactId": "sha256:331ec48e6f02d52716e3c81d8edfbe956a07cb50f2959dad1ecb6c722ab4b075:53191",
+      "sha256": "331ec48e6f02d52716e3c81d8edfbe956a07cb50f2959dad1ecb6c722ab4b075",
+      "bytes": 53191,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-38-e7a4cd9d235c.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-38-331ec48e6f02.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/aEzPaA.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-38-331ec48e6f02d527.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-38-e7a4cd9d235c.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-38-331ec48e6f02.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-38-e7a4cd9d235c.jpg",
-        "https://p.ipic.vip/aEzPaA.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-38-e7a4cd9d235c.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-38-331ec48e6f02.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-38-331ec48e6f02d527.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-38-331ec48e6f02.jpg"
       ]
     },
     {
       "id": "gen-gap-39",
-      "artifactId": "sha256:b218cd4d51717b00b4dd6787b91369f603b9f36682040f796bc50909baac067d:69799",
-      "sha256": "b218cd4d51717b00b4dd6787b91369f603b9f36682040f796bc50909baac067d",
-      "bytes": 69799,
+      "artifactId": "sha256:e835a83d96298bff30127a5695314aadaea15706d063d10ac089a42ab8cb1ab2:67387",
+      "sha256": "e835a83d96298bff30127a5695314aadaea15706d063d10ac089a42ab8cb1ab2",
+      "bytes": 67387,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-39-b218cd4d5171.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-39-e835a83d9629.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/LJea9A.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-39-e835a83d96298bff.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-39-b218cd4d5171.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-39-e835a83d9629.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-39-b218cd4d5171.jpg",
-        "https://p.ipic.vip/LJea9A.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-39-b218cd4d5171.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-39-e835a83d9629.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-39-e835a83d96298bff.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-39-e835a83d9629.jpg"
       ]
     },
     {
       "id": "gen-gap-40",
-      "artifactId": "sha256:056916f9a682cf57821c875ebd68ce2ebbad5112d1dfb8e3c2de19227bccc7d3:74243",
-      "sha256": "056916f9a682cf57821c875ebd68ce2ebbad5112d1dfb8e3c2de19227bccc7d3",
-      "bytes": 74243,
+      "artifactId": "sha256:024c67954d9fcca1aed4e4014343657e20ca9e9121a8ce1d2a32495bf7c09ba4:70281",
+      "sha256": "024c67954d9fcca1aed4e4014343657e20ca9e9121a8ce1d2a32495bf7c09ba4",
+      "bytes": 70281,
       "destinations": [
         {
           "providerId": "axxiu",
-          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-40-056916f9a682.jpg"
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-40-024c67954d9f.jpg"
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/HGskxw.jpg"
+          "url": "https://p.ipic.vip/daylight-gen-gap-40-024c67954d9fcca1.jpg"
         },
         {
           "providerId": "github-mirror",
-          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-40-056916f9a682.jpg"
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-40-024c67954d9f.jpg"
         }
       ],
       "aliases": [
-        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-40-056916f9a682.jpg",
-        "https://p.ipic.vip/HGskxw.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-40-056916f9a682.jpg"
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-40-024c67954d9f.jpg",
+        "https://p.ipic.vip/daylight-gen-gap-40-024c67954d9fcca1.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-40-024c67954d9f.jpg"
       ]
     },
     {
@@ -1167,7 +1191,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/YP5pBA.jpg"
+          "url": "https://p.ipic.vip/daylight-mountain-path-8f42fd7e84d19cbc.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -1176,8 +1200,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/mountain-path-8f42fd7e84d1.jpg",
-        "https://p.ipic.vip/YP5pBA.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/mountain-path-8f42fd7e84d1.jpg"
+        "https://p.ipic.vip/daylight-mountain-path-8f42fd7e84d19cbc.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/mountain-path-8f42fd7e84d1.jpg",
+        "https://p.ipic.vip/YP5pBA.jpg"
       ]
     },
     {
@@ -1192,7 +1217,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/SCJz1Q.jpg"
+          "url": "https://p.ipic.vip/daylight-quiet-coast-09aa4adfcd5fb0ef.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -1201,7 +1226,7 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/quiet-coast-09aa4adfcd5f.jpg",
-        "https://p.ipic.vip/SCJz1Q.jpg",
+        "https://p.ipic.vip/daylight-quiet-coast-09aa4adfcd5fb0ef.jpg",
         "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/quiet-coast-09aa4adfcd5f.jpg"
       ]
     },
@@ -1217,7 +1242,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/KWlfaQ.jpg"
+          "url": "https://p.ipic.vip/daylight-rain-window-1880d108ec479b0d.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -1226,8 +1251,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/rain-window-1880d108ec47.jpg",
-        "https://p.ipic.vip/KWlfaQ.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/rain-window-1880d108ec47.jpg"
+        "https://p.ipic.vip/daylight-rain-window-1880d108ec479b0d.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/rain-window-1880d108ec47.jpg",
+        "https://p.ipic.vip/KWlfaQ.jpg"
       ]
     },
     {
@@ -1242,7 +1268,7 @@
         },
         {
           "providerId": "ipic",
-          "url": "https://p.ipic.vip/mAiJog.jpg"
+          "url": "https://p.ipic.vip/daylight-spring-hills-b45fb1070f099986.jpg"
         },
         {
           "providerId": "github-mirror",
@@ -1251,8 +1277,9 @@
       ],
       "aliases": [
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/spring-hills-b45fb1070f09.jpg",
-        "https://p.ipic.vip/mAiJog.jpg",
-        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/spring-hills-b45fb1070f09.jpg"
+        "https://p.ipic.vip/daylight-spring-hills-b45fb1070f099986.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/spring-hills-b45fb1070f09.jpg",
+        "https://p.ipic.vip/mAiJog.jpg"
       ]
     }
   ],

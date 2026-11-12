@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "5b4e10127e5e",
+  "version": "e75a8e4ed8c4",
   "assets": [
     {
       "id": "gen-1793792546422",
@@ -21,25 +21,25 @@
     {
       "id": "gen-1793799217632",
       "label": "专属配图 · 变弱变强 32",
-      "file": "gen-1793799217632-19fcfd1f0f6f.png",
-      "sha256": "19fcfd1f0f6fd68c49f3dff0aafcfefd5582f7cbbd2f15664968c679ab9d1d99",
-      "bytes": 143095,
+      "file": "gen-1793799217632-a4e3566f87be.jpg",
+      "sha256": "a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547",
+      "bytes": 36571,
       "deliveryUrl": ""
     },
     {
       "id": "gen-db15182c6fa9fa6a99cdd24d6afe",
       "label": "生成 · 苦难是一种命运，不应该被赞美，也不应",
-      "file": "gen-db15182c6fa9fa6a99cdd24d6afe-0c9ad808e3ce.jpg",
-      "sha256": "0c9ad808e3ce7bf7acfd95315759c4b9747ce48d38e2d7dead7372fe55143b9b",
-      "bytes": 122239,
+      "file": "gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1.jpg",
+      "sha256": "76b81f4453c1b960d4010a1568ec891332dc15c7295666250604d6eb6bcdc276",
+      "bytes": 90397,
       "deliveryUrl": ""
     },
     {
       "id": "gen-gap-01",
       "label": "生成插画 1",
-      "file": "gen-gap-01-6ec68b9d0eff.jpg",
-      "sha256": "6ec68b9d0eff673728f7096efabfba6a53ccd409bd2662d185a657ad6be096b6",
-      "bytes": 140111,
+      "file": "gen-gap-01-c1df7d83a8b3.jpg",
+      "sha256": "c1df7d83a8b3e2964d56c400fb3a366b6f049979fdb420111ac8f21a2ce86e94",
+      "bytes": 102265,
       "deliveryUrl": ""
     },
     {
@@ -61,9 +61,9 @@
     {
       "id": "gen-gap-04",
       "label": "生成插画 4",
-      "file": "gen-gap-04-c9553aae960f.png",
-      "sha256": "c9553aae960fb6281e9f8b450cb3974ba2d1305812a3088fd89f28692ebea2ad",
-      "bytes": 147388,
+      "file": "gen-gap-04-eb973fe22cf4.jpg",
+      "sha256": "eb973fe22cf438e64b511282a37eb95a724972d920f1a5b39a11dd5942235a8c",
+      "bytes": 36614,
       "deliveryUrl": ""
     },
     {
@@ -117,9 +117,9 @@
     {
       "id": "gen-gap-11",
       "label": "生成插画 11",
-      "file": "gen-gap-11-99cc5057ba1c.jpg",
-      "sha256": "99cc5057ba1c8595c123441d33ae65e7182e87d59bbddbb22048729fcc3e214f",
-      "bytes": 63226,
+      "file": "gen-gap-11-934654c7176c.jpg",
+      "sha256": "934654c7176cbf01f991421c627af9e3e59d209658326fa5c03592cdde3c61da",
+      "bytes": 59156,
       "deliveryUrl": ""
     },
     {
@@ -141,17 +141,17 @@
     {
       "id": "gen-gap-14",
       "label": "生成插画 14",
-      "file": "gen-gap-14-1e15f145f007.jpg",
-      "sha256": "1e15f145f0073d26f8959df239fe7b82bec759c9d666a42a7495e680cd81273e",
-      "bytes": 95530,
+      "file": "gen-gap-14-9239114bdbb7.jpg",
+      "sha256": "9239114bdbb7bce7bcc5375aa4228959a61ddec185ae1899b61739b7e88c36c8",
+      "bytes": 86502,
       "deliveryUrl": ""
     },
     {
       "id": "gen-gap-15",
       "label": "生成插画 15",
-      "file": "gen-gap-15-f672740d4a53.jpg",
-      "sha256": "f672740d4a53814c087130c5e3056533464d1e881e03463ac064416e3b6b37d1",
-      "bytes": 113866,
+      "file": "gen-gap-15-07b07fa91a94.jpg",
+      "sha256": "07b07fa91a94c41fd3c3efb7e61c7080d329aa47deeb206230422564cd38f53c",
+      "bytes": 82518,
       "deliveryUrl": ""
     },
     {
@@ -189,9 +189,9 @@
     {
       "id": "gen-gap-20",
       "label": "生成插画 20",
-      "file": "gen-gap-20-0992c57e80e1.jpg",
-      "sha256": "0992c57e80e1ac5ac15c760f4060ee980a585d4b90af66f11e5578e96d406b7a",
-      "bytes": 69637,
+      "file": "gen-gap-20-6fd404b08f7d.jpg",
+      "sha256": "6fd404b08f7d52ce486c5df48b638d88b3b643ba060d6a4e7266e031495dc7ea",
+      "bytes": 66718,
       "deliveryUrl": ""
     },
     {
@@ -205,9 +205,9 @@
     {
       "id": "gen-gap-22",
       "label": "生成插画 22",
-      "file": "gen-gap-22-5ea1c70e5f6d.jpg",
-      "sha256": "5ea1c70e5f6d684a8ca4e79755e2ce64f40dd16766e01ea75e4653841b4ffc4b",
-      "bytes": 61386,
+      "file": "gen-gap-22-69f7c4c0fae3.jpg",
+      "sha256": "69f7c4c0fae36100ea383ce9c9da745d3c7db262986b28e2930064d690cd1910",
+      "bytes": 57776,
       "deliveryUrl": ""
     },
     {
@@ -221,9 +221,9 @@
     {
       "id": "gen-gap-24",
       "label": "生成插画 24",
-      "file": "gen-gap-24-bfdf6de59e10.jpg",
-      "sha256": "bfdf6de59e10c691c784eff61b149574075f7e8ca3618c019925d5cb1851bd46",
-      "bytes": 109757,
+      "file": "gen-gap-24-0588c18096f1.jpg",
+      "sha256": "0588c18096f1d5b3986ed9040458b666a035f63b2a6d24ba08cb1428f17d7a15",
+      "bytes": 100146,
       "deliveryUrl": ""
     },
     {
@@ -245,25 +245,25 @@
     {
       "id": "gen-gap-27",
       "label": "生成插画 27",
-      "file": "gen-gap-27-964c0f7e825c.jpg",
-      "sha256": "964c0f7e825c9df1ed5d473c490cf4a7834bf77b5e8d1eccc69e0f15636bd48b",
-      "bytes": 101815,
+      "file": "gen-gap-27-79c4f6e95d70.jpg",
+      "sha256": "79c4f6e95d70ab549bdabac45272398f5399af3148811a8aface6b710786eb54",
+      "bytes": 91294,
       "deliveryUrl": ""
     },
     {
       "id": "gen-gap-28",
       "label": "生成插画 28",
-      "file": "gen-gap-28-7e4f45fda232.jpg",
-      "sha256": "7e4f45fda232c878b42c2a2487c95e4cb7c3abcdd23c4ead944f6e012a7b14ff",
-      "bytes": 60203,
+      "file": "gen-gap-28-2f01a92b9715.jpg",
+      "sha256": "2f01a92b9715dc5e152cacf84df2a5243f389dcb577d5a7f03aeee9d05899594",
+      "bytes": 57239,
       "deliveryUrl": ""
     },
     {
       "id": "gen-gap-29",
       "label": "生成插画 29",
-      "file": "gen-gap-29-bf7fd01a1797.jpg",
-      "sha256": "bf7fd01a179706ca1163fb40fb31c0c6bd0fd320d3b33c74b9750c370eda8fc4",
-      "bytes": 62434,
+      "file": "gen-gap-29-5c4af7e50936.jpg",
+      "sha256": "5c4af7e50936309e417a7b228830805c1ff2a6d9f5ae599560de2d9ee8711870",
+      "bytes": 59406,
       "deliveryUrl": ""
     },
     {
@@ -285,9 +285,9 @@
     {
       "id": "gen-gap-32",
       "label": "生成插画 32",
-      "file": "gen-gap-32-45fcbca5f7e5.jpg",
-      "sha256": "45fcbca5f7e5262d5a9865104304b3ea8c1e9db546e2cb130eda443bee3e7449",
-      "bytes": 64925,
+      "file": "gen-gap-32-a9f54f64fc47.jpg",
+      "sha256": "a9f54f64fc47aa792cfb9dd76c8030fc9c4970417ce7706a84bd8d74285b3a73",
+      "bytes": 61159,
       "deliveryUrl": ""
     },
     {
@@ -301,9 +301,9 @@
     {
       "id": "gen-gap-34",
       "label": "生成插画 34",
-      "file": "gen-gap-34-8e2ad1d00d7e.jpg",
-      "sha256": "8e2ad1d00d7e479df2378bdce30caa4e8c251fb57eeaff0f6c2afb8869bd7538",
-      "bytes": 77088,
+      "file": "gen-gap-34-cb88cc5f6e18.jpg",
+      "sha256": "cb88cc5f6e186cd505df3fc8801e5eaa58a21d6af016c028f3ea597820766d31",
+      "bytes": 71501,
       "deliveryUrl": ""
     },
     {
@@ -317,41 +317,41 @@
     {
       "id": "gen-gap-36",
       "label": "生成插画 36",
-      "file": "gen-gap-36-b3a422a3f8d0.png",
-      "sha256": "b3a422a3f8d0f87327009eb9b7c8b7fcd1e5d90438de2fc2f69a5b21d5203c54",
-      "bytes": 150726,
+      "file": "gen-gap-36-1ee9856fc0b5.jpg",
+      "sha256": "1ee9856fc0b519601ce1b33e17907358d4e76b6cc0c7de4a2bf86bc96f4b7091",
+      "bytes": 39494,
       "deliveryUrl": ""
     },
     {
       "id": "gen-gap-37",
       "label": "生成插画 37",
-      "file": "gen-gap-37-b5b58258072a.jpg",
-      "sha256": "b5b58258072ae4564fb740f89d54ef590778fa4b87cdfecea924dea8f5dc6d40",
-      "bytes": 66076,
+      "file": "gen-gap-37-36a7325b4ca7.jpg",
+      "sha256": "36a7325b4ca78ffe9c42c7cdbfbb4f8596cfc0491bac12f76da24ea954e62f7d",
+      "bytes": 63279,
       "deliveryUrl": ""
     },
     {
       "id": "gen-gap-38",
       "label": "生成插画 38",
-      "file": "gen-gap-38-e7a4cd9d235c.jpg",
-      "sha256": "e7a4cd9d235cd9b2958abf257734608837fc466dd13efe1b05d6ca2bae3d9429",
-      "bytes": 57961,
+      "file": "gen-gap-38-331ec48e6f02.jpg",
+      "sha256": "331ec48e6f02d52716e3c81d8edfbe956a07cb50f2959dad1ecb6c722ab4b075",
+      "bytes": 53191,
       "deliveryUrl": ""
     },
     {
       "id": "gen-gap-39",
       "label": "生成插画 39",
-      "file": "gen-gap-39-b218cd4d5171.jpg",
-      "sha256": "b218cd4d51717b00b4dd6787b91369f603b9f36682040f796bc50909baac067d",
-      "bytes": 69799,
+      "file": "gen-gap-39-e835a83d9629.jpg",
+      "sha256": "e835a83d96298bff30127a5695314aadaea15706d063d10ac089a42ab8cb1ab2",
+      "bytes": 67387,
       "deliveryUrl": ""
     },
     {
       "id": "gen-gap-40",
       "label": "生成插画 40",
-      "file": "gen-gap-40-056916f9a682.jpg",
-      "sha256": "056916f9a682cf57821c875ebd68ce2ebbad5112d1dfb8e3c2de19227bccc7d3",
-      "bytes": 74243,
+      "file": "gen-gap-40-024c67954d9f.jpg",
+      "sha256": "024c67954d9fcca1aed4e4014343657e20ca9e9121a8ce1d2a32495bf7c09ba4",
+      "bytes": 70281,
       "deliveryUrl": ""
     },
     {
