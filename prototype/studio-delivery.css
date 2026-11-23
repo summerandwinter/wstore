@@ -204,3 +204,73 @@ body .nx-hosting-metrics .nx-definition { grid-template-columns:120px minmax(0,1
 .nx-ai-resource-requests strong{font-size:14px;font-weight:500;color:var(--ink)}
 .nx-ai-resource-requests small{display:block;font-size:12px;line-height:1.75;color:var(--secondary);margin-top:5px}
 @media(max-width:700px){.nx-ai-routing{padding:20px 16px 0}.nx-ai-routing .nx-definition{grid-template-columns:76px minmax(0,1fr)}.nx-ai-plan-routing{padding:14px}.nx-ai-plan-routing .button{min-height:44px}}
+
+/* Font destinations describe a bound publication snapshot, independently of upload stages. */
+.nx-publication-font-routing{margin:22px 0;padding:22px;border:1px solid var(--line);border-radius:9px;background:var(--panel,#fff);min-width:0}
+.nx-font-routing-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.nx-font-routing-heading h3{margin:0;font-size:16px;font-weight:600;color:var(--ink)}
+.nx-font-routing-heading .status{white-space:normal}
+.nx-publication-font-routing>p,.nx-font-routing-channels p,.nx-publication-stage-hint{font-size:12px;line-height:1.75;color:var(--secondary);overflow-wrap:anywhere}
+.nx-publication-font-routing>p{margin:12px 0 0}
+.nx-publication-font-routing .nx-definition{margin:16px 0;min-width:0}
+.nx-font-routing-channels{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;min-width:0}
+.nx-font-routing-channels li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:start;gap:8px 10px;padding:14px;border:1px solid var(--line);border-radius:7px;background:var(--tint);min-width:0;overflow-wrap:anywhere}
+.nx-font-routing-channels strong{font-size:14px;font-weight:600;color:var(--ink)}
+.nx-font-routing-channels [data-publication-font-coverage]{font-size:13px;color:var(--ink);white-space:nowrap}
+.nx-font-routing-channels p{grid-column:1/-1;margin:0}
+.nx-publication-stage-hint{margin:0;padding:0 24px 16px}
+.modal .nx-publication-font-routing{padding:17px;margin:18px 0}
+@media(max-width:800px){.nx-font-routing-channels{grid-template-columns:minmax(0,1fr)}.nx-publication-font-routing{padding:18px 16px}.nx-publication-stage-hint{padding-inline:16px}}
+
+/* Resource lanes: one card per publishable resource, each with its own entry point. */
+.nx-lanes{min-width:0;overflow:visible}
+.nx-lane-lead{display:flex;flex-direction:column;gap:4px;padding:18px 24px;border-bottom:1px solid var(--line);background:var(--tint)}
+.nx-lane-lead strong{font-size:14px;font-weight:600;color:var(--ink)}
+.nx-lane-lead p{margin:0;font-size:12px;line-height:1.75;color:var(--secondary);overflow-wrap:anywhere}
+.nx-lane-lead.warn{background:var(--orange-bg)}
+.nx-lane-lead.warn strong{color:var(--orange)}
+.nx-lane{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;align-items:center;gap:16px;padding:18px 24px;border-bottom:1px solid var(--line);transition:background .15s}
+.nx-lane:last-of-type{border-bottom:0}
+.nx-lane:has(.nx-lane-pick input:checked){background:var(--tint)}
+.nx-lane.is-attention{box-shadow:inset 3px 0 0 var(--orange)}
+.nx-lane.is-clean .nx-lane-copy{opacity:.72}
+.nx-lane-pick{display:grid;place-items:center;width:18px}
+.nx-lane-pick input{width:16px;height:16px;margin:0;accent-color:#56876b;cursor:pointer}
+.nx-lane-pick input:disabled{cursor:not-allowed}
+.nx-lane-icon{display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--green);flex:none}
+.nx-lane-icon .icon{width:18px;height:18px}
+.nx-lane-copy{min-width:0}
+.nx-lane-title{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px}
+.nx-lane-title strong{font-size:14px;font-weight:600;color:var(--ink)}
+.nx-lane-title .status{margin-left:0}
+.nx-lane-pace{font-size:11px;color:var(--secondary);border:1px solid var(--line);border-radius:999px;padding:1px 8px;white-space:nowrap}
+.nx-lane-copy>p{margin:6px 0 10px;font-size:12px;line-height:1.7;color:var(--secondary);overflow-wrap:anywhere}
+.nx-lane-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 20px;margin:0}
+.nx-lane-meta div{display:flex;gap:8px;min-width:0;font-size:12px;line-height:1.7}
+.nx-lane-meta dt{flex:none;color:var(--secondary)}
+.nx-lane-meta dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+.nx-lane-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px;max-width:220px}
+.nx-lane-actions .button{white-space:nowrap}
+.nx-lane-idle{font-size:12px;color:var(--secondary)}
+.nx-lane-reason{margin:0;font-size:12px;line-height:1.7;color:var(--orange);text-align:right;overflow-wrap:anywhere}
+.nx-lanes .nx-publication-footer{border-top:1px solid var(--line)}
+.nx-lane-scope{margin:16px 0}
+.nx-lane-scope h3{font-size:13px;font-weight:600;color:var(--ink);margin:0 0 8px}
+.nx-lane-scope .nx-freeze-list{max-height:none;overflow:visible;margin:0 0 16px}
+.nx-lane-scope .nx-preflight-row{padding:10px 0}
+.nx-lane-scope>p{margin-top:6px}
+.nx-job-lanes .nx-job-lane-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;padding:18px 24px}
+.nx-job-lane-groups h3{font-size:13px;font-weight:600;color:var(--ink);margin:0 0 10px}
+.nx-job-lane-list{display:flex;flex-wrap:wrap;gap:8px}
+.nx-job-lane{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--line);border-radius:999px;font-size:12px;color:var(--secondary);background:#fff}
+.nx-job-lane .icon{width:14px;height:14px}
+.nx-job-lane.is-chosen{color:var(--ink);background:var(--tint);border-color:#bbd6c6}
+@media(max-width:1200px){.nx-lane{grid-template-columns:auto auto minmax(0,1fr);gap:14px}.nx-lane-actions{grid-column:2/-1;flex-direction:row;align-items:center;justify-content:space-between;max-width:none}.nx-lane-reason{text-align:left}}
+@media(max-width:600px){
+  .nx-lane{grid-template-columns:auto minmax(0,1fr);padding:16px 18px;gap:12px}
+  .nx-lane-icon{display:none}
+  .nx-lane-actions{grid-column:1/-1;flex-wrap:wrap}
+  .nx-lane-meta{grid-template-columns:minmax(0,1fr)}
+  .nx-lane-lead{padding:16px 18px}
+  .nx-job-lanes .nx-job-lane-groups{grid-template-columns:minmax(0,1fr);padding:16px 18px;gap:16px}
+}

@@ -138,7 +138,8 @@ export function createDeliveryPages(api) {
   let fontPlan = null, fontReconcile = null, fontBenchmark = null, fontApplyPlan = null, fontSelection = '', fontScenario = 'normal', fontSpeedScenario = 'normal';
   const formalFonts = () => (api.getFontCatalog?.() || api.getCatalog?.()?.fonts || []).filter(row => row.id !== 'system');
   const fontChannel = () => model().demoFontChannel || { enabled: true, sampleToken: false };
-  const fontOrder = () => model().demoFontRouting || fontChannels.map(([id]) => id);
+  const savedFontRouting = () => model().demoResourceRouting || api.initialPublicationSettings?.routing;
+  const fontOrder = () => model().demoFontRouting || savedFontRouting()?.channels?.fonts?.map(row => row.providerId) || fontChannels.map(([id]) => id);
   const fontChannelName = id => fontChannels.find(([key]) => key === id)?.[1] || id;
   const fontOrderText = order => order.map(fontChannelName).join(' → ');
   // Freeze the validated shared metadata. This prototype never creates a byte-verification digest.
@@ -151,6 +152,50 @@ export function createDeliveryPages(api) {
   const effectiveFontOrder = font => fontOrder().filter(id => id !== 'uploadthing' || receiptMatches(font));
   const pendingFontReceipt = () => [...fontReceipts.values()].find(row => ['unknown', 'verification-failed'].includes(row.state));
   function clearFontPlans() { fontPlan = null; fontReconcile = null; fontApplyPlan = null; }
+  function clearPublicationPlan() {
+    const hadResourcePlan = pubPlan?.kind === 'resources';
+    pubPlan = null;
+    if (hadResourcePlan) api.render();
+  }
+  // A publication plan keeps shared metadata and matching fictional receipts together.
+  // Later settings or receipts never fill in a missing or older task snapshot.
+  function publicationFontRouteSnapshot() {
+    const catalog = api.getFontCatalog?.() || api.getCatalog?.()?.fonts;
+    return {
+      schemaVersion: savedFontRouting()?.schemaVersion || 3,
+      channelOrder: [...fontOrder()],
+      fonts: Array.isArray(catalog) ? formalFonts().map(font => {
+        const receipt = fontReceipts.get(font.id);
+        return { source: structuredClone(fontSource(font)), ready: fontSourceReady(font),
+          receipt: receiptMatches(font) && fontSourceSignature(receipt.font) === fontSourceSignature(font)
+            ? { operationId: receipt.operationId, objectReference: receipt.objectReference, sourceSignature: receipt.sourceSignature }
+            : null };
+      }) : null,
+    };
+  }
+  function publicationFontRouting(route, basis = 'planned') {
+    return { basis, schemaVersion: route.schemaVersion, totalFonts: route.fonts?.length ?? null,
+      channelOrder: [...route.channelOrder], channels: route.channelOrder.map(providerId => {
+        const fontIds = route.fonts?.filter(font => font.ready && (providerId !== 'uploadthing' || font.receipt)).map(font => font.source.id) ?? null;
+        return { providerId, coveredFonts: fontIds?.length ?? null, fontIds };
+      }) };
+  }
+  function publicationFontRoutingPanel(publication) {
+    const routing = publication?.scope?.fontRouting, task = Boolean(publication?.id);
+    const binding = task ? `本条任务 · ${publication.id}` : '本次预演计划';
+    const basis = routing?.basis === 'frozen' ? '已冻结 · 内存演示' : routing ? '计划范围 · 内存演示' : '未提供';
+    const description = routing ? `${binding}；${routing.basis === 'frozen' ? '沿用模拟本地准备时的快照。' : '公开包尚未冻结，覆盖为预演范围。'}`
+      : task ? `${binding}未提供字体路由快照；不使用当前设置或新回执补全历史。` : '本次尚未生成预演计划，字体分发信息未提供。';
+    const rows = (routing?.channels || []).map(channel => {
+      const coverage = Number.isInteger(channel.coveredFonts) && Number.isInteger(routing.totalFonts) ? `${channel.coveredFonts} / ${routing.totalFonts} 款` : '未提供';
+      const hint = channel.providerId === 'uploadthing'
+        ? channel.coveredFonts > 0 ? `已登记字体直链；随本次路由发布。${channel.coveredFonts < routing.totalFonts ? '缺匹配直链自动回退。' : ''}`
+          : channel.coveredFonts === 0 ? '缺匹配直链自动回退；本次没有已登记的匹配示例直链。' : '匹配直链范围未提供。'
+        : '批准 TTF 与完整许可随公开包分发。';
+      return `<li data-publication-font-channel="${h(channel.providerId)}"><strong>${h(fontChannelName(channel.providerId))}</strong><span data-publication-font-coverage>${coverage}</span><p>${hint}</p></li>`;
+    }).join('');
+    return `<section class="nx-publication-font-routing" data-publication-font-routing data-font-routing-basis="${h(routing?.basis || 'unavailable')}" aria-label="字体分发渠道"><div class="nx-font-routing-heading"><h3>字体分发渠道</h3>${status(basis)}</div><p data-publication-font-binding>${h(description)}</p><dl class="nx-definition"><dt>默认顺序</dt><dd data-publication-font-order>${routing?.channelOrder?.length ? h(fontOrderText(routing.channelOrder)) : '未提供'}</dd><dt>路由版本</dt><dd>${routing ? `schemaVersion ${h(routing.schemaVersion)}` : '未提供'}</dd></dl>${rows ? `<ul class="nx-font-routing-channels">${rows}</ul>` : ''}<p class="nx-font-routing-note">覆盖根据该快照的共享目录元数据与匹配示例回执计算，仅内存演示，不是新上传操作、原字节核验或实测结果。UploadThing 字体先独立上传，直链随 GitHub 镜像或 AxureShow 的路由发布；本页未真实构建或发布路由文件。</p></section>`;
+  }
   const validDates = dates => { const valid = new Set(dateRows()); return [...dates].filter(date => valid.has(date)).sort(); };
   const signature = dates => JSON.stringify([...dates].sort().map(date => [date, model().bindings[date], find(model().bindings[date]?.entryId)]));
   const snapshot = dates => [...dates].sort().map(date => { const row = find(model().bindings[date]?.entryId); return { date, entry: structuredClone(row), imagePath: image(row) }; });
@@ -301,10 +346,44 @@ export function createDeliveryPages(api) {
     taskPreview = { ...structuredClone(taskForm), plannedResourceRoute: requestRoute(primary), candidateCount: primary.candidateCount };
     focusTarget = '#ai-preview-heading'; api.render();
   }
+  // Resource lanes split one publication into independently publishable parts. A lane
+  // narrows what is checked and confirmed; every lane still freezes a whole package
+  // and carries unchanged lanes forward on their last verified identity.
+  const resourceLanes = [
+    { id: 'content', glyph: 'content', name: '内容与排期', pace: '高频', size: '约 0.13 MB', holds: '月份数据、内容清单与卡片排期', check: '正式范围、审核版本与已确认修订' },
+    { id: 'imagery', glyph: 'image', name: '批准配图', size: '约 4.5 MB', holds: '批准配图原字节与配图清单', check: '逐张交付回执与字节身份' },
+    { id: 'fonts', glyph: 'template', name: '字体与许可', size: '约 14 MB', holds: '生产 TTF、完整 OFL 与字体清单', check: '批准 TTF 与许可的字节身份' },
+    { id: 'prototype', glyph: 'grid', name: '原型与路由', size: '约 2.7 MB', holds: 'reader / cards / studio 原型、runtime 与资源入口指针', check: '原型源文件与路由草稿' },
+  ];
+  const laneName = id => resourceLanes.find(lane => lane.id === id)?.name || id;
+  let laneSelection = new Set(['content']);
+  // Design-only drift markers standing in for real per-lane source digests.
+  // They never claim that remote bytes were read.
+  let laneDirty = new Set(['content']);
+  let laneBlock = new Map();
+  function laneState(id) {
+    if (!laneDirty.has(id)) return { state: 'clean', label: '无变化', tone: '', attention: false };
+    return laneBlock.has(id) ? { state: 'blocked', label: '有更新 · 条件未满足', tone: 'warn', attention: true } : { state: 'ready', label: '有更新', tone: 'blue', attention: false };
+  }
+  function laneRows() {
+    return resourceLanes.map(lane => {
+      const current = laneState(lane.id);
+      return { ...lane, ...current, selected: laneSelection.has(lane.id) && current.state !== 'clean' };
+    });
+  }
+  const laneTitle = lanes => lanes.map(lane => lane.name).join('、') || '没有选择资源';
   function resourceHome() {
     resourceDates = new Set(validDates(Object.keys(model().bindings)));
     const selected = validDates(resourceDates), issues = problems(selected), formal = new Set(selected.map(date => model().bindings[date]?.entryId).filter(Boolean));
-    return `<div class="nx-pub-grid"><section class="panel"><div class="panel-top"><div class="panel-title"><h2>本次发布范围</h2><span>${selected.length} 个准确日期</span></div>${b('查看整包范围', 'pub-range', 'calendar', 'small')}</div><div class="release-content"><h3>${selected.length ? `${selected[0]} — ${selected.at(-1)}` : '尚未选择日期'}</h3><p>有效日期内的正式内容、批准配图与字体整体发布；公众号单篇和批量草稿独立选择日期。</p><div class="release-summary"><div><strong>${selected.length}</strong><span>准确日期</span></div><div><strong>${formal.size}</strong><span>关联内容</span></div><div><strong>${issues.length}</strong><span>待处理日期</span></div></div><div class="nx-date-chips">${selected.map(date => `<span>${date.slice(5).replace('-', '.')}</span>`).join('') || '<span>请选择日期</span>'}</div>${resourceChecked ? notice(issues.length ? `有 ${issues.length} 个日期需处理，请查看预检明细。` : '本地演示条件已满足；未核验真实原字节或远端状态。', !!issues.length) : notice('范围已展示；先查看本地预检，再确认交付。') }<div class="button-row nx-spaced">${b('查看本地预检', 'pub-preflight', 'check', 'small')}${b('按此范围发布 · 模拟', 'pub-freeze', 'send', 'primary', !selected.length ? 'disabled' : '')}</div><div class="editor-hint">资源发布与公众号草稿分开，内存演示不执行远端动作。</div><div class="nx-pending-summary"><strong>内容条件 ${issues.length ? `有 ${issues.length} 个日期需处理` : '当前无待处理日期'}</strong><p>这是演示内容条件，不是正式待发布变更数。内容变更与公开资源包分别核对；原型、字体或配图更新不按内容差异数计算。</p></div></div></section><aside class="panel nx-aside-card"><span class="nx-eyebrow">交付目标</span><h3>一次确认，分阶段追踪</h3><div class="nx-channel"><span>${icon('send')}公开资源主渠道</span>${status(channelState.mirror ? '已选择' : '未选择', channelState.mirror ? 'good' : '')}</div><div class="nx-channel"><span>${icon('book')}资源备份渠道</span>${status(channelState.archive ? '已选择' : '未选择', channelState.archive ? 'good' : '')}</div>${b('调整目标渠道', 'pub-channels', 'settings', 'quiet small')}<div class="steps">${[['冻结范围', '绑定准确日期和当前内容版本。'], ['准备与交付', '保留本次成品，不重放未知写入。'], ['核验结果', '提交与核验分别呈现。']].map(([title, desc], index) => `<div class="step"><span class="step-number">${index + 1}</span><div><h4>${title}</h4><p>${desc}</p></div></div>`).join('')}</div></aside></div>${hostingPanel()}`;
+    const rows = laneRows(), changed = rows.filter(row => row.state !== 'clean'), chosen = rows.filter(row => row.selected), blocked = chosen.filter(row => row.state === 'blocked');
+    const originalPending = activeJob && !['completed', 'cancelled'].includes(activeJob.state);
+    const publication = pubPlan?.kind === 'resources' ? pubPlan : activeJob?.kind === 'resources' ? activeJob : historyRows.find(row => row.kind === 'resources');
+    const lead = originalPending ? ['原任务未结束', `原任务 ${activeJob.id} ${activeJob.state === 'unknown' ? '结果待核对' : '尚未处理完成'}；继续原任务后才能发起下一次发布。`, true]
+      : !changed.length ? ['当前没有待发布更新', '内容、配图、字体或原型有变化时，对应资源会显示“有更新”。']
+      : [laneTitle(changed) + '有更新', '只检查并发布所选资源；未选或无变化的资源沿用上次已核验版本，不重新核验。'];
+    const cards = rows.map(row => `<div class="nx-lane${row.state === 'clean' ? ' is-clean' : ''}${row.attention ? ' is-attention' : ''}" data-pub-lane="${row.id}" data-lane-state="${row.state}"><label class="nx-lane-pick"><input type="checkbox" data-pub-lane-check="${row.id}" aria-label="选择${row.name}"${row.selected ? ' checked' : ''}${row.state === 'clean' || originalPending ? ' disabled' : ''}></label><span class="nx-lane-icon">${icon(row.glyph)}</span><div class="nx-lane-copy"><div class="nx-lane-title"><strong>${row.name}</strong>${status(row.label, row.tone)}${row.pace ? '<span class="nx-lane-pace">高频更新</span>' : ''}</div><p>${row.holds}</p><dl class="nx-lane-meta"><div><dt>体积</dt><dd>${row.size}</dd></div><div><dt>本次检查</dt><dd>${row.state === 'clean' ? '无需检查 · 沿用上次已核验' : row.check}</dd></div></dl></div><div class="nx-lane-actions">${row.state === 'blocked' ? `<p class="nx-lane-reason" role="alert">${h(laneBlock.get(row.id))}</p>` : ''}${row.state === 'clean' ? '<span class="nx-lane-idle">与已发布一致</span>' : b('单独发布', 'pub-lane', 'send', `${row.state === 'ready' ? 'primary' : 'quiet'} small`, `${attrs('id', row.id)} aria-label="单独发布${row.name}"`)}</div></div>`).join('');
+    const footer = `<footer class="nx-publication-footer"><div class="nx-footer-copy"><strong>${chosen.length ? `已选 ${chosen.length} 类资源 · 内存模拟` : '没有选择待发布资源'}</strong><p id="pub-lane-next-step">${h(originalPending ? '先继续或核对原任务。' : blocked.length ? `所选资源中，${laneTitle(blocked)}的发布条件未满足；可先处理该资源，或取消勾选后再发布。` : chosen.length ? '确认所选资源的范围、目标与覆盖影响后，开始本次模拟。' : '勾选有更新的资源，或使用某一项的“单独发布”。')}</p></div><div class="button-row">${b('完整发布', 'pub-freeze', 'book', 'quiet small', `aria-describedby="pub-lane-next-step"${originalPending ? ' disabled' : ''}`)}${b('发布所选 · 模拟', 'pub-lane-publish', 'send', 'primary', `disabled aria-describedby="pub-lane-next-step"`)}</div></footer>`;
+    return `<div class="nx-pub-grid"><section class="panel nx-lanes"><div class="panel-top"><div class="panel-title"><h2>按资源发布</h2><span>${selected.length ? `${selected[0]} — ${selected.at(-1)} · ${selected.length} 个准确日期` : '尚未选择日期'}</span></div>${b('查看整包范围', 'pub-range', 'calendar', 'small')}</div><div class="nx-lane-lead${lead[2] ? ' warn' : ''}"><strong>${h(lead[0])}</strong><p>${h(lead[1])}</p></div>${cards}${footer}</section><aside class="panel nx-aside-card"><span class="nx-eyebrow">交付目标</span><h3>一次确认，分阶段追踪</h3><div class="nx-channel"><span>${icon('send')}公开资源主渠道</span>${status(channelState.mirror ? '已选择' : '未选择', channelState.mirror ? 'good' : '')}</div><div class="nx-channel"><span>${icon('book')}资源备份渠道</span>${status(channelState.archive ? '已选择' : '未选择', channelState.archive ? 'good' : '')}</div>${b('调整目标渠道', 'pub-channels', 'settings', 'quiet small')}<div class="steps">${[['冻结范围', '绑定所选资源、准确日期和当前版本。'], ['准备与交付', '未变资源沿用已核验身份，不重放写入。'], ['核验结果', '只核验本次所选资源。']].map(([title, desc], index) => `<div class="step"><span class="step-number">${index + 1}</span><div><h4>${title}</h4><p>${desc}</p></div></div>`).join('')}</div><div class="nx-pending-summary"><strong>内容变更与公开资源包分别核对</strong><p>这里的“有更新”是演示状态，不是正式待发布变更数；真实后台按每类资源的来源摘要与上次已核验发布比对。</p></div><p class="nx-tiny">完整发布会检查全部资源并整体核验，适合首次发布或基线失效时使用。</p></aside></div>${publicationFontRoutingPanel(publication)}${hostingPanel()}`;
   }
   function hostingPanel() {
     const job = activeJob?.kind === 'resources' ? activeJob : historyRows.find(row => row.kind === 'resources');
@@ -407,8 +486,36 @@ export function createDeliveryPages(api) {
     const issues = problems(dates);
     if (issues.length) { preflight(); return; }
     if (!channelState.mirror && !channelState.archive) { api.notify('请至少选择一个交付渠道。'); return; }
-    pubPlan = { kind: 'resources', dates, records: snapshot(dates), signature: signature(dates), scenario: simulatedScenario, channels: { ...channelState } };
+    const fontRoute = publicationFontRouteSnapshot();
+    pubPlan = { kind: 'resources', dates, records: snapshot(dates), signature: signature(dates), scenario: simulatedScenario, channels: { ...channelState }, fontRoute, scope: { fontRouting: publicationFontRouting(fontRoute) } };
+    api.render();
     freezeModal();
+  }
+  // A lane plan reuses the whole-package freeze, then narrows the checked scope.
+  // Unchanged lanes are listed as carried-forward identities, never as re-verified.
+  function freezeLanes(ids) {
+    if (pendingJob()) return;
+    const lanes = resourceLanes.filter(lane => ids.includes(lane.id) && laneDirty.has(lane.id));
+    if (!lanes.length) { api.notify('所选资源没有待发布的更新。'); return; }
+    if (lanes.some(lane => laneBlock.has(lane.id))) { api.notify('所选资源存在未满足的发布条件，请先处理。'); return; }
+    const dates = validDates(resourceDates);
+    const contentIssues = lanes.some(lane => lane.id === 'content') ? problems(dates) : [];
+    if (contentIssues.length) { preflight(); return; }
+    if (!channelState.mirror && !channelState.archive) { api.notify('请至少选择一个交付渠道。'); return; }
+    const fontRoute = publicationFontRouteSnapshot();
+    pubPlan = { kind: 'resources', lanes: lanes.map(lane => lane.id), carried: resourceLanes.filter(lane => !lanes.some(row => row.id === lane.id)).map(lane => lane.id), dates, records: snapshot(dates), signature: signature(dates), scenario: simulatedScenario, channels: { ...channelState }, fontRoute, scope: { fontRouting: publicationFontRouting(fontRoute) } };
+    api.render();
+    freezeModal();
+  }
+  function jobLaneScope(job) {
+    const lanes = resourceLanes.filter(lane => job.lanes.includes(lane.id)), carried = resourceLanes.filter(lane => job.carried?.includes(lane.id));
+    return `<section class="panel nx-lane-scope nx-job-lanes" aria-label="本条任务的资源范围"><div class="panel-top"><div class="panel-title"><h2>资源范围</h2><span>${job.state === 'completed' ? '已发布并核验' : '按原任务冻结'}</span></div></div><div class="nx-job-lane-groups"><div><h3>本次检查并发布</h3><div class="nx-job-lane-list">${lanes.map(lane => `<span class="nx-job-lane is-chosen">${icon(lane.glyph)}${h(lane.name)}</span>`).join('')}</div></div><div><h3>沿用上次已核验版本</h3><div class="nx-job-lane-list">${carried.map(lane => `<span class="nx-job-lane">${icon(lane.glyph)}${h(lane.name)}</span>`).join('') || '<span class="nx-tiny">无</span>'}</div></div></div></section>`;
+  }
+  function laneScopeRows(plan) {
+    if (!plan.lanes) return '';
+    const row = (lane, carried) => `<div class="nx-preflight-row"><span><strong>${h(lane.name)}</strong><small>${h(lane.holds)}</small></span>${status(carried ? '沿用已核验 · 不检查' : '本次检查并发布', carried ? '' : 'blue')}</div>`;
+    const chosen = resourceLanes.filter(lane => plan.lanes.includes(lane.id)), carried = resourceLanes.filter(lane => plan.carried.includes(lane.id));
+    return `<div class="nx-lane-scope"><h3>本次检查并发布</h3><div class="nx-freeze-list">${chosen.map(lane => row(lane, false)).join('')}</div><h3>沿用上次已核验版本</h3><div class="nx-freeze-list">${carried.map(lane => row(lane, true)).join('')}</div><p class="nx-tiny">沿用项不重新核验，也不重放写入；其身份与上次已核验发布一致。</p></div>`;
   }
   function freezeArticle() {
     if (pendingJob()) return;
@@ -432,8 +539,15 @@ export function createDeliveryPages(api) {
   function freezeModal() {
     const plan = pubPlan;
     if (!plan) return;
-    const actionName = plan.kind === 'resources' ? '资源交付' : plan.kind === 'material' ? '仅上传图片素材' : '保存公众号草稿';
-    api.modal(`确认${actionName}`, `<div class="nx-pub"><p class="nx-modal-lead">${plan.dates.length} 个准确日期 · ${actionName}</p><dl class="nx-definition"><dt>操作范围</dt><dd>${plan.dates[0]} — ${plan.dates.at(-1)}</dd><dt>目标</dt><dd>${plan.kind === 'resources' ? Object.entries(plan.channels).filter(([, value]) => value).map(([key]) => key === 'mirror' ? '主渠道' : '备份渠道').join('、') : '拾光撷语 · 示例账号'}</dd>${plan.kind !== 'resources' ? `<dt>成品类型</dt><dd>${plan.articleKind === 'news' ? '图文正文' : '完整卡片图片帖'}</dd><dt>阅读入口</dt><dd>${plan.includeLink ? '关联小程序阅读' : '不添加阅读入口'}</dd>` : ''}</dl><div class="nx-freeze-list">${plan.dates.map(date => `<p><strong>${date}</strong><small>${h(text(find(model().bindings[date]?.entryId)))}</small></p>`).join('')}</div>${notice(plan.kind === 'material' ? '本操作只演示素材上传，0 草稿、0 发表。' : plan.kind === 'draft' ? '停在草稿结果；不模拟已发表。' : '上传和结果核验为独立演示阶段。')}${plan.kind === 'resources' ? '<div class="nx-hosting-impact"><strong>完整覆盖影响</strong><p>本地完整包覆盖线上项目，线上独有文件不保留；没有远端备份或自动回滚保证。结果未知时保留原任务，不自动重传。</p></div>' : ''}${checkbox('pub-consent', plan.kind === 'resources' ? '我已核对准确日期、操作目标与完整覆盖影响，开始本次模拟' : '我已核对准确日期与操作目标，开始本次模拟', false)}</div>`, b('返回修改', 'pub-close', '', 'quiet') + b('确认并开始模拟', 'pub-start', 'check', 'primary', 'id="pub-confirm" disabled'));
+    const lanePlan = plan.kind === 'resources' ? plan : null;
+    const lanes = lanePlan?.lanes ? resourceLanes.filter(lane => lanePlan.lanes.includes(lane.id)) : null;
+    const actionName = plan.kind === 'resources' ? lanes ? '按资源发布' : '完整发布' : plan.kind === 'material' ? '仅上传图片素材' : '保存公众号草稿';
+    const target = plan.kind === 'resources' ? Object.entries(plan.channels).filter(([, value]) => value).map(([key]) => key === 'mirror' ? '主渠道' : '备份渠道').join('、') : '拾光撷语 · 示例账号';
+    const lead = lanes ? `${laneTitle(lanes)} · ${lanes.length} 类资源` : `${plan.dates.length} 个准确日期 · ${actionName}`;
+    const dates = lanes && !lanes.some(lane => lane.id === 'content') ? '' : `<div class="nx-freeze-list">${plan.dates.map(date => `<p><strong>${date}</strong><small>${h(text(find(model().bindings[date]?.entryId)))}</small></p>`).join('')}</div>`;
+    const scope = lanes ? laneScopeRows(lanePlan) : '';
+    const impact = plan.kind === 'resources' ? `<div class="nx-hosting-impact"><strong>${lanes ? '覆盖影响' : '完整覆盖影响'}</strong><p>${lanes ? '仍以整包覆盖线上项目：未选资源按上次已核验版本原样带齐，线上独有文件不保留；没有远端备份或自动回滚保证。' : '本地完整发布包覆盖线上项目，线上独有文件不保留；没有远端备份或自动回滚保证。'}结果未知时保留原任务，不自动重传。</p></div>` : '';
+    api.modal(`确认${actionName}`, `<div class="nx-pub">${lanes ? `<p class="nx-modal-lead">${h(laneTitle(lanes))}</p><p>${lead} · ${h(plan.dates[0])} — ${h(plan.dates.at(-1))}</p>` : `<p class="nx-modal-lead">${lead}</p>`}<dl class="nx-definition"><dt>操作范围</dt><dd>${plan.dates[0]} — ${plan.dates.at(-1)}</dd><dt>目标</dt><dd>${target}</dd>${plan.kind !== 'resources' ? `<dt>成品类型</dt><dd>${plan.articleKind === 'news' ? '图文正文' : '完整卡片图片帖'}</dd><dt>阅读入口</dt><dd>${plan.includeLink ? '关联小程序阅读' : '不添加阅读入口'}</dd>` : ''}</dl>${plan.kind === 'resources' ? publicationFontRoutingPanel(plan) : ''}${scope}${dates}${notice(plan.kind === 'material' ? '本操作只演示素材上传，0 草稿、0 发表。' : plan.kind === 'draft' ? '停在草稿结果；不模拟已发表。' : lanes ? '只检查并核验所选资源；沿用项不重新核验。' : '上传和结果核验为独立演示阶段。')}${impact}${checkbox('pub-consent', plan.kind === 'resources' ? lanes ? '我已核对所选资源、操作目标与覆盖影响，开始本次模拟' : '我已核对准确日期、操作目标与完整覆盖影响，开始本次模拟' : '我已核对准确日期与操作目标，开始本次模拟', false)}</div>`, b('返回修改', 'pub-close', '', 'quiet') + b('确认并开始模拟', 'pub-start', 'check', 'primary', 'id="pub-confirm" disabled'));
   }
   function jobDateState(job, date) {
     if (job.rowPause?.includes(date) && !['completed', 'cancelled'].includes(job.state)) return { state: 'paused', label: '单项已暂停', tone: 'warn', attention: true };
@@ -443,13 +557,14 @@ export function createDeliveryPages(api) {
   function jobPanel() {
     const job = inspectedJob || activeJob;
     if (!job) { pubView = 'home'; return ''; }
-    const operation = job.kind === 'resources' ? '资源交付' : job.kind === 'material' ? '图片素材上传' : '公众号草稿保存';
+    const jobLanes = job.lanes?.length ? resourceLanes.filter(lane => job.lanes.includes(lane.id)) : null;
+    const operation = job.kind === 'resources' ? jobLanes ? `按资源发布 · ${laneTitle(jobLanes)}` : '完整发布' : job.kind === 'material' ? '图片素材上传' : '公众号草稿保存';
     const steps = job.kind === 'resources' ? ['范围冻结', '本地准备', '渠道交付', '结果核验'] : ['范围冻结', '准备成品', '上传素材', job.kind === 'material' ? '核对素材结果' : '保存草稿'];
     const rows = job.dates.map(date => ({ date, ...jobDateState(job, date) }));
     const count = state => rows.filter(row => row.state === state).length, attention = rows.filter(row => row.attention).length;
     const shown = rows.filter(row => jobResultFilter === 'all' || jobResultFilter === 'attention' && row.attention || jobResultFilter === 'completed' && row.state === 'completed');
     const controls = `${['queued', 'running'].includes(job.state) ? b('推进下一阶段', 'pub-job-next', 'arrow', 'primary small') + b('暂停', 'pub-job-pause', '', 'small') : ''}${job.state === 'paused' ? b('继续原任务', 'pub-job-resume', 'arrow', 'primary small') : ''}${job.state === 'failed' ? b('恢复失败阶段', 'pub-job-retry', 'arrow', 'primary small') : ''}${job.state === 'unknown' ? b('核对原回执', 'pub-job-reconcile', 'check', 'primary small') : ''}${!['completed', 'cancelled', 'unknown'].includes(job.state) ? b('取消后续', 'pub-job-cancel', '', 'quiet small') : ''}`;
-    return back('处理详情', 'pub-job-back') + head(operation, `${job.id} · ${job.dates.length} 个准确日期 · ${job.kind === 'resources' ? '公开资源' : job.articleKind === 'news' ? '图文正文' : '完整卡片图片帖'}`, badge(job.state)) + `<section class="panel nx-pub nx-job-workspace"><div class="panel-top"><div class="panel-title"><h2>本次进度</h2><span>原任务继续，不重复创建</span></div></div><div class="nx-stage-grid">${steps.map((step, index) => `<div class="nx-stage ${index < job.step || job.state === 'completed' ? 'done' : ''}"><span>${index < job.step || job.state === 'completed' ? icon('check') : index + 1}</span><strong>${step}</strong><small>${index < job.step || job.state === 'completed' ? '本阶段演示完成' : index === job.step ? '当前阶段' : '等待前一步'}</small></div>`).join('')}</div>${job.state === 'unknown' ? `<div class="nx-panel-pad">${notice('原任务结果未知，后续已停止。请核对原回执，再决定是否继续；当前不能重试或创建重复任务。', true)}</div>` : job.state === 'failed' ? `<div class="nx-panel-pad">${notice('模拟上传失败，已准备成品和原任务保留。恢复失败阶段时沿用原范围。', true)}</div>` : ''}<div class="nx-job-results"><div class="nx-execution-counts" aria-label="执行状态汇总">${[['completed', '已完成'], ['queued', '待处理'], ['running', '处理中'], ['failed', '失败'], ['unknown', '待核对'], ['paused', '已暂停'], ['cancelled', '已取消']].map(([state, label]) => `<span class="${state === 'completed' ? 'good' : ['failed', 'unknown', 'paused'].includes(state) && count(state) ? 'warn' : ''}">${label}<strong>${count(state)}</strong></span>`).join('')}</div>${publicationFilters([['all', '全部', rows.length], ['attention', '需处理', attention], ['completed', '已完成', count('completed')]], jobResultFilter, 'pub-job-filter')}${shown.length ? `<table class="nx-result-table"><thead><tr><th>准确日期</th><th>冻结内容</th><th>执行结果</th><th>操作</th></tr></thead><tbody>${shown.map(row => `<tr><td data-label="准确日期"><strong>${row.date}</strong></td><td data-label="冻结内容">${h(text(job.records?.find(item => item.date === row.date)?.entry))}</td><td data-label="执行结果">${status(row.label, row.tone)}</td><td data-label="操作">${['running', 'paused'].includes(job.state) ? b(job.rowPause?.includes(row.date) ? '继续此项' : '暂停此项', 'pub-row-toggle', '', 'quiet small', attrs('date', row.date)) : '<span>—</span>'}</td></tr>`).join('')}</tbody></table>` : empty('此筛选下暂无结果', '切换筛选不会改变原任务的准确日期。')}</div><details class="nx-job-details" ${detailAttrs(`job-log-${job.id}`, true)}><summary>处理记录 <span>${job.log.length} 条</span></summary><ol class="nx-timeline">${job.log.map(row => `<li>${h(row)}</li>`).join('')}</ol></details><footer class="nx-publication-footer"><div class="nx-footer-copy"><p>${job.state === 'unknown' ? '先核对原回执；原任务和已准备成品保留。' : job.state === 'failed' ? '确认问题已处理后，恢复原任务的失败阶段。' : job.state === 'completed' ? '所选日期已完成本次模拟，准确范围与原稿保留在记录中。' : '本页仅模拟推进；不会读取或写入真实公众号。'}</p></div><div class="button-row">${controls}${job.state === 'completed' ? b('查看记录', 'pub-history', 'arrow', 'small') : ''}</div></footer></section>`;
+    return back('处理详情', 'pub-job-back') + head(operation, `${job.id} · ${job.dates.length} 个准确日期 · ${job.kind === 'resources' ? '公开资源' : job.articleKind === 'news' ? '图文正文' : '完整卡片图片帖'}`, badge(job.state)) + (job.kind === 'resources' ? publicationFontRoutingPanel(job) : '') + (job.lanes?.length ? jobLaneScope(job) : '') + `<section class="panel nx-pub nx-job-workspace"><div class="panel-top"><div class="panel-title"><h2>本次进度</h2><span>原任务继续，不重复创建</span></div></div>${job.kind === 'resources' ? '<p class="nx-publication-stage-hint">正式执行阶段显示实际交付、构建与整包发布；字体渠道见独立的「字体分发渠道」区域。本页仅内存演示。</p>' : ''}<div class="nx-stage-grid">${steps.map((step, index) => `<div class="nx-stage ${index < job.step || job.state === 'completed' ? 'done' : ''}"><span>${index < job.step || job.state === 'completed' ? icon('check') : index + 1}</span><strong>${step}</strong><small>${index < job.step || job.state === 'completed' ? '本阶段演示完成' : index === job.step ? '当前阶段' : '等待前一步'}</small></div>`).join('')}</div>${job.state === 'unknown' ? `<div class="nx-panel-pad">${notice('原任务结果未知，后续已停止。请核对原回执，再决定是否继续；当前不能重试或创建重复任务。', true)}</div>` : job.state === 'failed' ? `<div class="nx-panel-pad">${notice('模拟上传失败，已准备成品和原任务保留。恢复失败阶段时沿用原范围。', true)}</div>` : ''}<div class="nx-job-results"><div class="nx-execution-counts" aria-label="执行状态汇总">${[['completed', '已完成'], ['queued', '待处理'], ['running', '处理中'], ['failed', '失败'], ['unknown', '待核对'], ['paused', '已暂停'], ['cancelled', '已取消']].map(([state, label]) => `<span class="${state === 'completed' ? 'good' : ['failed', 'unknown', 'paused'].includes(state) && count(state) ? 'warn' : ''}">${label}<strong>${count(state)}</strong></span>`).join('')}</div>${publicationFilters([['all', '全部', rows.length], ['attention', '需处理', attention], ['completed', '已完成', count('completed')]], jobResultFilter, 'pub-job-filter')}${shown.length ? `<table class="nx-result-table"><thead><tr><th>准确日期</th><th>冻结内容</th><th>执行结果</th><th>操作</th></tr></thead><tbody>${shown.map(row => `<tr><td data-label="准确日期"><strong>${row.date}</strong></td><td data-label="冻结内容">${h(text(job.records?.find(item => item.date === row.date)?.entry))}</td><td data-label="执行结果">${status(row.label, row.tone)}</td><td data-label="操作">${['running', 'paused'].includes(job.state) ? b(job.rowPause?.includes(row.date) ? '继续此项' : '暂停此项', 'pub-row-toggle', '', 'quiet small', attrs('date', row.date)) : '<span>—</span>'}</td></tr>`).join('')}</tbody></table>` : empty('此筛选下暂无结果', '切换筛选不会改变原任务的准确日期。')}</div><details class="nx-job-details" ${detailAttrs(`job-log-${job.id}`, true)}><summary>处理记录 <span>${job.log.length} 条</span></summary><ol class="nx-timeline">${job.log.map(row => `<li>${h(row)}</li>`).join('')}</ol></details><footer class="nx-publication-footer"><div class="nx-footer-copy"><p>${job.state === 'unknown' ? '先核对原回执；原任务和已准备成品保留。' : job.state === 'failed' ? '确认问题已处理后，恢复原任务的失败阶段。' : job.state === 'completed' ? '所选日期已完成本次模拟，准确范围与原稿保留在记录中。' : '本页仅模拟推进；不会读取或写入真实公众号。'}</p></div><div class="button-row">${controls}${job.state === 'completed' ? b('查看记录', 'pub-history', 'arrow', 'small') : ''}</div></footer></section>`;
   }
   function saveHistory(job) {
     const existing = historyRows.find(row => row.id === job.id);
@@ -587,17 +702,35 @@ export function createDeliveryPages(api) {
     job.state = 'running';
     if (job.step === 2 && job.scenario === 'failure') { job.state = 'failed'; job.log.push('模拟上传失败；准备成品保留'); }
     else if (job.step === 2 && job.scenario === 'unknown') { job.state = 'unknown'; job.log.push('模拟上传结果未知，锁定本次结果，等待核对原回执'); }
-    else { api.clearNotice?.(); job.step++; job.log.push(`阶段 ${job.step} 已完成 · 模拟`); if (job.step >= 4) { job.state = 'completed'; job.log.push(job.kind === 'draft' ? '模拟草稿已保存，未发表' : job.kind === 'material' ? '仅模拟素材回执，0 草稿、0 发表' : '模拟交付与核验阶段已完成'); saveHistory(job); } }
+    else {
+      api.clearNotice?.();
+      if (job.kind === 'resources' && job.step === 1 && job.scope?.fontRouting) job.scope.fontRouting = { ...structuredClone(job.scope.fontRouting), basis: 'frozen' };
+      job.step++; job.log.push(`阶段 ${job.step} 已完成 · 模拟`);
+      if (job.step >= 4) { job.state = 'completed'; job.log.push(job.kind === 'draft' ? '模拟草稿已保存，未发表' : job.kind === 'material' ? '仅模拟素材回执，0 草稿、0 发表' : job.lanes?.length ? `模拟完成：${laneTitle(resourceLanes.filter(lane => job.lanes.includes(lane.id)))}已发布并核验，沿用项未重新核验` : '模拟交付与核验阶段已完成'); saveHistory(job); }
+      // A completed simulation clears only the lanes it actually published.
+      if (job.kind === 'resources' && job.state === 'completed') { const done = job.lanes?.length ? job.lanes : resourceLanes.map(lane => lane.id); laneDirty = new Set([...laneDirty].filter(id => !done.includes(id))); laneSelection = new Set(); resourceChecked = false; }
+    }
     api.render();
   }
+  // The footer button follows the selection without a full re-render.
+  function syncLaneFooter() {
+    const button = $('[data-action="pub-lane-publish"]');
+    if (!button) return;
+    const chosen = laneRows().filter(row => row.selected);
+    button.disabled = !chosen.length || chosen.some(row => row.state === 'blocked') || Boolean(activeJob && !['completed', 'cancelled'].includes(activeJob.state));
+    const copy = $('#pub-lane-next-step');
+    if (copy) copy.textContent = chosen.some(row => row.state === 'blocked') ? `所选资源中，${laneTitle(chosen.filter(row => row.state === 'blocked'))}的发布条件未满足；可先处理该资源，或取消勾选后再发布。` : chosen.length ? '确认所选资源的范围、目标与覆盖影响后，开始本次模拟。' : '勾选有更新的资源，或使用某一项的“单独发布”。';
+  }
   function channelsModal() {
-    api.modal('目标渠道与演示策略', `<div class="nx-pub"><p>交付目标在提交前展示，调整后旧预检失效。</p><div class="nx-check-stack nx-spaced">${checkbox('pub-channel-mirror', '公开资源主渠道', channelState.mirror)}${checkbox('pub-channel-archive', '资源备份渠道', channelState.archive)}</div>${field('本次异常交互', select('pub-channel-scenario', [['normal', '正常推进'], ['failure', '上传失败'], ['unknown', '结果未知']], simulatedScenario))}</div>`, b('取消', 'pub-close', '', 'quiet') + b('保存渠道', 'pub-channels-save', 'check', 'primary'));
+    const laneOptions = [['content', '仅内容与排期'], ['content+imagery', '内容与配图'], ['all', '全部资源'], ['none', '全部无变化']];
+    const current = !laneDirty.size ? 'none' : laneDirty.size === resourceLanes.length ? 'all' : laneDirty.size === 2 && laneDirty.has('content') && laneDirty.has('imagery') ? 'content+imagery' : 'content';
+    api.modal('目标渠道与演示策略', `<div class="nx-pub"><p>交付目标在提交前展示，调整后旧预检失效。</p><div class="nx-check-stack nx-spaced">${checkbox('pub-channel-mirror', '公开资源主渠道', channelState.mirror)}${checkbox('pub-channel-archive', '资源备份渠道', channelState.archive)}</div>${field('本次异常交互', select('pub-channel-scenario', [['normal', '正常推进'], ['failure', '上传失败'], ['unknown', '结果未知']], simulatedScenario))}${field('演示：哪些资源有更新', select('pub-channel-lanes', laneOptions, current), '仅改变本页的示例状态，用来查看不同组合下的发布入口。')}</div>`, b('取消', 'pub-close', '', 'quiet') + b('保存渠道', 'pub-channels-save', 'check', 'primary'));
   }
   function recordModal(id) {
     const record = historyRows.find(row => row.id === id);
     if (!record) return;
     recordId = id;
-    api.modal('处理记录详情', `<div class="nx-pub"><p class="nx-modal-lead">${record.kind === 'draft' ? '公众号草稿' : record.kind === 'material' ? '仅图片素材' : '资源交付'} · ${record.dates.length} 个日期</p>${badge(record.state)}<dl class="nx-definition"><dt>创建时间</dt><dd>${record.createdAt ? `<time datetime="${h(record.createdAt)}">${h(formatStudioDateTime(record.createdAt))}</time>` : '—'}</dd><dt>原任务</dt><dd>${h(record.id)}</dd><dt>结果含义</dt><dd>${record.kind === 'draft' ? '模拟草稿已保存，未发表' : record.kind === 'material' ? '仅模拟素材，未建稿' : '模拟资源交付核验'}</dd></dl><div class="nx-freeze-list">${record.dates.map(date => `<div class="nx-preflight-row"><span><strong>${date}</strong><small>${h(text(record.records?.find(item => item.date === date)?.entry))}</small></span>${b('查看原稿', 'pub-record-artifact', 'right', 'quiet small', attrs('date', date))}</div>`).join('')}</div><p class="nx-tiny">模拟回执：${record.id}-receipt；不是远端身份或上传证据。</p></div>`, b('下载演示记录', 'pub-record-download', 'collect', 'small') + b('查看原任务', 'pub-record-task', 'arrow', 'primary'));
+    api.modal('处理记录详情', `<div class="nx-pub"><p class="nx-modal-lead">${record.kind === 'draft' ? '公众号草稿' : record.kind === 'material' ? '仅图片素材' : '资源交付'} · ${record.dates.length} 个日期</p>${badge(record.state)}<dl class="nx-definition"><dt>创建时间</dt><dd>${record.createdAt ? `<time datetime="${h(record.createdAt)}">${h(formatStudioDateTime(record.createdAt))}</time>` : '—'}</dd><dt>原任务</dt><dd>${h(record.id)}</dd><dt>结果含义</dt><dd>${record.kind === 'draft' ? '模拟草稿已保存，未发表' : record.kind === 'material' ? '仅模拟素材，未建稿' : '模拟资源交付核验'}</dd></dl>${record.kind === 'resources' ? publicationFontRoutingPanel(record) : ''}<div class="nx-freeze-list">${record.dates.map(date => `<div class="nx-preflight-row"><span><strong>${date}</strong><small>${h(text(record.records?.find(item => item.date === date)?.entry))}</small></span>${b('查看原稿', 'pub-record-artifact', 'right', 'quiet small', attrs('date', date))}</div>`).join('')}</div><p class="nx-tiny">模拟回执：${record.id}-receipt；不是远端身份或上传证据。</p></div>`, b('下载演示记录', 'pub-record-download', 'collect', 'small') + b('查看原任务', 'pub-record-task', 'arrow', 'primary'));
   }
   async function handle(action, target) {
     if (!action.startsWith('ai-') && !action.startsWith('pub-')) return false;
@@ -645,7 +778,7 @@ export function createDeliveryPages(api) {
       case 'ai-reconcile-done': if (task?.state === 'unknown') { task.state = 'completed'; task.done = task.ids.length; task.log.push('模拟核对：已完成，未重放任务'); close(); api.render(); } break;
       case 'ai-open-entry': api.openEntry(id); break;
       case 'pub-tab': if (pubTab !== value) api.clearNotice?.(); clearFontPlans(); pubTab = value; pubView = 'home'; api.render(); break;
-      case 'pub-close': pubPlan = null; clearFontPlans(); close(); break;
+      case 'pub-close': clearFontPlans(); close(); clearPublicationPlan(); break;
       case 'pub-range': rangeModal(); break;
       case 'pub-range-scheduled': resourceDraft = new Set(validDates(Object.keys(model().bindings))); $('#pub-range-list').innerHTML = rangeChoices(); break;
       case 'pub-range-all': resourceDraft = new Set(dateRows()); $('#pub-range-list').innerHTML = rangeChoices(); break;
@@ -659,8 +792,15 @@ export function createDeliveryPages(api) {
       case 'pub-exclude-issues': api.notify('请修复问题日期后重新预检整包。'); break;
       case 'pub-fix-date': close(); { const row = find(model().bindings[date]?.entryId); if (row) api.openEntry(row.id); else api.navigate('schedule'); } break;
       case 'pub-freeze': freezeResource(); break;
+      case 'pub-lane': freezeLanes([id]); break;
+      case 'pub-lane-publish': freezeLanes([...laneSelection]); break;
       case 'pub-channels': channelsModal(); break;
-      case 'pub-channels-save': channelState = { mirror: $('#pub-channel-mirror').checked, archive: $('#pub-channel-archive').checked }; simulatedScenario = $('#pub-channel-scenario').value; resourceChecked = false; close(); api.render(); break;
+      case 'pub-channels-save': {
+        channelState = { mirror: $('#pub-channel-mirror').checked, archive: $('#pub-channel-archive').checked }; simulatedScenario = $('#pub-channel-scenario').value;
+        const scenario = $('#pub-channel-lanes')?.value;
+        if (scenario) { laneDirty = new Set(scenario === 'none' ? [] : scenario === 'all' ? resourceLanes.map(lane => lane.id) : scenario === 'content+imagery' ? ['content', 'imagery'] : ['content']); laneSelection = new Set(laneDirty); pubPlan = null; }
+        resourceChecked = false; close(); api.render(); break;
+      }
       case 'pub-mode': captureArticle(); articleMode = value;  articlePreview = false; api.render(); break;
       case 'pub-batch-load': loadBatchRange(); break;
       case 'pub-batch-filter': if (['all', 'attention', 'ready'].includes(value)) { batchResultFilter = value; api.render(); } break;
@@ -672,7 +812,19 @@ export function createDeliveryPages(api) {
       case 'pub-batch-exclude': { const issues = new Set(problems(batchDates).map(row => row.date)); batchDates = new Set([...batchDates].filter(date => !issues.has(date))); articlePreview = false; api.render(); break; }
       case 'pub-batch-remove': captureArticle(); batchDates.delete(date); articlePreview = false; api.render(); break;
       case 'pub-open-schedule': api.navigate('schedule'); break;
-      case 'pub-start': if (pubPlan && $('#pub-consent')?.checked) { if (pubPlan.signature !== signature(pubPlan.dates)) { pubPlan = null; close(); api.notify('内容已变化，请重新准备并核对范围。'); break; } api.clearNotice?.(); activeJob = { ...structuredClone(pubPlan), id: `demo-pub-${++sequence}`, createdAt: new Date().toISOString(), state: 'queued', step: 0, rowPause: [], log: ['准确日期、类型与目标已冻结 · 模拟'] }; pubPlan = null; inspectedJob = null; jobResultFilter = 'all'; pubView = 'job'; close(); api.render(); } break;
+      case 'pub-start':
+        if (pubPlan && $('#pub-consent')?.checked) {
+          if (pubPlan.signature !== signature(pubPlan.dates)) { close(); clearPublicationPlan(); api.notify('内容已变化，请重新准备并核对范围。'); break; }
+          if (pubPlan.kind === 'resources' && JSON.stringify(pubPlan.fontRoute) !== JSON.stringify(publicationFontRouteSnapshot())) {
+            pubPlan = null; close(); api.render(); api.notify('字体目录、路由顺序或匹配回执已变化，请重新预演本次字体分发。'); break;
+          }
+          if (pubPlan.lanes && (pubPlan.lanes.some(id => !laneDirty.has(id) || laneBlock.has(id)) || !channelState.mirror && !channelState.archive)) {
+            pubPlan = null; close(); api.render(); api.notify('所选资源的状态已变化，请重新核对后发布。'); break;
+          }
+          api.clearNotice?.(); activeJob = { ...structuredClone(pubPlan), id: `demo-pub-${++sequence}`, createdAt: new Date().toISOString(), state: 'queued', step: 0, rowPause: [], log: ['准确日期、类型与目标已冻结 · 模拟'] };
+          pubPlan = null; inspectedJob = null; jobResultFilter = 'all'; pubView = 'job'; close(); api.render();
+        }
+        break;
       case 'pub-job-back': inspectedJob = null; pubView = 'home'; api.render(); break;
       case 'pub-existing-job': inspectedJob = null; pubView = 'job'; close(); api.render(); break;
       case 'pub-job-next': stepJob(); break;
@@ -714,6 +866,7 @@ export function createDeliveryPages(api) {
     if (target.dataset.pubBatch) { if (target.checked && validDates(batchDates).length >= 31) { target.checked = false; api.notify('单个批次最多选择 31 个准确日期。'); return; } target.checked ? batchDates.add(target.dataset.pubBatch) : batchDates.delete(target.dataset.pubBatch); articlePreview = false; captureArticle(); api.render(); }
     if (target.dataset.pubRange && resourceDraft) target.checked ? resourceDraft.add(target.dataset.pubRange) : resourceDraft.delete(target.dataset.pubRange);
     if (target.id === 'pub-consent' && $('#pub-confirm')) $('#pub-confirm').disabled = !target.checked || !pubPlan;
+    if (target.dataset.pubLaneCheck) { const id = target.dataset.pubLaneCheck; target.checked ? laneSelection.add(id) : laneSelection.delete(id); api.render(); syncLaneFooter(); }
     if (target.id === 'pub-link') articleLink = target.checked;
     if (target.id === 'pub-scenario') simulatedScenario = target.value;
     if (target.id === 'pub-history-filter') { historyFilter = target.value; api.render(); }
@@ -738,15 +891,16 @@ export function createDeliveryPages(api) {
     }
   });
   document.addEventListener('click', event => {
-    if (event.target.closest('[data-action="close-modal"]')) { pubPlan = null; clearFontPlans(); }
+    if (event.target.closest('[data-action="close-modal"]')) { clearFontPlans(); clearPublicationPlan(); }
   });
   document.addEventListener('toggle', event => {
     const node = event.target;
     if (node.dataset?.pubDetails) publicationDetails.set(node.dataset.pubDetails, node.open);
     if (node.dataset?.articlePreviewToggle !== undefined && node.isConnected && node.open !== (articlePreviewOpen ?? !previewMedia?.matches)) articlePreviewOpen = node.open;
   }, true);
-  document.querySelector('#modal')?.addEventListener('cancel', () => { pubPlan = null; clearFontPlans(); });
+  document.querySelector('#modal')?.addEventListener('cancel', () => { clearFontPlans(); clearPublicationPlan(); });
   function afterRender(page) {
+    syncLaneFooter();
     if (page === 'ai' && focusTarget) {
       const target = $(focusTarget); focusTarget = '';
       target?.focus?.({ preventScroll: true }); target?.scrollIntoView?.({ block: target?.id === 'ai-session-heading' ? 'nearest' : 'start', behavior: 'auto' });
@@ -777,7 +931,7 @@ export function createDeliveryPages(api) {
     restoreAiPriority,
     syncAiResourcePool,
     beforeNavigate(page) {
-      if (page !== 'release') clearFontPlans();
+      if (page !== 'release') { clearFontPlans(); clearPublicationPlan(); }
       if (page === 'ai' || aiView !== 'new' || !taskForm) return true;
       captureTaskForm();
       if (JSON.stringify(taskForm) === taskFormBaseline) return true;
