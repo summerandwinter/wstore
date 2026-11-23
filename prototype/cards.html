@@ -5,10 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>拾光撷语 · 卡片与字体设计资源</title>
 <link rel="stylesheet" href="./shared/design.css">
+<link rel="stylesheet" href="./shared/preview-shell.css">
+<script type="module" src="./shared/preview-shell.js"></script>
 <script type="module" src="./cards.js"></script>
 </head>
-<body>
-<nav class="resource-nav" aria-label="项目设计资源"><strong>设计资源</strong><a href="./cards.html" aria-current="page">卡片与字体</a><a href="./reader.html">阅读端</a><a href="./studio.html">管理端</a><a href="#archive">历史来源</a><button class="theme-button" data-theme-toggle aria-pressed="false">浅色 / 深色</button></nav>
+<body class="preview-shell preview-shell-cards">
+<aside data-preview-navigation="cards" aria-label="原型预览导航"></aside>
+<div class="preview-body">
+<header class="preview-topbar"><div class="preview-breadcrumb"><button class="preview-menu-button" type="button" data-preview-menu aria-controls="preview-sidebar" aria-expanded="false" aria-label="打开原型导航"><span data-preview-menu-icon aria-hidden="true">☰</span></button><span>原型预览</span><span>/</span><strong>卡片与字体</strong></div><div class="preview-topbar-actions"><span class="preview-mode-label">同源资源 · 浏览器演示</span><button class="theme-button" data-theme-toggle aria-pressed="false">浅色 / 深色</button></div></header>
+<div class="preview-page-title"><div><h1>卡片与字体</h1><p>预览共享版式与生产字体，找到文字最合适的表达。</p></div><span class="preview-page-badge">15 款版式 · 同源预览</span></div>
 <main class="resource-frame" id="card-library">
 <header class="resource-header"><div class="brand"><span class="mark" aria-hidden="true">拾</span><div><h1>拾光撷语</h1><small>CARD & TYPE COLLECTION</small></div></div><span class="caption">项目内设计资源 · 只读素材 · 不连接业务</span></header>
 <nav class="resource-tabs" role="tablist" aria-label="卡片设计预览">
@@ -27,7 +32,8 @@
 </div>
 <p class="loading-mode-note" id="loading-mode-note" data-loading-note>演示仅改变显示时机，不模拟网速；真实字体与图片仍由共享绘图器加载。</p>
 <section class="loading-stage" id="selected-preview" aria-labelledby="loading-selected-title">
-  <div class="loading-selected-heading"><div><span class="eyebrow">SELECTED · 同一版式，两种状态</span><h3 id="loading-selected-title" data-selected-title tabindex="-1">正在读取版式…</h3><p class="caption" data-selected-description></p></div><span class="tag" data-selected-index>当前选中</span></div>
+  <div class="loading-selected-heading"><div><span class="eyebrow">SELECTED · 同一版式，两种状态</span><h3 id="loading-selected-title" data-selected-title tabindex="-1">正在读取版式…</h3><p class="caption" data-selected-description></p><a href="./studio.html?page=templates" data-template-management>配置本模板默认 · 管理端原型 →</a></div><span class="tag" data-selected-index>当前选中</span></div>
+  <div class="cards-visual-controls" data-shared-visual-controls aria-live="polite"></div>
   <div class="loading-comparison">
     <figure class="loading-example"><figcaption class="loading-example-head"><strong class="loading-example-label">01 / 版式骨架</strong><span class="tag historical">静态参照</span></figcaption><div data-skeleton-preview role="img" aria-label="当前版式的静态骨架参考" aria-describedby="skeleton-preview-note"></div><p class="preview-status" id="skeleton-preview-note">浅绿标记图文位置；随版式与正文长度调整，不是成品图。</p></figure>
     <figure class="loading-example"><figcaption class="loading-example-head"><strong class="loading-example-label">02 / 成品预览</strong><span class="tag" data-playback-state>等待加载</span></figcaption><div data-main-preview></div><p class="preview-status" id="main-preview-status" data-main-status role="status" aria-live="polite"></p></figure>
@@ -54,5 +60,7 @@
 <p class="notice" id="load-error" role="alert" hidden></p>
 </main>
 <footer class="archive-note" id="archive"><details><summary>资源边界与字体许可</summary><p>版式、活动字体与批准配图来自统一清单。字体样张和卡片预览使用同一生产TTF字节；许可入口随字体清单生成。候选字体、历史WOFF样张和提案保留在本地归档，不进入公开活动包。</p><p>所有交互只改变页面内存；不连接后台，不包含账号设置或私有来源路径，也不执行真实发布。实际导出仍需在小程序和后台分别验收。</p></details></footer>
+<footer class="preview-footer"><span>拾光撷语 · 设计工作空间</span><span>同源资源预览 · <a href="../index.html">资源首页与边界</a></span></footer>
+</div>
 </body>
 </html>

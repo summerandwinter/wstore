@@ -1,3 +1,4 @@
+import { applyTemplateVisual, validateTemplateVisualConfig } from '../domain/template-config.js';
 import { EXPORT_HEIGHT, EXPORT_WIDTH, FONT_FAMILIES, getTemplate, getPromotionTemplate, isPromotionId, promotionPressure, PROMOTION_PALETTE } from './templates.js';
 export const MAX_TEXT_LENGTH = 240;
 export const MAX_ATTRIBUTION_LENGTH = 90;
@@ -129,7 +130,7 @@ function horizontalLayout(text, attributionText, template, loadedFamily, measure
         : [];
     const attributionHeight = attributionLines.length * attributionLineHeight;
     const gap = attributionLines.length ? 32 : 0;
-    for (let fontSize = template.fontSize; fontSize >= MIN_BODY_FONT_SIZE; fontSize -= 2) {
+    for (let fontSize = Math.max(MIN_BODY_FONT_SIZE, template.fontSize); fontSize >= MIN_BODY_FONT_SIZE; fontSize -= fontSize === MIN_BODY_FONT_SIZE + 1 ? 1 : 2) {
         let lines;
         try {
             lines = wrapText(text, content.width, value => measure(value, fontSize, fontFamily));
@@ -193,10 +194,10 @@ function verticalUnits(text) {
     }
     return units;
 }
-function verticalBlock(text, rect, fontSize, fontFamily, color, measure) {
+function verticalBlock(text, rect, fontSize, fontFamily, color, measure, lineHeightScale = 1) {
     if (rect.width <= 0)
         return undefined;
-    const lineHeight = Math.ceil(fontSize * 1.14);
+    const lineHeight = Math.max(fontSize, Math.ceil(fontSize * 1.14 * lineHeightScale));
     const capacity = Math.floor(rect.height / lineHeight);
     if (capacity < 1)
         return undefined;
@@ -225,7 +226,7 @@ function verticalBlock(text, rect, fontSize, fontFamily, color, measure) {
         return width;
     }));
     const columnWidth = Math.max(fontSize, ...measured.flat());
-    const advance = Math.ceil(columnWidth * 1.65);
+    const advance = Math.ceil(columnWidth * 1.65 * lineHeightScale);
     const width = (unitColumns.length - 1) * advance + columnWidth;
     if (width > rect.width)
         return undefined;
@@ -253,10 +254,10 @@ function verticalBlock(text, rect, fontSize, fontFamily, color, measure) {
         align: 'left', direction: 'vertical-rl', columns,
     };
 }
-function verticalLayout(text, attributionText, template, loadedFamily, measure, footer) {
+function verticalLayout(text, attributionText, template, loadedFamily, measure, footer, lineHeightScale = 1) {
     const fontFamily = loadedFamily ? `"${loadedFamily}", ${template.fontFamily}` : template.fontFamily;
     for (let size = template.fontSize; size >= MIN_BODY_FONT_SIZE; size -= 2) {
-        const body = verticalBlock(text, template.content, size, fontFamily, template.color, measure);
+        const body = verticalBlock(text, template.content, size, fontFamily, template.color, measure, lineHeightScale);
         if (!body)
             continue;
         const creditRect = {
@@ -264,14 +265,14 @@ function verticalLayout(text, attributionText, template, loadedFamily, measure, 
             height: Math.floor(template.content.height * 0.85),
         };
         const attribution = attributionText
-            ? verticalBlock(attributionText, creditRect, 28, FONT_FAMILIES.sans, template.muted, measure) : undefined;
+            ? verticalBlock(attributionText, creditRect, 28, FONT_FAMILIES.sans, template.muted, measure, lineHeightScale) : undefined;
         if (attributionText && !attribution)
             continue;
         return { width: EXPORT_WIDTH, height: EXPORT_HEIGHT, template, body, attribution, ...footer, decorations: [] };
     }
     return undefined;
 }
-function decorate(layout, card, options, measure) {
+function decorate(layout, card, options, measure, tokens) {
     const { template, body, attribution } = layout;
     const decorations = layout.decorations;
     const rectangle = (rect, fill = template.accent, extra = {}) => {
@@ -293,7 +294,7 @@ function decorate(layout, card, options, measure) {
             for (let x = 94; x < 986; x += 17)
                 rectangle({ x, y, width: Math.min(6, 986 - x), height: 2 }, template.muted);
             for (const x of [70, 1010])
-                rectangle({ x: x - 18, y: y - 18, width: 36, height: 36, shape: 'circle' }, PROMOTION_PALETTE.paper);
+                rectangle({ x: x - 18, y: y - 18, width: 36, height: 36, shape: 'circle' }, tokens?.paper ?? PROMOTION_PALETTE.paper);
         }
         const headingSize = design.headingSize || 28;
         label(design.headingText, design.heading, headingSize, Math.ceil(headingSize * 1.35));
@@ -324,8 +325,8 @@ function decorate(layout, card, options, measure) {
                 label(layout.fallback.message, { x: 97, y: 72, width: 886, height: 32 });
             }
             else {
-                rectangle({ x: 897, y: 1204, width: 66, height: 66 }, 'rgba(0, 0, 0, 0)', { stroke: '#a7614e', lineWidth: 2 });
-                label('拾', { x: 897, y: 1217, width: 66, height: 46 }, 38, 46, 'center', '#a7614e', FONT_FAMILIES.serif);
+                rectangle({ x: 897, y: 1204, width: 66, height: 66 }, 'rgba(0, 0, 0, 0)', { stroke: tokens?.accent ?? '#a7614e', lineWidth: 2 });
+                label('拾', { x: 897, y: 1217, width: 66, height: 46 }, 38, 46, 'center', tokens?.accent ?? '#a7614e', FONT_FAMILIES.serif);
             }
             break;
         case 'split':
@@ -344,7 +345,7 @@ function decorate(layout, card, options, measure) {
                 label(`${month} · ${match[1]}`, { x: 827, y: 214, width: 178, height: 32 }, 22, 32, 'center');
             }
             if (layout.brand)
-                rectangle({ x: 97, y: 1322, width: 484, height: 68 }, '#fffdf7');
+                rectangle({ x: 97, y: 1322, width: 484, height: 68 }, tokens?.paper ?? '#fffdf7');
             break;
         }
         case 'photo': {
@@ -352,9 +353,9 @@ function decorate(layout, card, options, measure) {
             const frame = { x: image.x - 24, y: image.y - 24, width: image.width + 48, height: image.height + 96 };
             const rotation = image.rotation;
             const rotationOrigin = image.rotationOrigin;
-            rectangle({ ...frame, x: frame.x + 7, y: frame.y + 12 }, '#dcd7cd', { layer: 'beforeImage', rotation, rotationOrigin });
-            rectangle(frame, '#fffdf7', { layer: 'beforeImage', rotation, rotationOrigin });
-            rectangle({ x: 404, y: frame.y - 16, width: 272, height: 42 }, 'rgba(246, 242, 233, 0.88)', { rotation: 4 });
+            rectangle({ ...frame, x: frame.x + 7, y: frame.y + 12 }, tokens?.muted ?? '#dcd7cd', { layer: 'beforeImage', rotation, rotationOrigin });
+            rectangle(frame, tokens?.paper ?? '#fffdf7', { layer: 'beforeImage', rotation, rotationOrigin });
+            rectangle({ x: 404, y: frame.y - 16, width: 272, height: 42 }, tokens?.paper ?? 'rgba(246, 242, 233, 0.88)', { rotation: 4 });
             if (options.showDate && card.date)
                 label(card.date.replace(/-/g, ' / '), { x: 97, y: 90, width: 800, height: 32 });
             break;
@@ -364,6 +365,10 @@ function decorate(layout, card, options, measure) {
 }
 /** 无平台、字体环境依赖；测量、字形定位、图片形状和装饰同时供原生预览与两端绘图使用。 */
 export function layoutCard(card, options, measure, loadedFamily) {
+    const inputConfig = options.templateConfig ?? card.templateConfig;
+    // Reject the entire nested payload before any text measurement, including unused template rows.
+    const config = inputConfig === undefined ? undefined : validateTemplateVisualConfig(inputConfig);
+    const tokens = config?.templates[options.template];
     const text = normalizeNewlines(card.text);
     const author = normalizeNewlines(card.author);
     const source = normalizeNewlines(card.source);
@@ -381,24 +386,24 @@ export function layoutCard(card, options, measure, loadedFamily) {
         const pressures = [...new Set([initial, Math.min(1, initial + 0.25), Math.min(1, initial + 0.5), 1])];
         const attributionText = [author, source].filter(part => part.trim()).join(' · ');
         for (const pressure of pressures) {
-            const template = getPromotionTemplate(options.template, textLength, explicitRows, pressure);
+            const template = applyTemplateVisual(getPromotionTemplate(options.template, textLength, explicitRows, pressure), config);
             const footer = footerBlocks(card, options, template, measure);
             const layout = horizontalLayout(text, attributionText, template, loadedFamily, measure, footer, options.attributionSystemFallback);
             if (layout)
-                return decorate(layout, card, options, measure);
+                return decorate(layout, card, options, measure, tokens);
         }
         throw fitError();
     }
-    let template = getTemplate(options.template, textLength);
+    let template = applyTemplateVisual(getTemplate(options.template, textLength), config);
     let footer = footerBlocks(card, options, template, measure);
     const attributionText = [author, source].filter(part => part.trim()).join(' · ');
     let fallback;
     let layout;
     if (template.direction === 'vertical-rl') {
-        layout = verticalLayout(text, attributionText, template, loadedFamily, measure, footer);
+        layout = verticalLayout(text, attributionText, template, loadedFamily, measure, footer, tokens?.lineHeightScale);
         if (!layout) {
             fallback = { from: 'vertical-rl', reason: 'insufficient-space', message: '竖排空间不足 · 已转横排' };
-            template = getTemplate('vertical', 43);
+            template = applyTemplateVisual(getTemplate('vertical', 43), config);
         }
     }
     else if (template.id === 'vertical') {
@@ -408,7 +413,7 @@ export function layoutCard(card, options, measure, loadedFamily) {
         layout = horizontalLayout(text, attributionText, template, loadedFamily, measure, footer, options.attributionSystemFallback);
     // 新版短句遇到大量显式换行或宽字形时让出图片面积；旧三款不改变任何原有几何。
     if (!layout && template.variant === 'short' && !legacyTemplate(template)) {
-        template = getTemplate(template.id, Math.max(43, textLength));
+        template = applyTemplateVisual(getTemplate(template.id, Math.max(43, textLength)), config);
         footer = footerBlocks(card, options, template, measure);
         layout = horizontalLayout(text, attributionText, template, loadedFamily, measure, footer, options.attributionSystemFallback);
     }
@@ -416,5 +421,5 @@ export function layoutCard(card, options, measure, loadedFamily) {
         throw fitError();
     if (fallback)
         layout.fallback = fallback;
-    return decorate(layout, card, options, measure);
+    return decorate(layout, card, options, measure, tokens);
 }

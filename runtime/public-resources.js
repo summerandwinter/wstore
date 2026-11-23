@@ -1,4 +1,6 @@
 // Shared production TTF resources. Public copies live at runtime/public-resources.js.
+import { validateTemplateVisualConfig } from './domain/template-config.js';
+import { sha256Hex } from './services/resource-digest.js';
 export const publicBase = new URL('../', import.meta.url);
 const SHA = /^[a-f0-9]{64}$/;
 const ID = /^[a-z][a-z0-9-]{0,39}$/;
@@ -21,7 +23,13 @@ export function resolvePublicResource(path, base = publicBase) {
   if (url.origin !== root.origin || !url.pathname.startsWith(root.pathname)) throw new Error('Resource reference escapes root');
   return url.href;
 }
-const sha256 = async bytes => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), n => n.toString(16).padStart(2, '0')).join('');
+const sha256 = async bytes => {
+  const subtle = globalThis.crypto?.subtle;
+  if (typeof subtle?.digest === 'function') return Array.from(new Uint8Array(await subtle.digest('SHA-256', bytes)), n => n.toString(16).padStart(2, '0')).join('');
+  // LAN HTTP pages lack WebCrypto; keep the shared byte-integrity check active.
+  const buffer = ArrayBuffer.isView(bytes) ? bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) : bytes;
+  return sha256Hex(buffer);
+};
 const identityHash = value => sha256(new TextEncoder().encode(JSON.stringify(value)));
 function jsonBytes(bytes) { return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)); }
 async function fetchBytes(path, base, limit, expected) {
@@ -77,7 +85,8 @@ export function createPublicResources({ base = publicBase } = {}) {
             if (!/^[A-Za-z0-9._-]{1,120}$/.test(asset.id || '') || ids.has(asset.id) || !safeText(asset.label, 120) || /https?:\/\/|[A-Za-z]:\/|\.\.\//i.test(asset.label) || !/^[A-Za-z0-9._-]+\.(png|jpe?g|webp)$/i.test(asset.file || '') || files.has(asset.file) || !SHA.test(asset.sha256 || '') || !Number.isSafeInteger(asset.bytes) || asset.bytes < 1 || asset.bytes > 6 * 1024 * 1024 || asset.deliveryUrl !== '' || Object.keys(asset).some(key => !['id', 'label', 'file', 'sha256', 'bytes', 'deliveryUrl'].includes(key))) throw new Error('Invalid public imagery record');
             ids.add(asset.id); files.add(asset.file);
           }
-          return { index, documents, fonts: [SYSTEM, ...documents.fonts.registry.fonts], imagery: imagery.assets };
+          const templateConfig = documents.content.templateConfig === undefined ? undefined : validateTemplateVisualConfig(documents.content.templateConfig);
+          return { index, documents, fonts: [SYSTEM, ...documents.fonts.registry.fonts], imagery: imagery.assets, ...(templateConfig ? { templateConfig } : {}) };
         })();
         task = pending;
         pending.catch(() => { if (task === pending) task = undefined; });
@@ -155,7 +164,7 @@ export function createProductionFontLoader({ base = publicBase, catalog, resourc
       const font = definitions.find(row => row.id === id), result = loaded.get(id), name = font?.name || id;
       if (!result?.family) return `${name}未加载 · 系统字体回退${result?.error ? `（${result.error}）` : ''}`;
       const missing = [...new Set(Array.from(text).filter(character => !/\s/.test(character) && !result.coverage.has(character)))].length;
-      return `${name} · 正常 TTF 已加载 · ${result.version}${missing ? ` · ${missing} 个字形使用系统回退` : ' · 当前正文已覆盖'}`;
+      return `${name} · 正常 TTF 已加载${missing ? ` · ${missing} 个字形使用系统回退` : ' · 当前正文已覆盖'}`;
     },
     stateFor(id, text = '') { return id === 'system' ? 'system' : !loaded.get(id)?.family ? 'fallback' : Array.from(text).some(character => !/\s/.test(character) && !loaded.get(id).coverage.has(character)) ? 'partial' : 'loaded'; },
   };

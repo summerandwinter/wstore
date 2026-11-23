@@ -10,10 +10,13 @@ export const ASSETS = [
 ];
 const clone = value => JSON.parse(JSON.stringify(value));
 function entry(id, text, author, source, pool, imageId, tags) {
-  return { id, text, author, source, pool, defaults: { template: 'paper', fontId: 'wenkai', imageId, showDate: true, showBrand: true }, tags, note: '公开诗句 · 仅用于设计样例', annotationConfirmed: false, protected: false };
+  return { id, text, author, source, pool, category: '诗词', created: '2026-11-01', entered: '2026-11-02', removed: '2026-11-03', defaults: { template: 'paper', fontId: 'wenkai', imageId, showDate: true, showBrand: true }, tags, note: '公开诗句 · 仅用于设计样例', annotationConfirmed: false, protected: false };
 }
 export function createStudioModel() {
   return {
+    // 首次安装从公开种子建立本地正式池与排期；不复制私有工作库，也不代表远端已发表。
+    initialization: { source: 'public-seed-demo', emptyOnly: true, remoteVerified: false, previewSource: 'verified-local-approved-bytes' },
+    schedule: { start: '2026-11-02', end: '2026-11-15' },
     entries: [
       entry('example-cloud', '行到水穷处，\n坐看云起时。', '王维', '终南别业', 'formal', 'sample-mist', ['释然', '平静', '山野', '云']),
       entry('example-moon', '明月松间照，\n清泉石上流。', '王维', '山居秋暝', 'formal', 'sample-dusk', ['日常', '平静', '树林', '月']),
@@ -76,11 +79,13 @@ export function applyScope(model, entryId, patch, scope, currentDate, dates = []
   const next = clone(model);
   if (scope === 'default') {
     Object.assign(next.entries.find(item => item.id === entryId).defaults, patch);
-    for (const date of boundDates(next, entryId)) { next.bindings[date].confirmed = false; next.bindings[date].locked = false; }
+    next.entries.find(item => item.id === entryId).systemReview = null;
+    for (const date of boundDates(next, entryId)) { next.bindings[date].confirmed = false; next.bindings[date].locked = false; next.bindings[date].systemReview = null; }
   } else for (const date of targets) {
     Object.assign(next.bindings[date].overrides, patch);
     next.bindings[date].confirmed = false;
     next.bindings[date].locked = false;
+    next.bindings[date].systemReview = null;
   }
   next.release.completed = 0;
   return next;

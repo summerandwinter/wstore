@@ -1,4 +1,4 @@
-import { loadCatalog, loadPreviewFont, paintPreview, previewFrame, cancelCardPreview, setCardPreviewPaused, resourceUrl, escapeHTML as h, bindTheme } from './shared/card-preview.js';
+import { loadCatalog, loadPreviewFont, paintPreview, previewFrame, cancelCardPreview, setCardPreviewPaused, resourceUrl, escapeHTML as h, bindTheme, getTemplateVisualConfig, setTemplateVisualConfig, updateTemplateVisualToken, resetTemplateVisualTokens, templateVisualControlsMarkup } from './shared/card-preview.js';
 import { proposalTemplates } from './shared/proposals.js';
 
 bindTheme();
@@ -95,7 +95,7 @@ function cancelPreview(canvas) {
   if (!previews.get(canvas)?.settled) previews.delete(canvas);
 }
 function paintOnce(canvas, card, options, status, presentation, { force = false, start, done } = {}) {
-  const key = JSON.stringify([card, options, presentation]);
+  const key = JSON.stringify([card, options, presentation, getTemplateVisualConfig()?.revision || 'baseline']);
   if (!force && previews.get(canvas)?.key === key) return;
   const request = { key, settled: false };
   previews.set(canvas, request);
@@ -142,6 +142,8 @@ function renderSelected(template, font, sample, detail) {
   selectionKey = key;
   $('[data-selected-title]').textContent = `${template.name} · ${detail.title}`;
   $('[data-selected-description]').textContent = `${detail.structure} · ${font.name} · ${sample.name}`;
+  const management = $('[data-template-management]');
+  if (management) management.setAttribute('href', `./studio.html?${new URLSearchParams({ page: 'templates', template: template.id, sample: state.sample })}`);
   $('[data-selected-index]').textContent = `已选 ${String(catalog.templates.indexOf(template) + 1).padStart(2, '0')} / ${catalog.templates.length}`;
   $('[data-text-count]').textContent = `${Array.from(sample.text).length} 字 · 作者与出处完整保留`;
   $('[data-skeleton-preview]').setAttribute('aria-label', `${template.name}版式的静态骨架参考，${sample.name}`);
@@ -189,6 +191,8 @@ function render({ replay = false, retry = false } = {}) {
   renderSelected(template, font, sample, detailFor(template));
   renderLoadingControls();
   $('[data-pairing]').textContent = `当前搭配：${template.name} × ${font.name}`;
+  const visualHost = $('[data-shared-visual-controls]');
+  visualHost.innerHTML = `${templateVisualControlsMarkup(template.id, catalog.visualDefaults?.[template.id] || {})}<p class="caption">本页视觉试调覆盖全部成品缩略图、对照画布和阅读示例；正式卡片目录和配置文件不变。</p>`;
   document.querySelectorAll('[data-font-tile]').forEach(tile => tile.classList.toggle('selected', state.font === tile.dataset.fontTile));
   // 配图只引用批准资产 ID；正文、落款与布局仍直接交给同一生产绘图器。
   const card = { text: sample.text, author: sample.author, source: sample.source, date: '2026-11-05', background: state.art, ...(state.art.startsWith('asset:') ? { imageId: state.art.slice(6), background: 'mist' } : {}) };
@@ -260,6 +264,12 @@ function renderLayoutOverview() {
 }
 document.addEventListener('click', event => {
   if (!catalog) return;
+  const visualReset = event.target.closest('[data-visual-reset]');
+  if (visualReset) {
+    try { resetTemplateVisualTokens(visualReset.dataset.visualReset); render(); }
+    catch (error) { announceVisualError(error); }
+    return;
+  }
   const action = event.target.closest('[data-loading-action]')?.dataset.loadingAction;
   if (action) {
     if (action === 'pause') {
@@ -288,7 +298,40 @@ document.addEventListener('click', event => {
     $('#loading-selected-title').focus({ preventScroll: true });
   }
 });
+function announceVisualError(error) {
+  const host = $('[data-shared-visual-controls]');
+  if (!host) return;
+  const status = host.querySelector('[data-visual-error]') || host.appendChild(document.createElement('p'));
+  status.dataset.visualError = '';
+  status.setAttribute('role', 'alert');
+  status.textContent = error?.message || '视觉配置无效，请重新选择。';
+}
+function updateVisualControl(event) {
+  if (!catalog || event.type !== 'change') return false;
+  const node = event.target.closest('[data-visual-enabled],[data-visual-token]');
+  if (!node || !node.closest('[data-shared-visual-controls]')) return false;
+  const field = node.dataset.visualEnabled || node.dataset.visualToken;
+  const template = catalog.templates.find(row => row.id === state.layout);
+  if (!template) return true;
+  try {
+    if (node.dataset.visualEnabled) {
+      const input = node.closest('label').querySelector(`[data-visual-token="${field}"]`);
+      input.disabled = !node.checked;
+      updateTemplateVisualToken(template.id, field, input.value, node.checked);
+    } else if (field === 'fontScale' || field === 'lineHeightScale') {
+      updateTemplateVisualToken(template.id, field, node.value);
+      node.previousElementSibling.querySelector('output').textContent = Number(node.value).toFixed(3);
+    } else updateTemplateVisualToken(template.id, field, node.value, node.closest('label').querySelector(`[data-visual-enabled="${field}"]`).checked);
+    const revision = getTemplateVisualConfig()?.revision;
+    const badge = $('[data-visual-revision]');
+    if (badge) badge.textContent = revision ? `当前预览修订 ${revision.slice(0, 12)}` : '沿用共享生产默认';
+    render({ retry: true });
+  } catch (error) { announceVisualError(error); }
+  return true;
+}
+document.addEventListener('input', event => { updateVisualControl(event); });
 document.addEventListener('change', event => {
+  if (updateVisualControl(event)) return;
   if (!catalog) return;
   const node = event.target;
   if (node.matches('[data-font]')) state.font = node.value;
