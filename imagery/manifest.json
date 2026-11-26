@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "e75a8e4ed8c4",
+  "version": "e5ccbad5a77f",
   "assets": [
     {
       "id": "gen-1793792546422",
@@ -24,6 +24,14 @@
       "file": "gen-1793799217632-a4e3566f87be.jpg",
       "sha256": "a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547",
       "bytes": 36571,
+      "deliveryUrl": ""
+    },
+    {
+      "id": "gen-26abc27f5efb47c90d51f683e93c",
+      "label": "生成 · 山河远阔，人间星河，无一是你，无一不",
+      "file": "gen-26abc27f5efb47c90d51f683e93c-5616ae409897.jpg",
+      "sha256": "5616ae409897b8cb5eda9febdf00b1afdc2d0a89da2df497d7726d3c92916291",
+      "bytes": 145071,
       "deliveryUrl": ""
     },
     {

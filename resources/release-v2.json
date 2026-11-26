@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "version": "release-v2-0c64d4fd11bb69b635267a78310e4c117e1c6ea3bf101a3731a1bd712cc974d9",
+  "version": "release-v2-061c3416b260d35b0bb56f2046eadd211ae80cd6a64392c266c8e6f987068587",
   "contentVersion": "929c44964677",
   "manifests": {
     "content": {
@@ -10,22 +10,22 @@
       "version": "929c44964677"
     },
     "fonts": {
-      "url": "fonts/manifest-v5-bf301d9bcd774c23c548f67b3ef31e5129b084fdecb308701b611bff7b1bdea9.json",
-      "sha256": "bf301d9bcd774c23c548f67b3ef31e5129b084fdecb308701b611bff7b1bdea9",
-      "bytes": 108680,
-      "version": "font-v5-6efbef7e1a6600d58756a498a1f7fe419fe2917ab09cfefa95075f44a95abc54"
+      "url": "fonts/manifest-v5-b49e77422865d4b323e98955429f2d3c14a6a4e2496fa88ef301bd57af1cfc9f.json",
+      "sha256": "b49e77422865d4b323e98955429f2d3c14a6a4e2496fa88ef301bd57af1cfc9f",
+      "bytes": 185262,
+      "version": "font-v5-ec07f6ff5f835080aa945be3294a7caa7fcc591600aa88209942da6edea1e27b"
     },
     "imagery": {
-      "url": "imagery/manifest-54a3e62958fce4f677668601bc6b8c031073eaa026978e0122aadf6846fff79c.json",
-      "sha256": "54a3e62958fce4f677668601bc6b8c031073eaa026978e0122aadf6846fff79c",
-      "bytes": 12157,
-      "version": "e75a8e4ed8c4"
+      "url": "imagery/manifest-c1ac7d6f8ff4d762c0ab86d11b5e874708b9b369303e5d619adec252ab6ad4b3.json",
+      "sha256": "c1ac7d6f8ff4d762c0ab86d11b5e874708b9b369303e5d619adec252ab6ad4b3",
+      "bytes": 12499,
+      "version": "e5ccbad5a77f"
     }
   },
   "routing": {
-    "url": "resources/routing-6b7f29103384783c6d78518df010a3a79e53d7ca1318d308af6b44d1de8ec2f2.json",
-    "sha256": "6b7f29103384783c6d78518df010a3a79e53d7ca1318d308af6b44d1de8ec2f2",
-    "bytes": 139277,
-    "version": "routing-v2-2cf9300fe1ad6d0083076ee3d60b9b8d17d9042f9c4dc441c4813b4d4159f926"
+    "url": "resources/routing-eb6eb7068f52e96ccab3752ee4a8ae10e305f83f8d14f965295710cf623331e4.json",
+    "sha256": "eb6eb7068f52e96ccab3752ee4a8ae10e305f83f8d14f965295710cf623331e4",
+    "bytes": 145499,
+    "version": "routing-v2-cb45eeea13a4c061448c94ef0b15445c50d1cd9b94598823d063c40fc5afd4a1"
   }
 }

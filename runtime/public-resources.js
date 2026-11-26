@@ -9,6 +9,20 @@ const SYSTEM = Object.freeze({ id: 'system', name: '系统字体', role: 'sans',
 // Frozen compatibility identities projected from shared/card-catalog.json; display metadata remains schema5-only.
 const BUILTIN_MAPPING = Object.freeze({ wenkai: ['DaylightWenkai', 'serif'], xiaowei: ['DaylightXiaowei', 'serif'], notoserif: ['DaylightNotoSerif', 'serif'], notosans: ['DaylightNotoSans', 'sans'], mashanzheng: ['DaylightMaShanZheng', 'handwriting'], longcang: ['DaylightLongCang', 'handwriting'] });
 const RESERVED_IDS = new Set(['system', '__proto__', 'prototype', 'constructor', 'tostring', 'tolocalestring', 'valueof', 'hasownproperty', 'isprototypeof', 'propertyisenumerable', '__definegetter__', '__definesetter__', '__lookupgetter__', '__lookupsetter__']);
+const FONT_FAILURES = Object.freeze(Object.fromEntries([
+  ['metadata', 'FONT_METADATA_FAILED'], ['ttf', 'FONT_TTF_INVALID'], ['license', 'FONT_LICENSE_INVALID'],
+  ['fontface', 'FONT_FACE_LOAD_FAILED'], ['registration', 'FONT_REGISTRATION_FAILED'],
+].map(([stage, code]) => [stage, Object.freeze({ stage, code })])));
+const FONT_FAILURE_RECORDS = new Set(Object.values(FONT_FAILURES));
+const FONT_FAILURE_MESSAGES = Object.freeze({
+  metadata: '字体资源清单读取或校验失败',
+  ttf: 'TTF 文件读取或完整性校验失败',
+  license: '字体许可文件读取或校验失败',
+  fontface: '浏览器未能解析或加载 TTF 字体',
+  registration: '浏览器字体注册或就绪检查失败',
+});
+async function fontStage(stage, operation) { try { return await operation(); } catch { throw FONT_FAILURES[stage]; } }
+const missingGlyphCount = (result, text) => new Set(Array.from(text).filter(character => !/\s/.test(character) && !result.coverage.has(character))).size;
 const safeText = (value, limit, empty = false) => typeof value === 'string' && (empty || value.trim()) && Array.from(value).length <= limit && !/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069<>"'`\\{}]/.test(value) && !Array.from(value).some(char => char.codePointAt(0) >= 0xd800 && char.codePointAt(0) <= 0xdfff);
 const fullLicense = value => typeof value === 'string' && /SIL OPEN FONT LICENSE\s+Version 1\.1/.test(value) && ['Copyright', 'PERMISSION & CONDITIONS', 'TERMINATION', 'DISCLAIMER'].every(part => value.includes(part));
 const exactKeys = (value, keys) => value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).join(',') === keys;
@@ -32,8 +46,8 @@ const sha256 = async bytes => {
 };
 const identityHash = value => sha256(new TextEncoder().encode(JSON.stringify(value)));
 function jsonBytes(bytes) { return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)); }
-async function fetchBytes(path, base, limit, expected) {
-  const response = await fetch(resolvePublicResource(path, base), { signal: AbortSignal.timeout(8000), cache: 'no-store', redirect: 'error' });
+async function fetchBytes(path, base, limit, expected, timeoutMs = 8000) {
+  const response = await fetch(resolvePublicResource(path, base), { signal: AbortSignal.timeout(timeoutMs), cache: 'no-store', redirect: 'error' });
   if (!response.ok) throw new Error(`Resource HTTP ${response.status}`);
   const declared = Number(response.headers?.get('content-length'));
   if (declared > limit) throw new Error('Resource exceeds byte budget');
@@ -101,48 +115,63 @@ export function createPublicResources({ base = publicBase } = {}) {
   };
 }
 export function createProductionFontLoader({ base = publicBase, catalog, resources = createPublicResources({ base }), fontManifestPath, fontObjectPrefix = 'fonts/' } = {}) {
-  const loaded = new Map(), tasks = new Map();
-  let manifestTask, definitions = [SYSTEM];
+  const loaded = new Map(), tasks = new Map(), failures = new Map();
+  let manifestTask, metadataFailure, definitions = [SYSTEM];
   async function metadata() {
     if (!manifestTask) {
-      const pending = (async () => {
+      const pending = fontStage('metadata', async () => {
         const manifest = fontManifestPath ? await validateFontManifest(jsonBytes(await fetchBytes(fontManifestPath, base, 512 * 1024))) : (await resources.catalog()).documents.fonts;
         if (catalog) for (const expected of catalog.filter(row => row.id !== 'system')) {
           const actual = manifest.registry.fonts.find(row => row.id === expected.id);
           if (!actual || actual.family !== expected.family || actual.role !== expected.role) throw new Error('Reserved font registry mapping changed');
         }
         definitions = [SYSTEM, ...manifest.registry.fonts];
+        metadataFailure = undefined;
         return manifest;
-      })();
+      });
       manifestTask = pending;
-      pending.catch(() => { if (manifestTask === pending) manifestTask = undefined; });
+      pending.catch(() => { if (manifestTask === pending) { manifestTask = undefined; metadataFailure = FONT_FAILURES.metadata; } });
     }
     return manifestTask;
   }
   const loader = {
-    async catalog() { await metadata(); return definitions; },
+    async catalog() { try { await metadata(); return definitions; } catch { throw new Error(FONT_FAILURE_MESSAGES.metadata); } },
     get fontDefinitions() { return definitions; },
     async ensureFont(id) {
       if (id === 'system') return undefined;
       try {
         const manifest = await metadata(), row = manifest.fonts.find(value => value.id === id);
-        if (!row) throw new Error('Unknown production font');
+        if (!row) throw FONT_FAILURES.metadata;
         const key = `${row.family}:${row.version}:${row.nativeSha256}`;
         if (!tasks.has(key)) {
           const pending = (async () => {
-            const bytes = await fetchBytes(`${fontObjectPrefix}${row.nativeUrl}`, base, 4 * 1024 * 1024, { bytes: row.nativeBytes, sha256: row.nativeSha256 });
-            const license = await fetchBytes(`${fontObjectPrefix}${row.licenseUrl}`, base, 32 * 1024, { bytes: new TextEncoder().encode(row.license).byteLength, sha256: row.licenseSha256 });
-            if (new TextDecoder('utf-8', { fatal: true }).decode(license) !== row.license) throw new Error('Font OFL object mismatch');
-            const signature = new DataView(bytes).getUint32(0);
-            if (signature !== 0x00010000) throw new Error('Resource is not a normal TrueType glyf TTF');
-            const face = new FontFace(row.family, bytes, { weight: '400', style: 'normal' });
-            await face.load();
-            if (face.status !== 'loaded') throw new Error('Browser did not load TTF');
-            document.fonts.add(face);
-            await document.fonts.load(`16px "${row.family}"`);
-            if (!document.fonts.check(`16px "${row.family}"`)) { document.fonts.delete?.(face); throw new Error('Font registration check failed'); }
+            const bytes = await fontStage('ttf', async () => {
+              const value = await fetchBytes(`${fontObjectPrefix}${row.nativeUrl}`, base, 4 * 1024 * 1024, { bytes: row.nativeBytes, sha256: row.nativeSha256 }, 30000);
+              if (new DataView(value).getUint32(0) !== 0x00010000) throw FONT_FAILURES.ttf;
+              return value;
+            });
+            await fontStage('license', async () => {
+              const license = await fetchBytes(`${fontObjectPrefix}${row.licenseUrl}`, base, 32 * 1024, { bytes: new TextEncoder().encode(row.license).byteLength, sha256: row.licenseSha256 });
+              if (new TextDecoder('utf-8', { fatal: true }).decode(license) !== row.license) throw FONT_FAILURES.license;
+            });
+            const face = await fontStage('fontface', async () => {
+              const value = new FontFace(row.family, bytes, { weight: '400', style: 'normal' });
+              await value.load();
+              if (value.status !== 'loaded') throw FONT_FAILURES.fontface;
+              return value;
+            });
+            await fontStage('registration', async () => {
+              try {
+                document.fonts.add(face);
+                await document.fonts.load(`16px "${row.family}"`);
+                if (!document.fonts.check(`16px "${row.family}"`)) throw FONT_FAILURES.registration;
+              } catch {
+                try { document.fonts.delete?.(face); } catch {}
+                throw FONT_FAILURES.registration;
+              }
+            });
             const result = { family: row.family, version: row.version, coverage: new Set(Array.from(row.coverage)) };
-            loaded.set(id, result); familyRoles.set(row.family, manifest.registry.fonts.find(value => value.id === id).role);
+            loaded.set(id, result); failures.delete(id); familyRoles.set(row.family, manifest.registry.fonts.find(value => value.id === id).role);
             return result.family;
           })();
           if (tasks.size >= 24) tasks.delete(tasks.keys().next().value);
@@ -150,7 +179,7 @@ export function createProductionFontLoader({ base = publicBase, catalog, resourc
           pending.catch(() => { if (tasks.get(key) === pending) tasks.delete(key); });
         }
         return await tasks.get(key);
-      } catch (error) { loaded.set(id, { error: error.message }); return undefined; }
+      } catch (error) { loaded.delete(id); failures.set(id, FONT_FAILURE_RECORDS.has(error) ? error : FONT_FAILURES.metadata); return undefined; }
     },
     async ensure(id) {
       if (id) return loader.ensureFont(id);
@@ -159,14 +188,24 @@ export function createProductionFontLoader({ base = publicBase, catalog, resourc
       return results.filter(Boolean).length;
     },
     familyFor(id) { return id === 'system' ? undefined : loaded.get(id)?.family; },
+    failureFor(id, text = '') {
+      if (id === 'system') return null;
+      const result = loaded.get(id);
+      if (!result?.family) return failures.get(id) || metadataFailure || null;
+      const count = missingGlyphCount(result, text);
+      return count ? Object.freeze({ stage: 'coverage', code: 'FONT_GLYPHS_MISSING', count }) : null;
+    },
     noticeFor(id, text = '') {
       if (id === 'system') return '系统字体 · 字形随设备变化';
-      const font = definitions.find(row => row.id === id), result = loaded.get(id), name = font?.name || id;
-      if (!result?.family) return `${name}未加载 · 系统字体回退${result?.error ? `（${result.error}）` : ''}`;
-      const missing = [...new Set(Array.from(text).filter(character => !/\s/.test(character) && !result.coverage.has(character)))].length;
+      const font = definitions.find(row => row.id === id), result = loaded.get(id), name = font?.name || '生产字体';
+      if (!result?.family) {
+        const failure = loader.failureFor(id);
+        return `${name}未加载 · 系统字体回退${failure ? `（${FONT_FAILURE_MESSAGES[failure.stage]}）` : ''}`;
+      }
+      const missing = missingGlyphCount(result, text);
       return `${name} · 正常 TTF 已加载${missing ? ` · ${missing} 个字形使用系统回退` : ' · 当前正文已覆盖'}`;
     },
-    stateFor(id, text = '') { return id === 'system' ? 'system' : !loaded.get(id)?.family ? 'fallback' : Array.from(text).some(character => !/\s/.test(character) && !loaded.get(id).coverage.has(character)) ? 'partial' : 'loaded'; },
+    stateFor(id, text = '') { return id === 'system' ? 'system' : !loaded.get(id)?.family ? 'fallback' : missingGlyphCount(loaded.get(id), text) ? 'partial' : 'loaded'; },
   };
   return loader;
 }

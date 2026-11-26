@@ -447,6 +447,7 @@ async function updateExport(mode = state.loadingMode) {
   const status = $('#reader-export-status');
   const retry = $('[data-action="retry-export"]');
   const key = exportIdentity();
+  const selectedFontId = state.fontId;
   button.disabled = true; retry.hidden = true;
   preview.setAttribute('aria-disabled', 'true'); preview.tabIndex = -1; preview.classList.remove('zoomed');
   const card = previewPayload(exportCard(), !state.exportFromDraft && state.scenario === 'image-error');
@@ -455,9 +456,11 @@ async function updateExport(mode = state.loadingMode) {
   const display = result => {
     if (!current() || codeLoaded === undefined) return;
     const code = preview.querySelector('.reader-code-footer img');
-    const originalFontReady = ['system', 'loaded'].includes(canvas.dataset.fontState);
+    // The result records the body font actually painted. Attribution-only system
+    // fallback is explicit in the shared renderer and does not replace the body.
+    const originalFontReady = Boolean(result && !result.fontFailure && result.fontState === (selectedFontId === 'system' ? 'system' : 'loaded'));
     const valid = Boolean(result?.displayReady && originalFontReady && result.imageState === 'ready' && codeLoaded && code.naturalWidth === 280 && code.naturalHeight === 280 && key === exportIdentity());
-    if (valid) exportReady = { version, sheet, key };
+    exportReady = valid ? { version, sheet, key } : undefined;
     button.disabled = !valid;
     preview.setAttribute('aria-disabled', String(!valid)); preview.tabIndex = valid ? 0 : -1;
     retry.hidden = Boolean(result && (valid || mode === 'hold'));
@@ -467,7 +470,7 @@ async function updateExport(mode = state.loadingMode) {
     if (valid) status.textContent += ' · 码区独立 360px，合计 1080 × 1800。';
     if (!retry.hidden) { status.dataset.loadingHint = 'false'; status.hidden = false; }
   };
-  const [result, codeReady] = await Promise.all([paintPreview(canvas, card, { template: state.template, fontId: state.fontId, showDate: state.showDate, showBrand: state.showBrand }, status, { ...presentationOptions(mode), onReady: value => { latestResult = value; display(value); } }), codeTask]);
+  const [result, codeReady] = await Promise.all([paintPreview(canvas, card, { template: state.template, fontId: selectedFontId, showDate: state.showDate, showBrand: state.showBrand, productionFontGate: true }, status, { ...presentationOptions(mode), onReady: value => { latestResult = value; display(value); } }), codeTask]);
   codeLoaded = codeReady;
   display(latestResult || result);
 }
@@ -515,7 +518,7 @@ function shiftDay(offset) {
   state.date = next; renderDaily(); announce(`已切换示例日期 ${next}`);
 }
 document.addEventListener('click', event => {
-  const node = event.target.closest('[data-action],[data-date],[data-template],[data-font],[data-export-tab]');
+  const node = event.target.closest('button[data-action],[role="button"][data-action],button[data-date],button[data-template],button[data-font],button[data-export-tab]');
   if (!node || node.disabled || node.getAttribute('aria-disabled') === 'true') return;
   if (!catalog && !['close', 'fulltext', 'about', 'guide', 'share'].includes(node.dataset.action)) return;
   if (node.dataset.date) { state.date = node.dataset.date; renderDaily(); closeSheet(); return; }

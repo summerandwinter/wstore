@@ -1,5 +1,6 @@
 import { loadCatalog, loadPreviewFont, paintPreview, previewFrame, cancelCardPreview, setCardPreviewPaused, resourceUrl, escapeHTML as h, bindTheme, getTemplateVisualConfig, setTemplateVisualConfig, updateTemplateVisualToken, resetTemplateVisualTokens, templateVisualControlsMarkup } from './shared/card-preview.js';
 import { proposalTemplates } from './shared/proposals.js';
+import { createCardStudies } from './cards-studies.js';
 
 bindTheme();
 const samples = [
@@ -42,7 +43,7 @@ function metadataChips(template) {
 const query = new URLSearchParams(location.search);
 const motionPreference = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)');
 const state = {
-  pane: ['layouts', 'fonts', 'sync'].includes(query.get('pane')) ? query.get('pane') : 'layouts',
+  pane: ['layouts', 'fonts', 'sync', 'studies'].includes(query.get('pane')) ? query.get('pane') : 'layouts',
   layout: 'window', font: 'auto', art: 'mist', category: '',
   sample: samples.some(row => row.id === query.get('sample')) ? query.get('sample') : 'poem',
   group: Object.hasOwn(GROUPS, query.get('group')) ? query.get('group') : '',
@@ -54,6 +55,7 @@ const state = {
   loadingPaused: false,
 };
 let catalog;
+let studies;
 let sampleFontsLoaded = false;
 let activePane;
 let selectionKey;
@@ -153,6 +155,7 @@ function renderSelected(template, font, sample, detail) {
 }
 function render({ replay = false, retry = false } = {}) {
   if (activePane && activePane !== state.pane) {
+    if (activePane === 'studies') studies?.hide();
     const selector = activePane === 'layouts' ? '[data-main-canvas], [data-skeleton-canvas], [data-layout-canvas]' : activePane === 'sync' ? '[data-admin-canvas], [data-reader-canvas]' : null;
     if (selector) document.querySelectorAll(selector).forEach(cancelPreview);
   }
@@ -161,7 +164,8 @@ function render({ replay = false, retry = false } = {}) {
     button.setAttribute('aria-selected', String(button.dataset.pane === state.pane));
     button.tabIndex = button.dataset.pane === state.pane ? 0 : -1;
   });
-  for (const pane of ['layouts', 'fonts', 'sync']) $(`#pane-${pane}`).hidden = pane !== state.pane;
+  for (const pane of ['layouts', 'fonts', 'sync', 'studies']) $(`#pane-${pane}`).hidden = pane !== state.pane;
+  $('[data-library-count]').textContent = `${catalog.templates.length} 款正式版式 · ${catalog.fonts.filter(row => row.id !== 'system').length} 款生产字体`;
   const template = catalog.templates.find(row => row.id === state.layout);
   const fontId = selectedFont(template);
   const font = catalog.fonts.find(row => row.id === fontId);
@@ -218,7 +222,7 @@ function render({ replay = false, retry = false } = {}) {
         updateRetry();
       },
     });
-    // 每张缩略图按实际输入去重；选中项重播不会触发十五张缩略图或参照帧重绘。
+    // 每张缩略图按实际输入去重；选中项重播不会触发整组缩略图或参照帧重绘。
     for (const row of visible) {
       const canvas = document.querySelector(`[data-layout-canvas="${row.id}"]`);
       const label = document.querySelector(`[data-layout-status="${row.id}"]`);
@@ -239,6 +243,7 @@ function render({ replay = false, retry = false } = {}) {
   }
   if (state.pane === 'fonts' && !sampleFontsLoaded) loadSampleFonts();
   rememberLocation();
+  if (state.pane === 'studies') studies.show();
 }
 async function loadSampleFonts() {
   sampleFontsLoaded = true;
@@ -264,6 +269,7 @@ function renderLayoutOverview() {
 }
 document.addEventListener('click', event => {
   if (!catalog) return;
+  if (event.target.closest('[data-study-open-fonts]')) { state.pane = 'studies'; render(); studies.focusFonts(); return; }
   const visualReset = event.target.closest('[data-visual-reset]');
   if (visualReset) {
     try { resetTemplateVisualTokens(visualReset.dataset.visualReset); render(); }
@@ -356,7 +362,7 @@ document.addEventListener('keydown', event => {
   tabs[index].focus();
 });
 motionPreference?.addEventListener('change', () => { if (catalog) render(); });
-window.addEventListener('pagehide', () => document.querySelectorAll('[data-main-canvas], [data-skeleton-canvas], [data-layout-canvas], [data-admin-canvas], [data-reader-canvas]').forEach(cancelPreview));
+window.addEventListener('pagehide', () => { studies?.hide(); document.querySelectorAll('[data-main-canvas], [data-skeleton-canvas], [data-layout-canvas], [data-admin-canvas], [data-reader-canvas]').forEach(cancelPreview); });
 window.addEventListener('pageshow', event => { if (event.persisted && catalog) render(); });
 try {
   catalog = await loadCatalog();
@@ -371,6 +377,7 @@ try {
   $('[data-font-count]').textContent = `${productionFontCount} 款生产 TTF + 系统字体 · 与小程序、后台同源`;
   renderFontTiles();
   renderLayoutOverview();
+  studies = createCardStudies({ catalog, samples });
   render();
 } catch (error) {
   $('#load-error').hidden = false;

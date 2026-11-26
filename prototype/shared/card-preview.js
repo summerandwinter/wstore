@@ -1,4 +1,5 @@
 import { publicResources, productionFonts, fontStackForFamily } from '../../runtime/public-resources.js';
+import { fontCoverageText } from '../../runtime/font-coverage.js';
 import { layoutCard as sharedLayoutCard } from '../../runtime/rendering/layout.js';
 import { readableCard, READABLE_FONT_FAMILY } from '../../runtime/rendering/readable.js';
 import { cardSkeleton, measureSkeletonText, skeletonLayout as sharedSkeletonLayout, skeletonColor as blend } from '../../runtime/rendering/skeleton.js';
@@ -18,6 +19,11 @@ const displayedPreviews = new WeakMap();
 const fontSubscriptions = new WeakMap();
 const fontListeners = new Map();
 let presentationGeneration = 0;
+const fontFailureCodes = Object.freeze({ metadata: 'FONT_METADATA_FAILED', ttf: 'FONT_TTF_INVALID', license: 'FONT_LICENSE_INVALID', fontface: 'FONT_FACE_LOAD_FAILED', registration: 'FONT_REGISTRATION_FAILED', coverage: 'FONT_GLYPHS_MISSING' });
+function safeFontFailure(failure) {
+  if (!failure || !Object.hasOwn(fontFailureCodes, failure.stage) || fontFailureCodes[failure.stage] !== failure.code) return null;
+  return { stage: failure.stage, code: failure.code, ...(failure.stage === 'coverage' && Number.isSafeInteger(failure.count) && failure.count > 0 ? { count: failure.count } : {}) };
+}
 export async function loadCatalog() {
   if (!catalogRequest) {
     const pending = Promise.all([import('../../runtime/card-catalog.js'), ensureTemplateVisualConfig()]).then(([{ templateDefinitions }, resources]) => {
@@ -103,6 +109,10 @@ export const resourceUrl = path => publicResources.resolve(path);
 export async function loadPreviewFont(fontId, text = '') {
   const family = await productionFonts.ensureFont(fontId);
   const result = { family, state: productionFonts.stateFor(fontId, text), notice: productionFonts.noticeFor(fontId, text) };
+  // Only expose the renderer's finite, user-safe failure vocabulary.  Preview
+  // surfaces must never surface a fetch URL, exception text, or response body.
+  const failure = typeof productionFonts.failureFor === 'function' ? safeFontFailure(productionFonts.failureFor(fontId, text)) : null;
+  if (failure) result.failure = failure;
   if (family) for (const listener of [...(fontListeners.get(fontId) || [])]) listener();
   return result;
 }
@@ -468,9 +478,27 @@ export async function paintPreview(canvas, card, options, status, presentation) 
         catch { frame.dataset.geometry = 'pending'; }
       }
     }
-    const font = await loadPreviewFont(options.fontId, card.text);
+    // The production renderer can place promotion attribution in a separate text
+    // run. Check the body first; only a missing attribution glyph may use the
+    // renderer's documented system-font attribution fallback.
+    const bodyText = fontCoverageText(card, { ...options, attributionSystemFallback: true });
+    const productionText = fontCoverageText(card, { ...options, attributionSystemFallback: false });
+    const font = await loadPreviewFont(options.fontId, bodyText);
     if (!current()) return null;
-    if (view && !retain) { prepareSkeleton(skeleton, previewCard, previewOptions, font.family, layoutCard, paintCardLayout); frame.dataset.geometry = 'measured'; }
+    let fontFailure = safeFontFailure(font.failure), attributionSystemFallback = false;
+    if (!fontFailure && options.productionFontGate === true && !['system', 'loaded'].includes(font.state)) {
+      fontFailure = safeFontFailure(font.state === 'partial' ? { stage: 'coverage', code: 'FONT_GLYPHS_MISSING' } : { stage: 'registration', code: 'FONT_REGISTRATION_FAILED' });
+    }
+    if (!fontFailure && productionText !== bodyText) {
+      const completeFont = await loadPreviewFont(options.fontId, productionText);
+      if (!current()) return null;
+      const completeFailure = safeFontFailure(completeFont.failure);
+      if (!fontFailure && completeFailure?.stage === 'coverage' && options.productionFontGate === true) attributionSystemFallback = true;
+      else if (completeFailure) fontFailure = completeFailure;
+    }
+    const { productionFontGate: _productionFontGate, attributionSystemFallback: _unusedAttributionFallback, ...basePreviewOptions } = previewOptions;
+    const renderOptions = attributionSystemFallback ? { ...basePreviewOptions, attributionSystemFallback: true } : basePreviewOptions;
+    if (view && !retain) { prepareSkeleton(skeleton, previewCard, renderOptions, font.family, layoutCard, paintCardLayout); frame.dataset.geometry = 'measured'; }
     if (!rendererRequest) {
       const pending = import('../../runtime/browser-canvas.js');
       rendererRequest = pending;
@@ -484,7 +512,7 @@ export async function paintPreview(canvas, card, options, status, presentation) 
       candidate = (frame.ownerDocument || document).createElement('canvas');
       candidate.hidden = true; candidate.setAttribute('aria-hidden', 'true'); frame.append(candidate);
     }
-    const result = await drawCard(candidate || canvas, { ...previewCard, imagePath }, previewOptions, font.family);
+    const result = await drawCard(candidate || canvas, { ...previewCard, imagePath }, renderOptions, font.family);
     if (!current() || result.imageState === 'stale') return null;
     if (retain && (result.imageState !== 'ready' || !['system', 'loaded', 'partial'].includes(font.state))) {
       feedback('原版候选暂未准备好，保留当前可读图；可重试。');
@@ -513,9 +541,9 @@ export async function paintPreview(canvas, card, options, status, presentation) 
       feedback('加载失败 · 演示状态；正文仍可阅读，可重试。');
       return null;
     }
-    const output = view ? { ...result, displayReady } : result;
+    const output = { ...result, ...(view ? { displayReady } : {}), fontState: font.state, ...(fontFailure ? { fontFailure } : {}), ...(attributionSystemFallback ? { attributionSystemFallback: true } : {}) };
     if (view && displayReady) displayedPreviews.set(canvas, { key, result: output });
-    feedback(`${view && !displayReady ? '骨架停留 · 演示状态 · ' : ''}${font.notice} · 1080 × 1440${result.imageState === 'failed' ? ' · 配图未加载，当前显示底色' : ' · 同源画布'}${result.fallback ? ` · ${result.fallback.message}` : ''}`, Boolean(view && !displayReady));
+    feedback(`${view && !displayReady ? '骨架停留 · 演示状态 · ' : ''}${font.notice} · 1080 × 1440${result.imageState === 'failed' ? ' · 配图未加载，当前显示底色' : ' · 同源画布'}${attributionSystemFallback ? ' · 署名使用系统字体；正文使用所选生产字体。' : ''}${result.fallback ? ` · ${result.fallback.message}` : ''}`, Boolean(view && !displayReady));
     if (view && displayReady) presentation.onReady?.(output);
     if (view && displayReady && font.state === 'fallback') {
       const upgrade = () => {
@@ -530,12 +558,12 @@ export async function paintPreview(canvas, card, options, status, presentation) 
   } catch (error) {
     if (!current()) return null;
     if (retain) {
-      feedback(`原版候选未就绪，保留当前可读图：${error.message}`);
+      feedback('原版候选未就绪，保留当前可读图；可重试。');
       return { ...previous.result, displayReady: true };
     }
     canvas.dataset.renderState = 'error';
-    view?.fail(`卡片暂未准备好：${error.message}`, card);
-    feedback(`无法生成预览：${error.message}。不会用独立示意图冒充渲染结果。`);
+    view?.fail('卡片暂未准备好，请检查资源后重试。', card);
+    feedback('无法生成预览，请检查资源后重试。');
     return null;
   } finally { candidate?.remove(); }
 }

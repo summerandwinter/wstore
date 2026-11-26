@@ -100,8 +100,6 @@ dialog{padding:0;border:1px solid var(--line);color:var(--ink);background:#fff;b
 .editor-save-status{position:relative;flex:1;min-width:0}
 .editor-save-status>summary{cursor:pointer;list-style:none;color:var(--secondary)}
 .editor-save-status>summary::-webkit-details-marker{display:none}
-.editor-save-status>summary::after{content:' ⌃'}
-.editor-save-status[open]>summary::after{content:' ⌄'}
 .editor-save-panel{position:absolute;bottom:calc(100% + 10px);left:0;z-index:4;width:min(310px,calc(100vw - 48px));max-height:40dvh;overflow:auto;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 28px #17352b25;font-size:12px;color:var(--secondary)}
 .editor-save-panel dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 12px;margin-top:10px}
 .editor-save-panel dd{margin:0;overflow-wrap:anywhere}
@@ -377,4 +375,57 @@ html body .nx-ai-task-list .nx-task-progress-summary { display:contents; }
 @media(max-height:600px) {
   html:has(#main .nx-cfg-savebar,#main .nx-tpl-save-bar:not([hidden])) { scroll-padding-block-end:24px; }
   html body .nx-cfg .nx-cfg-savebar,html body .nx-tpl .nx-tpl-save-bar,html body .nx-tpl-defaults .nx-form-actions { position:static;box-shadow:none; }
+}
+
+/* Bulk intake shares the workbench CSV contract and keeps its preview inside the dialog. */
+html body .modal:has([data-content-import]) { width:min(880px,calc(100% - 32px)); }
+.content-import { min-width:0; }
+.content-import-template { display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:16px 18px;margin-bottom:20px;border:1px solid var(--line);border-radius:10px;background:var(--tint); }
+.content-import-template>div { min-width:0; }
+.content-import-template strong { color:var(--ink);font-size:15px; }
+.content-import-template p { font-size:13px;line-height:1.8;margin:6px 0 0; }
+.content-import-template>.button { flex:none; }
+.content-import-modes { display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px; }
+body .content-import .field { font-size:13px; }
+body .content-import .field :is(input,textarea) { font-size:14px; }
+.content-import .field textarea { min-height:150px;max-height:40dvh;white-space:pre; }
+.content-import-file input { padding:12px;background:var(--bg); }
+.content-import-file :is(small,strong) { display:block;margin-top:8px;overflow-wrap:anywhere; }
+.content-import-file strong { font-size:13px;color:var(--ink);font-weight:500; }
+.content-import-counts { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:14px 0;border-top:1px solid var(--line); }
+.content-import-counts span { font-size:12px; }
+.content-import-counts strong { font-size:23px;font-weight:600;color:var(--ink);margin-right:4px; }
+.content-import-counts .content-import-invalid strong,.content-import-invalid { color:var(--red); }
+.content-import-note,.content-import-empty { color:var(--secondary);font-size:12px;line-height:1.8; }
+.content-import-empty { padding:18px;background:var(--bg);border:1px dashed var(--line);border-radius:8px; }
+.content-import-warning { color:var(--red);background:var(--red-bg,#fff3f0);padding:10px 12px;border-radius:7px;line-height:1.8;font-size:13px; }
+.content-import-table-wrap { margin:14px 0 18px;border:1px solid var(--line);border-radius:8px;overflow:hidden; }
+.content-import-table { width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;line-height:1.8; }
+.content-import-table th { color:var(--secondary);background:var(--bg);font-weight:500; }
+.content-import-table :is(th,td) { padding:11px 13px;vertical-align:top;text-align:left;overflow-wrap:anywhere;border-bottom:1px solid var(--line); }
+.content-import-table th:first-child { width:84px; }
+.content-import-table th:last-child { width:180px; }
+.content-import-table tr:last-child td { border-bottom:0; }
+.content-import-table strong { display:block;color:var(--ink);font-size:13px;font-weight:500;white-space:pre-wrap; }
+.content-import-table small { display:block;margin-top:5px;color:var(--secondary);font-size:12px; }
+.content-import-result { padding:16px;text-align:center; }
+.content-import-result>.icon { width:36px;height:36px;color:var(--primary); }
+.content-import-result h3 { color:var(--ink);font-size:18px;margin:12px 0 8px; }
+@media(max-width:700px) {
+  html body .page-heading:has(.content-entry-actions) { flex-wrap:wrap; }
+  .content-entry-actions { width:100%; }
+  .content-entry-actions>.button { flex:1;justify-content:center; }
+  .content-import-template { flex-direction:column;gap:12px;padding:14px; }
+  .content-import-counts { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  html body .content-import .field :is(input,textarea) { font-size:16px; }
+  .content-import-table { display:block; }
+  .content-import-table thead { display:none; }
+  .content-import-table tbody,.content-import-table tr { display:block; }
+  .content-import-table tr+tr { border-top:1px solid var(--line); }
+  .content-import-table td { display:block;width:100%;border-bottom:0;padding:8px 12px; }
+  .content-import-table td:first-child { padding-bottom:0;color:var(--secondary); }
+  .content-import-table td:first-child::before { content:attr(data-label) " "; }
+  .content-import-table td:last-child { padding-top:0; }
+  html body .modal:has([data-content-import])>.dialog-footer { justify-content:flex-end; }
+  html body .modal:has([data-content-import])>.dialog-footer>.button { min-height:44px;white-space:normal; }
 }

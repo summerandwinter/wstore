@@ -29,8 +29,6 @@
 .nx-res .nx-form-actions{margin-bottom:0}
 .nx-res-demo-source,.nx-res-optional,.nx-res-channel-actions{font-size:13px;line-height:1.8;color:#607f6a}
 .nx-res-demo-source summary,.nx-res-optional summary,.nx-res-channel-actions summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:500}
-.nx-res-demo-source summary::before,.nx-res-optional summary::before,.nx-res-channel-actions summary::before{content:'›';font-size:19px;line-height:1;transition:transform .15s}
-.nx-res-demo-source[open]>summary::before,.nx-res-optional[open]>summary::before,.nx-res-channel-actions[open]>summary::before{transform:rotate(90deg)}
 .nx-res-demo-source .field{margin-top:12px}
 .nx-res-optional{border-top:1px solid var(--line);padding-top:12px;margin-top:20px}
 .nx-res-optional .field{margin-top:16px}

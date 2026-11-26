@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "routing-v1-6267f9712175028c4498823a743c76614ee390383ac4955868a73317eded6860",
+  "version": "routing-v1-2b237740bb2cd5793e38250ccb7fbd1e3595648c059c2c3ee792ca4c00cd92b6",
   "authorityRoot": "https://www.axxiu.cn/project/AWNgdZoT",
   "trustedOrigins": [
     "https://gh-proxy.com",
@@ -16,16 +16,16 @@
       "version": "929c44964677"
     },
     "fonts": {
-      "url": "fonts/manifest-v5-bf301d9bcd774c23c548f67b3ef31e5129b084fdecb308701b611bff7b1bdea9.json",
-      "sha256": "bf301d9bcd774c23c548f67b3ef31e5129b084fdecb308701b611bff7b1bdea9",
-      "bytes": 108680,
-      "version": "font-v5-6efbef7e1a6600d58756a498a1f7fe419fe2917ab09cfefa95075f44a95abc54"
+      "url": "fonts/manifest-v5-b49e77422865d4b323e98955429f2d3c14a6a4e2496fa88ef301bd57af1cfc9f.json",
+      "sha256": "b49e77422865d4b323e98955429f2d3c14a6a4e2496fa88ef301bd57af1cfc9f",
+      "bytes": 185262,
+      "version": "font-v5-ec07f6ff5f835080aa945be3294a7caa7fcc591600aa88209942da6edea1e27b"
     },
     "imagery": {
-      "url": "imagery/manifest-54a3e62958fce4f677668601bc6b8c031073eaa026978e0122aadf6846fff79c.json",
-      "sha256": "54a3e62958fce4f677668601bc6b8c031073eaa026978e0122aadf6846fff79c",
-      "bytes": 12157,
-      "version": "e75a8e4ed8c4"
+      "url": "imagery/manifest-c1ac7d6f8ff4d762c0ab86d11b5e874708b9b369303e5d619adec252ab6ad4b3.json",
+      "sha256": "c1ac7d6f8ff4d762c0ab86d11b5e874708b9b369303e5d619adec252ab6ad4b3",
+      "bytes": 12499,
+      "version": "e5ccbad5a77f"
     }
   },
   "channels": {
@@ -130,6 +130,31 @@
         "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793799217632-a4e3566f87be.jpg",
         "https://p.ipic.vip/daylight-gen-1793799217632-a4e3566f87be597b.jpg",
         "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793799217632-a4e3566f87be.jpg"
+      ]
+    },
+    {
+      "id": "gen-26abc27f5efb47c90d51f683e93c",
+      "artifactId": "sha256:5616ae409897b8cb5eda9febdf00b1afdc2d0a89da2df497d7726d3c92916291:145071",
+      "sha256": "5616ae409897b8cb5eda9febdf00b1afdc2d0a89da2df497d7726d3c92916291",
+      "bytes": 145071,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-26abc27f5efb47c90d51f683e93c-5616ae409897.jpg"
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-26abc27f5efb47c90d51f683e93c-5616ae409897b8cb-9565db3f.jpg"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-26abc27f5efb47c90d51f683e93c-5616ae409897.jpg"
+        }
+      ],
+      "aliases": [
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-26abc27f5efb47c90d51f683e93c-5616ae409897.jpg",
+        "https://p.ipic.vip/daylight-gen-26abc27f5efb47c90d51f683e93c-5616ae409897b8cb-9565db3f.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-26abc27f5efb47c90d51f683e93c-5616ae409897.jpg"
       ]
     },
     {
@@ -1285,6 +1310,38 @@
   ],
   "fonts": [
     {
+      "id": "kuaile",
+      "artifactId": "sha256:402f0c67676caaa81ac70c1e727d9ac80ea12f9f9dd8b3efc23963c341530f66:621552",
+      "sha256": "402f0c67676caaa81ac70c1e727d9ac80ea12f9f9dd8b3efc23963c341530f66",
+      "bytes": 621552,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/kuaile-v2-067b0592ec3ac547ed4085ae.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/kuaile-v2-067b0592ec3ac547ed4085ae.ttf"
+        }
+      ]
+    },
+    {
+      "id": "liujianmaocao",
+      "artifactId": "sha256:0c30feaee1dcfbf094bc9bf249d6d9f6d597bbeedf5aae39ec7e1408f790689c:2208168",
+      "sha256": "0c30feaee1dcfbf094bc9bf249d6d9f6d597bbeedf5aae39ec7e1408f790689c",
+      "bytes": 2208168,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/liujianmaocao-v2-9cb444decb9402112f118d86.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/liujianmaocao-v2-9cb444decb9402112f118d86.ttf"
+        }
+      ]
+    },
+    {
       "id": "longcang",
       "artifactId": "sha256:901bc63443b70236bd4612dcbabdd850a58e583de04181e1ab142fe4da786279:2890552",
       "sha256": "901bc63443b70236bd4612dcbabdd850a58e583de04181e1ab142fe4da786279",
@@ -1297,6 +1354,22 @@
         {
           "providerId": "github-mirror",
           "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/longcang-v2-b08185299506c8c6ffc82cb7.ttf"
+        }
+      ]
+    },
+    {
+      "id": "lxgwmarker",
+      "artifactId": "sha256:35350ce8237b6b5b2de6f8509fd8a1dc699d6b842ea9f642bcf3e8a0720af769:559360",
+      "sha256": "35350ce8237b6b5b2de6f8509fd8a1dc699d6b842ea9f642bcf3e8a0720af769",
+      "bytes": 559360,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/lxgwmarker-v2-465df811a85666702fe0e29f.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/lxgwmarker-v2-465df811a85666702fe0e29f.ttf"
         }
       ]
     },
@@ -1349,6 +1422,22 @@
       ]
     },
     {
+      "id": "qingke",
+      "artifactId": "sha256:7d13f3543081ac37cfbfaf527c2436be2f1d767974598b3044bea579a7fffd40:1717836",
+      "sha256": "7d13f3543081ac37cfbfaf527c2436be2f1d767974598b3044bea579a7fffd40",
+      "bytes": 1717836,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/qingke-v2-ab5ba0be8038a6ab5bfe779f.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/qingke-v2-ab5ba0be8038a6ab5bfe779f.ttf"
+        }
+      ]
+    },
+    {
       "id": "wenkai",
       "artifactId": "sha256:fa4b91756344817160e6169cb7b6fd0eb6bdbb047c22d1359f28f3722b59ef81:2431028",
       "sha256": "fa4b91756344817160e6169cb7b6fd0eb6bdbb047c22d1359f28f3722b59ef81",
@@ -1377,6 +1466,22 @@
         {
           "providerId": "github-mirror",
           "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/xiaowei-v2-ea30ac2e09c9c4dec5b969fb.ttf"
+        }
+      ]
+    },
+    {
+      "id": "zhimangxing",
+      "artifactId": "sha256:fd8e816eae1a2478aa66dc4de38af47e9ea1f0d7634a6a64e7376130da56e0e2:1807700",
+      "sha256": "fd8e816eae1a2478aa66dc4de38af47e9ea1f0d7634a6a64e7376130da56e0e2",
+      "bytes": 1807700,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/zhimangxing-v2-68a43d545cdf4d7829df4be9.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/zhimangxing-v2-68a43d545cdf4d7829df4be9.ttf"
         }
       ]
     }

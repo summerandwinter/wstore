@@ -1,5 +1,5 @@
 import { applyTemplateVisual, validateTemplateVisualConfig } from '../domain/template-config.js';
-import { EXPORT_HEIGHT, EXPORT_WIDTH, FONT_FAMILIES, getTemplate, getPromotionTemplate, isPromotionId, promotionPressure, PROMOTION_PALETTE } from './templates.js';
+import { EXPORT_HEIGHT, EXPORT_WIDTH, FONT_FAMILIES, getTemplate, getPromotionTemplate, isPromotionId, usesSelectedAttributionFont, promotionPressure, PROMOTION_PALETTE } from './templates.js';
 export const MAX_TEXT_LENGTH = 240;
 export const MAX_ATTRIBUTION_LENGTH = 90;
 export const MIN_BODY_FONT_SIZE = 36;
@@ -60,20 +60,25 @@ function textBlock(value, rect, fontSize, lineHeight, fontFamily, color, align, 
 function footerBlocks(card, options, template, measure) {
     if (template.promotion) {
         const design = template.promotion;
+        const labelRatio = design.labelLineHeightRatio ?? 1.35;
         const label = (value, rect, size = 28, ratio = 1.35, align = 'right', family = FONT_FAMILIES.sans, color = template.muted) => textBlock(value, rect, size, Math.ceil(size * ratio), family, color, align, measure);
         let date, dateMeta;
         if (options.showDate && card.date) {
-            const match = template.id === 'ticket' && /^(\d{4})[-/.](\d{2})[-/.](\d{2})$/.exec(card.date);
-            if (match) {
+            const match = (template.id === 'ticket' || design.calendarDate) && /^(\d{4})[-/.](\d{2})[-/.](\d{2})$/.exec(card.date);
+            if (match && design.calendarDate) {
+                date = label(match[3], { x: 112, y: 84, width: 220, height: 114 }, 86, labelRatio, 'left', FONT_FAMILIES.serif, template.accent);
+                dateMeta = label(`${match[1]} / ${match[2]}`, { x: 112, y: 218, width: 390, height: 42 }, 28, labelRatio, 'left');
+            }
+            else if (match) {
                 date = label(match[3], { x: 132, y: 1244, width: 126, height: 108 }, 72, 1.35, 'left', FONT_FAMILIES.serif, template.accent);
                 dateMeta = label(`${match[1]} / ${match[2]}`, { x: 292, y: 1264, width: 260, height: 40 }, 28, 1.35, 'left');
             }
             else
-                date = label(normalizeNewlines(card.date), design.dateArea, 28, 1.35, design.dateAlign || 'right');
+                date = label(normalizeNewlines(card.date), design.dateArea, 28, labelRatio, design.dateAlign || 'right');
         }
         const brand = options.showBrand ? label('拾光撷语 · DAYLIGHT', {
             x: design.footerX ?? 128, y: design.footerY ?? 1350, width: design.footerWidth ?? 824, height: 42,
-        }, 26) : undefined;
+        }, design.footerSize ?? 26, labelRatio) : undefined;
         return { date, ...(dateMeta ? { dateMeta } : {}), brand };
     }
     function footer(value, x, width, align) {
@@ -124,7 +129,7 @@ function horizontalLayout(text, attributionText, template, loadedFamily, measure
     const fontFamily = loadedFamily ? `"${loadedFamily}", ${template.fontFamily}` : template.fontFamily;
     const attributionSize = 28;
     const attributionLineHeight = template.promotion ? Math.ceil(attributionSize * 1.45) : 40;
-    const attributionFamily = template.promotion && !attributionSystemFallback ? fontFamily : FONT_FAMILIES.sans;
+    const attributionFamily = usesSelectedAttributionFont(template.id) && !attributionSystemFallback ? fontFamily : FONT_FAMILIES.sans;
     const attributionLines = attributionText
         ? wrapText(attributionText, content.width, value => measure(value, attributionSize, attributionFamily))
         : [];
@@ -283,6 +288,8 @@ function decorate(layout, card, options, measure, tokens) {
     };
     if (template.promotion) {
         const design = template.promotion;
+        for (const item of design.shapes || [])
+            rectangle(item.rect, (item.fillToken ? tokens?.[item.fillToken] : undefined) ?? item.fill, { layer: item.layer, ...(item.rotation === undefined ? {} : { rotation: item.rotation }) });
         for (const paper of design.papers || [])
             rectangle(paper, paper.fill, { layer: 'beforeImage' });
         if (design.panel)
@@ -297,7 +304,14 @@ function decorate(layout, card, options, measure, tokens) {
                 rectangle({ x: x - 18, y: y - 18, width: 36, height: 36, shape: 'circle' }, tokens?.paper ?? PROMOTION_PALETTE.paper);
         }
         const headingSize = design.headingSize || 28;
-        label(design.headingText, design.heading, headingSize, Math.ceil(headingSize * 1.35));
+        const labelRatio = design.labelLineHeightRatio ?? 1.35;
+        label(design.headingText, design.heading, headingSize, Math.ceil(headingSize * labelRatio), 'left', design.headingInk ? template.color : template.muted);
+        for (const item of design.labels || [])
+            label(item.text, item.area, item.size, Math.ceil(item.size * labelRatio), item.align || 'left');
+        if (design.ruled)
+            for (let row = 0; row < body.lines.length; row += 1) {
+                rectangle({ x: body.x, y: body.y + (row + 1) * body.lineHeight - 3, width: body.width, height: 1 }, tokens?.muted ?? '#e1e3d8', { layer: 'beforeImage' });
+            }
         if (design.quoteArea)
             label('“', design.quoteArea, 128, Math.ceil(128 * 1.1), 'left', template.accent, FONT_FAMILIES.serif);
         return layout;
@@ -382,7 +396,7 @@ export function layoutCard(card, options, measure, loadedFamily) {
     }
     if (isPromotionId(options.template)) {
         const explicitRows = text.split('\n').length;
-        const initial = promotionPressure(textLength, explicitRows);
+        const initial = promotionPressure(textLength, explicitRows, options.template);
         const pressures = [...new Set([initial, Math.min(1, initial + 0.25), Math.min(1, initial + 0.5), 1])];
         const attributionText = [author, source].filter(part => part.trim()).join(' · ');
         for (const pressure of pressures) {

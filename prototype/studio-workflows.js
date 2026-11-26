@@ -1,4 +1,6 @@
 import { formatStudioDateTime, createStudioAiResourcePool, studioAiCandidates } from './studio-delivery.js';
+import { IMAGE_GENERATION_STYLES, IMAGE_GENERATION_DEFAULTS } from '../runtime/image-generation-styles.js';
+import { fontCatalog } from '../runtime/card-catalog.js';
 
 // Review-only workflows. All state and simulated jobs live in this browser tab.
 export function createWorkflowPages(api) {
@@ -41,6 +43,10 @@ export function createWorkflowPages(api) {
     return {
       workflow: { mode: 'auto', review: 'rules', protectLabels: true, protectImages: true, deduplicate: true },
       resourcePool: clone(model().demoAiResourcePool || createStudioAiResourcePool()),
+      workParameters: clone(model().demoAiWorkParameters || {
+        annotation: { concurrency: 3, timeoutMs: 30000, temperature: 0.2, batchSize: 50, maxBatchChars: 12000 },
+        generation: { concurrency: 2, timeoutMs: 60000, size: '1080x1440', countPerItem: 1, ...IMAGE_GENERATION_DEFAULTS },
+      }),
       channels: {
         images: { name: '批准素材图床', provider: 'axureshow', namespace: 'daylight-demo', enabled: true },
         wechat: { name: '示例公众号', provider: 'personal', namespace: 'example-account', enabled: false },
@@ -53,11 +59,13 @@ export function createWorkflowPages(api) {
     };
   }
   const defaults = defaultSettings();
-  const cfg = { tab: ['models', 'channels'].includes(api.initialTab) ? api.initialTab : 'workflow', saved: clone(defaults), draft: clone(defaults), errors: {}, editor: null, editorOriginal: '', test: null, savedAt: '', saveFailed: false, editorFailed: false, loginOutcome: 'success' };
+  model().demoAiWorkParameters ||= clone(defaults.workParameters);
+  const cfg = { tab: ['models', 'channels'].includes(api.initialTab) ? api.initialTab : 'workflow', poolKind: 'annotation', openChannels: {}, poolStates: {}, parameterStates: {}, saved: clone(defaults), draft: clone(defaults), errors: {}, editor: null, editorOriginal: '', test: null, savedAt: '', saveFailed: false, editorFailed: false, loginOutcome: 'success' };
   const initialRoutingUpgrade = Object.hasOwn(initialPublication, 'routingUpgrade') ? clone(initialPublication.routingUpgrade) : demoRoutingUpgrade(defaults.routing);
   let routingUpgrade = clone(initialRoutingUpgrade), routingSequence = 0;
   let settingsRead = { state: 'ready', revision: initialPublication.revision || 'demo-publication', error: '' }, settingsReadRun = 0;
-  let poolDetection = null, detectionTimer = null, detectionRun = 0, poolSequence = 1;
+  let fontResourceDemo = { scenario: 'current', imported: false, error: '' };
+  let poolDetection = null, detectionTimer = null, detectionRun = 0, poolSequence = 1, aiReadRun = 0;
   const publicationReady = () => settingsRead.state === 'ready' && typeof settingsRead.revision === 'string' && settingsRead.revision.length > 0;
   const fontDraftChanged = () => JSON.stringify(cfg.draft.channels.fonts) !== JSON.stringify(cfg.saved.channels.fonts);
   const routingDraftChanged = () => JSON.stringify(cfg.draft.routing) !== JSON.stringify(cfg.saved.routing);
@@ -71,7 +79,10 @@ export function createWorkflowPages(api) {
   const note = text => `<div class="notice">${h(text)}</div>`;
   const technicalNotes = (title, text) => `<details class="nx-cfg-details nx-cfg-technical"><summary>${h(title)}</summary><div><p class="nx-form-help">${h(text)}</p></div></details>`;
   const errorLine = (errors, key) => errors[key] ? `<small class="nx-form-error" role="alert">${h(errors[key])}</small>` : '';
-  const field = (label, input, key = '', errors = {}) => `<label class="field"><span>${h(label)}</span>${errors[key] ? input.replace(/^(<(?:input|select|textarea)\b)/, '$1 aria-invalid="true"') : input}${errorLine(errors, key)}</label>`;
+  const field = (label, input, key = '', errors = {}) => {
+    const errorId = `nx-error-${key.replace(/[^a-z0-9_-]/gi, '-')}`;
+    return `<label class="field"><span>${h(label)}</span>${errors[key] ? input.replace(/^(<(?:input|select|textarea)\b)/, `$1 aria-invalid="true" aria-describedby="${errorId}"`) : input}${errors[key] ? `<small id="${errorId}" class="nx-form-error" role="alert">${h(errors[key])}</small>` : ''}</label>`;
+  };
   const heading = (title, subtitle, action = '') => `<div class="page-heading"><div><h1>${h(title)}</h1><p>${h(subtitle)}</p></div>${action}</div>`;
   const empty = (title, text) => `<div class="empty">${icon('inbox')}<strong>${h(title)}</strong>${h(text)}</div>`;
   function openModal(kind, title, body, footer) {
@@ -208,7 +219,7 @@ export function createWorkflowPages(api) {
   const editorStatus = () => cfg.editor?.channel === 'fonts' && !publicationReady() ? settingsReadStatus() : cfg.editorFailed ? '保存失败 · 修改未保存' : editorDirty() ? '有未保存修改' : '未修改';
   function editorFooter(action) {
     const blocked = cfg.editor?.channel === 'fonts' && !publicationReady();
-    return `<span id="nx-cfg-editor-status" role="status">${editorStatus()}</span><div class="button-row">${button('放弃修改', 'cfg-editor-close', '', 'quiet', editorDirty() ? '' : 'disabled')}${button('保存到设置草稿', action, 'check', 'primary', editorDirty() && !blocked ? '' : 'disabled')}</div>`;
+    return `<span id="nx-cfg-editor-status" role="status">${editorStatus()}</span><div class="button-row">${button('放弃修改', 'cfg-editor-close', '', 'quiet', editorDirty() ? '' : 'disabled')}${button(action.startsWith('cfg-pool-') ? '应用到资源池草稿' : '保存到设置草稿', action, 'check', 'primary', editorDirty() && !blocked ? '' : 'disabled')}</div>`;
   }
   const checked = value => value ? 'checked' : '';
   const options = (rows, selected) => rows.map(([id, label]) => `<option value="${id}" ${selected === id ? 'selected' : ''}>${label}</option>`).join('');
@@ -225,9 +236,43 @@ export function createWorkflowPages(api) {
   const poolSlot = (kind, settings = cfg.draft) => settings.resourcePool[kind];
   const poolChannel = (kind, id, settings = cfg.draft) => poolSlot(kind, settings)?.channels.find(row => row.id === id);
   const poolAttrs = (kind, channelId, id = '') => `data-kind="${h(kind)}" data-channel-id="${h(channelId)}"${id ? ` data-id="${h(id)}"` : ''}`;
+  const poolDirty = kind => JSON.stringify(poolSlot(kind)) !== JSON.stringify(poolSlot(kind, cfg.saved));
+  const parametersDirty = kind => JSON.stringify(cfg.draft.workParameters[kind]) !== JSON.stringify(cfg.saved.workParameters[kind]);
+  const poolLabel = kind => poolKinds.find(([id]) => id === kind)?.[1] || '模型';
+  const aiAccess = { readState: 'ready', canEditConfig: true, safeMode: false, ...api.initialAiResourceState };
+  const editablePool = () => aiAccess.readState === 'ready' && aiAccess.canEditConfig;
+  const poolBaselineRevisions = Object.fromEntries(poolKinds.map(([kind]) => [kind, poolSlot(kind, cfg.saved).revision]));
+  const parameterBaselines = Object.fromEntries(poolKinds.map(([kind]) => [kind, clone(cfg.saved.workParameters[kind])]));
+  const poolDisclosures = new Map();
+  function rememberPoolDisclosures() {
+    for (const node of document.querySelectorAll('[data-cfg-work-parameters], [data-cfg-pool-history], [data-cfg-pool-prompts], [data-cfg-style-editor]')) {
+      const key = node.dataset.cfgWorkParameters ? `parameters-${node.dataset.cfgWorkParameters}` : node.dataset.cfgPoolHistory ? `history-${node.dataset.cfgPoolHistory}` : node.dataset.cfgStyleEditor ? `style-${node.dataset.cfgStyleEditor}` : 'prompts';
+      poolDisclosures.set(key, node.open);
+    }
+  }
   const priorityOrder = rows => [...rows].sort((a, b) => a.priority - b.priority);
   const normalizePriorities = rows => rows.forEach((row, index) => { row.priority = index + 1; });
   const sameSavedChannel = (kind, id) => JSON.stringify(poolChannel(kind, id)) === JSON.stringify(poolChannel(kind, id, cfg.saved));
+  const demoEndpoint = value => {
+    try {
+      if (typeof value !== 'string' || /[\s\\]/u.test(value)) return '';
+      const url = new URL(value);
+      if (url.protocol !== 'https:' || url.username || url.password || url.search || url.hash || !url.hostname.endsWith('.example.test')) return '';
+      return url.href.replace(/\/+$/, '');
+    } catch { return ''; }
+  };
+  const savedPoolConnection = (kind, id) => {
+    const channel = poolChannel(kind, id), saved = poolChannel(kind, id, cfg.saved);
+    const endpoint = demoEndpoint(saved?.baseUrl);
+    return Boolean(editablePool() && !aiAccess.safeMode && endpoint && saved?.keyStored && channel && endpoint === demoEndpoint(channel.baseUrl) && !channel.sampleKeyPending && !channel.removeApiKey && poolBaselineRevisions[kind] === poolSlot(kind, cfg.saved).revision);
+  };
+  function poolFocus(action, kind, channelId = '', id = '') {
+    const find = name => [...document.querySelectorAll(`[data-action="${name}"][data-kind="${kind}"]`)].find(node => (!channelId || node.dataset.channelId === channelId) && (!id || node.dataset.id === id));
+    let target = find(action);
+    if (target?.disabled && channelId) target = find(id ? 'cfg-pool-model-edit' : 'cfg-pool-channel-edit');
+    const more = target?.closest?.('.nx-ai-pool-more'); if (more) more.open = true;
+    target?.focus?.({ preventScroll: true }); target?.scrollIntoView?.({ block: 'nearest', behavior: 'auto' });
+  }
   function poolAvailabilityText(kind, channelId, modelId) {
     const channel = poolChannel(kind, channelId, cfg.saved);
     const row = model().demoAiAvailability?.[kind]?.candidates?.find(row => row.channelId === channelId && row.model === modelId && (row.channelRevision === undefined || row.channelRevision === channel?.channelRevision));
@@ -241,20 +286,31 @@ export function createWorkflowPages(api) {
     const [row] = sorted.splice(index, 1); sorted.splice(priority - 1, 0, row); normalizePriorities(sorted);
     rows.splice(0, rows.length, ...sorted); cfg.saveFailed = false; return true;
   }
+  function poolSavebar(kind, parameters = false) {
+    const changed = parameters ? parametersDirty(kind) : poolDirty(kind), state = (parameters ? cfg.parameterStates : cfg.poolStates)[kind];
+    const description = changed ? state === 'failed' ? '保存失败 · 草稿保留' : '有未保存修改' : state === 'saved' ? '已保存' : '未修改';
+    return `<div class="nx-cfg-savebar nx-ai-pool-savebar" data-cfg-${parameters ? 'parameters' : 'pool'}-savebar="${kind}"><span role="status" data-cfg-${parameters ? 'parameters' : 'pool'}-status="${kind}">${parameters ? '工作参数' : '渠道与模型'} · ${description}</span><div class="button-row">${button('放弃修改', parameters ? 'cfg-parameters-discard' : 'cfg-pool-discard', '', 'quiet small', `data-kind="${kind}"${changed ? '' : ' disabled'}`)}${button(`保存${kind === 'annotation' ? '标注' : '生图'}${parameters ? '工作参数' : '资源池'}`, parameters ? 'cfg-parameters-save' : 'cfg-pool-save', 'check', 'primary small', `data-kind="${kind}"${changed && editablePool() ? '' : ' disabled'}`)}</div></div>`;
+  }
+  function poolParameters(kind) {
+    const values = cfg.draft.workParameters[kind], prefix = `parameters.${kind}.`;
+    const parameter = (label, name, attrs = '', textarea = false) => field(label, textarea ? `<textarea name="${name}" data-cfg-parameter="${name}" data-kind="${kind}" rows="4" maxlength="4000">${h(values[name])}</textarea>` : `<input name="${name}" data-cfg-parameter="${name}" data-kind="${kind}" value="${h(values[name])}" ${attrs}>`, prefix + name, cfg.errors);
+    return `<details class="nx-ai-pool-parameters" data-cfg-work-parameters="${kind}"><summary><span><strong>工作参数${kind === 'generation' ? '与生图提示词' : ''}</strong><small>${kind === 'generation' ? `${h(values.size)} · 每句 ${h(values.countPerItem)} 张` : `每批 ${h(values.batchSize)} 句 · 最多 ${h(values.maxBatchChars)} 字符`} · 并发 ${h(values.concurrency)}${parametersDirty(kind) ? ' · 未保存' : ''}</small></span><span aria-hidden="true">⌄</span></summary><form data-cfg-parameters="${kind}"><p class="nx-form-help">作用于本用途的所有渠道，独立保存。新任务采用已保存参数。</p>${kind === 'generation' ? `<section class="nx-cfg-form-section"><h3>配图设置</h3><div class="field-grid">${parameter('尺寸', 'size', 'maxlength="1000" placeholder="按模型支持的尺寸填写"')}${parameter('每句张数', 'countPerItem', 'type="number" min="1" max="4" step="1"')}</div>${field('默认配图风格', `<select name="imageStyle" data-cfg-parameter="imageStyle" data-kind="${kind}">${options(IMAGE_GENERATION_STYLES.map(style => [style.id, style.name]), values.imageStyle)}</select>`, prefix + 'imageStyle', cfg.errors)}<details class="nx-cfg-details nx-ai-pool-prompts" data-cfg-pool-prompts><summary>编辑两套风格提示词</summary><div>${IMAGE_GENERATION_STYLES.map(style => `<details class="nx-ai-style-editor" data-cfg-style-editor="${style.id}"${style.id === values.imageStyle ? ' open' : ''}><summary>${h(style.name)}</summary>${parameter('画面转换指令', style.instructionField, '', true)}<p class="nx-form-help">先由标注资源池把句意转为具体画面。</p>${parameter('画风提示词', style.prefixField, '', true)}<p class="nx-form-help">与具体画面一起发送给生图模型；切换风格保留另一套修改。</p></details>`).join('')}</div></details></section>` : ''}<section class="nx-cfg-form-section"><h3>调用参数</h3><div class="field-grid">${parameter('并发', 'concurrency', 'type="number" min="1" max="8" step="1"')}${parameter('超时（毫秒）', 'timeoutMs', 'type="number" min="1000" max="600000" step="1"')}${kind === 'annotation' ? `${parameter('温度', 'temperature', 'type="number" min="0" max="2" step="0.1"')}${parameter('每批句数', 'batchSize', 'type="number" min="1" max="50" step="1"')}${parameter('每批最多字符', 'maxBatchChars', 'type="number" min="1" max="12000" step="1"')}` : ''}</div></section>${poolSavebar(kind, true)}</form></details>`;
+  }
   function poolModelsPage() {
-    return `<div class="nx-cfg-section-head"><div><h2>AI 资源池</h2><p>语义标注和图像生成分别配置渠道；渠道与模型都由人工排序，优先级 1 最高。</p></div>${button('查看 AI 任务', 'cfg-open-ai', 'right', 'small')}</div>
+    return `<div class="nx-cfg-section-head"><div><h2>模型服务 / AI 资源池</h2><p>先按渠道，再按渠道内模型选择。优先级 1 最高，明确失败后使用下一候选。</p></div>${button('查看 AI 任务', 'cfg-open-ai', 'right', 'small')}</div>
+      <div class="nx-ai-pool-tabs" role="tablist" aria-label="模型用途">${poolKinds.map(([kind, label]) => button(label, 'cfg-pool-purpose', '', '', `data-kind="${kind}" id="nx-pool-tab-${kind}" role="tab" aria-controls="nx-pool-panel-${kind}" aria-selected="${cfg.poolKind === kind}" tabindex="${cfg.poolKind === kind ? 0 : -1}"`)).join('')}</div>
+      ${aiAccess.readState !== 'ready' ? `<p class="nx-form-error" role="alert">${aiAccess.readState === 'loading' ? '正在读取资源池…' : '模型配置或资源池读取失败，草稿保留；请刷新后重试，读取成功前不能修改或保存。'}</p>` : !aiAccess.canEditConfig ? '<div class="notice">当前配置只读，请核对访问地址与登录权限。</div>' : ''}${aiAccess.safeMode ? '<div class="notice">隔离模式：可手动保存配置，模型检测和联网任务已禁用。</div>' : ''}
       <div class="nx-ai-pool-slots">${poolKinds.map(([kind, label]) => {
-        const channels = priorityOrder(poolSlot(kind).channels), candidates = studioAiCandidates(cfg.draft.resourcePool, kind), ready = studioAiCandidates(cfg.draft.resourcePool, kind, model().demoAiAvailability || {});
-        return `<section class="nx-ai-pool-slot" data-ai-pool-kind="${kind}"><div class="nx-cfg-section-head"><div><h3>${label}</h3><p>${channels.length} 个渠道 · ${candidates.length} 个启用候选 · 本机可用 ${ready.length} 个</p></div><div class="button-row">${button('新增渠道', 'cfg-pool-channel-new', 'plus', 'small', `data-kind="${kind}"${channels.length >= 8 ? ' disabled' : ''}`)}${button('恢复优先渠道', 'cfg-pool-availability-reset', 'undo', 'quiet small', `data-kind="${kind}"`)}</div></div>
-          <p class="nx-ai-pool-priority">草稿优先候选：${h(candidates.length ? `${candidates[0].channelName} / ${candidates[0].model}` : '暂无可用候选；请启用渠道并添加模型')}</p>
+        const channels = priorityOrder(poolSlot(kind).channels), candidates = studioAiCandidates(cfg.draft.resourcePool, kind), savedCandidates = studioAiCandidates(cfg.saved.resourcePool, kind), ready = studioAiCandidates(cfg.saved.resourcePool, kind, model().demoAiAvailability || {});
+        if (!Object.hasOwn(cfg.openChannels, kind)) cfg.openChannels[kind] = channels[0]?.id || '';
+        return `<section class="nx-ai-pool-slot" data-ai-pool-kind="${kind}" id="nx-pool-panel-${kind}" role="tabpanel" aria-labelledby="nx-pool-tab-${kind}"${cfg.poolKind === kind ? '' : ' hidden'}><div class="nx-ai-pool-overview"><div><span>草稿优先候选</span><strong>${h(candidates.length ? `${candidates[0].channelName} / ${candidates[0].model}` : '暂无启用候选')}</strong></div><dl><div><dt>渠道</dt><dd>${channels.length}<small> / 8</small></dd></div><div><dt>启用候选</dt><dd>${candidates.length}</dd></div><div><dt>已保存本机可用</dt><dd>${ready.length}<small> / ${savedCandidates.length}</small></dd></div></dl></div><div class="nx-ai-pool-list-head"><div><h3>${label}渠道</h3><p>按优先级排列 · 本机可用状态来自已有记录</p></div>${button('新增渠道', 'cfg-pool-channel-new', 'plus', 'small', `data-kind="${kind}"${channels.length >= 8 || !editablePool() ? ' disabled' : ''}`)}</div>
           ${channels.length ? channels.map(channel => {
-            const models = priorityOrder(channel.models), attrs = poolAttrs(kind, channel.id);
-            return `<article class="nx-ai-pool-channel" data-ai-pool-channel="${h(channel.id)}"><header><div><strong>${h(channel.name)}</strong>${status(channel.enabled ? '已启用' : '已停用', channel.enabled ? 'good' : '')}<p>渠道优先级 ${channel.priority} · 示例凭据${channel.keyStored ? '已配置' : '未配置'}${sameSavedChannel(kind, channel.id) ? '' : ' · 配置有未保存修改'}</p></div><div class="button-row">${button('上移', 'cfg-pool-channel-up', '', 'quiet small', `${attrs}${channel.priority === 1 ? ' disabled' : ''}`)}${button('下移', 'cfg-pool-channel-down', '', 'quiet small', `${attrs}${channel.priority === channels.length ? ' disabled' : ''}`)}${button('编辑渠道', 'cfg-pool-channel-edit', '', 'small', attrs)}${button('删除', 'cfg-pool-channel-delete', '', 'quiet small', attrs)}</div></header>
-              ${models.length ? `<ol class="nx-ai-pool-models">${models.map(row => `<li data-ai-pool-model="${h(row.id)}"><div><strong>${h(row.id)}</strong>${status(row.enabled ? '已启用' : '已停用', row.enabled ? 'good' : '')}<small>模型优先级 ${row.priority} · ${row.source === 'detected' ? '检测后确认加入' : '手动添加'}</small>${poolAvailabilityText(kind, channel.id, row.id) ? `<small class="nx-ai-route-warning">${h(poolAvailabilityText(kind, channel.id, row.id))}</small>` : ''}</div><div class="button-row">${button('上移', 'cfg-pool-model-up', '', 'quiet small', `${poolAttrs(kind, channel.id, row.id)}${row.priority === 1 ? ' disabled' : ''}`)}${button('下移', 'cfg-pool-model-down', '', 'quiet small', `${poolAttrs(kind, channel.id, row.id)}${row.priority === models.length ? ' disabled' : ''}`)}${button('编辑', 'cfg-pool-model-edit', '', 'small', poolAttrs(kind, channel.id, row.id))}${button('删除', 'cfg-pool-model-delete', '', 'quiet small', poolAttrs(kind, channel.id, row.id))}</div></li>`).join('')}</ol>` : empty('这个渠道还没有模型', '可手动添加模型 ID，也可检测保存渠道后核对候选。')}
-              <footer><div class="button-row">${button('手动添加模型', 'cfg-pool-model-new', 'plus', 'small', `${attrs}${models.length >= 64 ? ' disabled' : ''}`)}${button('检测模型 · 模拟', 'cfg-pool-detect', 'search', 'quiet small', `${attrs}${!sameSavedChannel(kind, channel.id) || !channel.enabled || !channel.keyStored ? ' disabled' : ''}`)}</div><small>${sameSavedChannel(kind, channel.id) ? '检测仅返回候选，确认合并后保存设置才生效；新增检测模型默认停用。' : '先保存这个渠道的修改，再检测模型。'}</small></footer></article>`;
-          }).join('') : empty('还没有渠道', '新增渠道后，手动配置一个或多个模型。')}</section>`;
+            const models = priorityOrder(channel.models), attrs = poolAttrs(kind, channel.id), expanded = cfg.openChannels[kind] === channel.id, unavailable = models.map(row => poolAvailabilityText(kind, channel.id, row.id)).find(Boolean);
+            return `<article class="nx-ai-pool-channel${expanded ? ' is-expanded' : ''}" data-ai-pool-channel="${h(channel.id)}"><header><span class="nx-ai-pool-number" aria-label="渠道优先级 ${channel.priority}">${channel.priority}</span><div class="nx-ai-pool-channel-info"><strong>${h(channel.name)}</strong>${status(channel.enabled ? '已启用' : '已停用', channel.enabled ? 'good' : '')}<p>${models.length} 个模型 · ${channel.sampleKeyPending ? '新示例密钥待保存' : channel.removeApiKey ? '密钥待移除' : channel.keyStored ? '密钥已保存 · 尚未联网验证' : '未配置密钥'}${sameSavedChannel(kind, channel.id) ? '' : ' · 未保存'}${unavailable ? `<span class="nx-ai-route-warning">${h(unavailable)}</span>` : ''}</p></div><div class="button-row">${button(expanded ? '收起模型' : '管理模型', 'cfg-pool-channel-models', '', 'quiet small', `${attrs} aria-expanded="${expanded}" aria-controls="nx-models-${kind}-${h(channel.id)}" aria-label="${h(channel.name)}的模型列表"`)}${button('编辑渠道', 'cfg-pool-channel-edit', '', 'small', `${attrs} aria-label="编辑${h(channel.name)}"${editablePool() ? '' : ' disabled'}`)}<details class="nx-ai-pool-more"><summary aria-label="${h(channel.name)}的更多操作">更多</summary><div>${button('上移', 'cfg-pool-channel-up', '', 'quiet small', `${attrs} aria-label="提高${h(channel.name)}的优先级"${channel.priority === 1 || !editablePool() ? ' disabled' : ''}`)}${button('下移', 'cfg-pool-channel-down', '', 'quiet small', `${attrs} aria-label="降低${h(channel.name)}的优先级"${channel.priority === channels.length || !editablePool() ? ' disabled' : ''}`)}${button('删除渠道', 'cfg-pool-channel-delete', '', 'quiet small', `${attrs}${editablePool() ? '' : ' disabled'}`)}</div></details></div></header>
+              <section class="nx-ai-pool-model-section" id="nx-models-${kind}-${h(channel.id)}"${expanded ? '' : ' hidden'}><div class="nx-ai-pool-model-head"><h4>渠道模型 <small>${models.length} / 64</small></h4><div class="button-row">${button('手动添加', 'cfg-pool-model-new', 'plus', 'small', `${attrs}${models.length >= 64 || !editablePool() ? ' disabled' : ''}`)}${button('检测模型', 'cfg-pool-detect', 'search', 'quiet small', `${attrs}${savedPoolConnection(kind, channel.id) ? '' : ' disabled'}`)}</div></div>${models.length ? `<ol class="nx-ai-pool-models">${models.map(row => `<li data-ai-pool-model="${h(row.id)}"><span class="nx-ai-pool-model-number" aria-label="模型优先级 ${row.priority}">${row.priority}</span><div class="nx-ai-pool-model-info"><strong>${h(row.id)}</strong><small>${row.source === 'detected' ? '检测添加' : '手动添加'}${poolAvailabilityText(kind, channel.id, row.id) ? ` · <span class="nx-ai-route-warning">${h(poolAvailabilityText(kind, channel.id, row.id))}</span>` : ''}</small></div><label class="nx-ai-pool-enable"><input type="checkbox" data-cfg-model-enabled="${h(row.id)}" data-kind="${kind}" data-channel-id="${h(channel.id)}"${checked(row.enabled) ? ' checked' : ''}${editablePool() ? '' : ' disabled'} aria-label="启用 ${h(row.id)}">启用</label><div class="button-row">${button('编辑', 'cfg-pool-model-edit', '', 'quiet small', `${poolAttrs(kind, channel.id, row.id)} aria-label="编辑 ${h(row.id)}"${editablePool() ? '' : ' disabled'}`)}<details class="nx-ai-pool-more"><summary aria-label="${h(row.id)}的更多操作">更多</summary><div>${button('上移', 'cfg-pool-model-up', '', 'quiet small', `${poolAttrs(kind, channel.id, row.id)} aria-label="提高 ${h(row.id)} 的优先级"${row.priority === 1 || !editablePool() ? ' disabled' : ''}`)}${button('下移', 'cfg-pool-model-down', '', 'quiet small', `${poolAttrs(kind, channel.id, row.id)} aria-label="降低 ${h(row.id)} 的优先级"${row.priority === models.length || !editablePool() ? ' disabled' : ''}`)}${button('删除模型', 'cfg-pool-model-delete', '', 'quiet small', `${poolAttrs(kind, channel.id, row.id)}${editablePool() ? '' : ' disabled'}`)}</div></details></div></li>`).join('')}</ol>` : empty('这个渠道还没有模型', '手动填写已知模型 ID，或保存接口和密钥后检测。')}<p class="nx-form-help">${savedPoolConnection(kind, channel.id) ? '检测仅预览候选；确认合并后新增模型默认停用，再保存资源池生效。' : '检测使用已保存接口与密钥；新接口或密钥修改须先保存。'}</p></section></article>`;
+          }).join('') : empty('还没有渠道', '新增渠道后可先保存接口与密钥，再手动添加模型或检测。')}${poolSavebar(kind)}<div class="nx-ai-pool-secondary-actions">${button('恢复优先渠道', 'cfg-pool-availability-reset', 'undo', 'quiet small', `data-kind="${kind}"${editablePool() ? '' : ' disabled'}`)}<small>只清除本机暂不可用记录，不查询余额或检测模型。</small></div>${poolParameters(kind)}<details class="nx-ai-pool-history" data-cfg-pool-history="${kind}"><summary>历史兼容配置与导入</summary><p class="nx-form-help">导入本用途当前兼容配置及全部历史，按完整接口地址归为渠道。已有模型设置和顺序保留；导入会保存资源池。</p>${button('将当前与全部历史导入资源池', 'cfg-pool-import', '', 'small', `data-kind="${kind}"${poolDirty(kind) || !editablePool() ? ' disabled' : ''}`)}<p class="nx-form-help">资源池有草稿时，请先保存或放弃；无需手动切换历史配置。</p></details></section>`;
       }).join('')}</div>
-      <div class="notice">新增、启停和优先级变更先进入设置草稿，点击底部「保存设置」后供新任务选择。配置变更会暂停关联任务，须重新预演并创建任务；已有产物和原请求的渠道模型记录保留。</div>${technicalNotes('原型与真实配置边界', '本页只使用固定的示例渠道与模型，真实地址和 API Key 输入已禁用。检测、故障切换和任务请求均为内存模拟；读取和打开任务不会探测模型，不投影后台私人设置。')}`;
+      ${technicalNotes('原型演示与配置说明', '本页渠道、地址与结果均为虚构，只允许 .example.test 示例地址，不接收真实密钥。配置、检测、导入和任务全部在本页内存中演示。实际后台独立保存各用途资源池和工作参数，配置变更会使关联任务需要重新预演；已有产物与原请求记录保留。')}`;
   }
   const routingRows = kind => cfg.draft.routing.channels[kind];
   const routingBase = (kind, providerId) => routingRows(kind).find(row => row.providerId === providerId)?.baseUrl || '';
@@ -284,6 +340,18 @@ export function createWorkflowPages(api) {
     const node = $('#nx-cfg-save-status'); if (node) node.textContent = settingsStatus();
     $('.nx-cfg [data-action="cfg-save"]')?.toggleAttribute?.('disabled', !dirty() || blockedSettingsSave());
     $('.nx-cfg [data-action="cfg-cancel"]')?.toggleAttribute?.('disabled', !dirty());
+    for (const [kind] of poolKinds) {
+      const values = cfg.draft.workParameters[kind], summary = $(`[data-cfg-work-parameters="${kind}"]`)?.querySelector?.('summary small');
+      if (summary) summary.textContent = `${kind === 'generation' ? `${values.size} · 每句 ${values.countPerItem || '默认'} 张` : `每批 ${values.batchSize || '默认'} 句 · 最多 ${values.maxBatchChars || '默认'} 字符`} · 并发 ${values.concurrency || '默认'}${parametersDirty(kind) ? ' · 未保存' : ''}`;
+      for (const parameters of [false, true]) {
+        const changed = parameters ? parametersDirty(kind) : poolDirty(kind), state = (parameters ? cfg.parameterStates : cfg.poolStates)[kind], scope = parameters ? 'parameters' : 'pool';
+        const statusNode = $(`[data-cfg-${scope}-status="${kind}"]`);
+        if (statusNode) statusNode.textContent = `${parameters ? '工作参数' : '渠道与模型'} · ${changed ? state === 'failed' ? '保存失败 · 草稿保留' : '有未保存修改' : state === 'saved' ? '已保存' : '未修改'}`;
+        $(`[data-action="cfg-${scope}-save"][data-kind="${kind}"]`)?.toggleAttribute?.('disabled', !changed || !editablePool());
+        $(`[data-action="cfg-${scope}-discard"][data-kind="${kind}"]`)?.toggleAttribute?.('disabled', !changed);
+      }
+      $(`[data-action="cfg-pool-import"][data-kind="${kind}"]`)?.toggleAttribute?.('disabled', poolDirty(kind) || !editablePool());
+    }
   }
   function setRoutingBase(key, value) {
     if (!publicationReady()) return;
@@ -330,11 +398,31 @@ export function createWorkflowPages(api) {
       } catch { cfg.errors[`routing.${key}`] = '请填写不含凭据、查询参数或片段的完整 HTTPS 公开基址。'; }
     }
   }
+  function fontResourceCard() {
+    const fonts = (api.getCatalog?.()?.fonts || []).filter(row => row.id !== 'system');
+    const builtinIds = new Set(fontCatalog.map(row => row.id));
+    const newFonts = fonts.filter(row => !builtinIds.has(row.id));
+    const pending = !fontResourceDemo.imported && ['available', 'blocked'].includes(fontResourceDemo.scenario);
+    const blocked = fontResourceDemo.scenario === 'blocked', failed = fontResourceDemo.scenario === 'failed';
+    const addedBytes = newFonts.reduce((sum, row) => sum + (Number.isSafeInteger(row.nativeBytes) ? row.nativeBytes : 0), 0);
+    return `<section class="nx-cfg-font-resources" data-cfg-font-resources><div class="nx-cfg-section-head"><h3>生产字体资源</h3>${status(failed ? '读取失败 · 演示' : blocked ? '资源冲突待处理 · 演示' : pending ? `可导入 ${newFonts.length} 款 · 演示` : '本机已就绪 · 演示', pending || failed ? 'warn' : 'good')}</div><p>查看程序提供的正式字体，显式导入到本机后再到发布中心发布资源。</p><dl class="nx-definition"><dt>本机已安装 · 示例</dt><dd>${pending ? fonts.length - newFonts.length : fonts.length} 款</dd><dt>程序提供</dt><dd>${fonts.length} 款</dd>${pending ? `<dt>本次新增 · 示例</dt><dd>${newFonts.length} 款${addedBytes ? ` · ${(addedBytes / 1_000_000).toFixed(2)} MB TTF` : ''}</dd>` : ''}</dl><details><summary>查看共享批准字体</summary><ul>${fonts.map(row => `<li>${h(row.name)} · ${pending && !builtinIds.has(row.id) ? '可导入 · 示例' : '已安装 · 示例'}</li>`).join('')}</ul></details>${blocked ? '<p class="nx-form-error" role="alert">同名字体身份不一致，请核对批准资源清单后刷新；本页不覆盖冲突文件。</p>' : ''}${failed ? '<p class="nx-form-error" role="alert">生产字体资源读取失败，请点击「重试读取」重试；读取成功前不能导入。</p>' : ''}${fontResourceDemo.error ? `<p class="nx-form-error" role="alert">${h(fontResourceDemo.error)}</p>` : ''}${fontResourceDemo.imported ? '<p role="status">新增字体已导入本机 · 演示。正式后台需先保存当前输入，再刷新后台页面更新字体菜单，并到发布中心发布资源；本机就绪不代表远端已发布。</p>' : '<p class="nx-form-help">只使用共享目录展示实际字体名称；安装数量与导入结果为内存演示，未读写真实工作库。</p>'}<label class="field"><span>安装状态演示</span><select id="cfg-font-resource-scenario">${options([['current', '新安装 · 已就绪'], ['available', '旧安装 · 可导入新款'], ['blocked', '字体身份冲突'], ['failed', '读取失败']], fontResourceDemo.scenario)}</select></label><div class="button-row">${button(failed ? '重试读取 · 模拟' : '刷新字体状态 · 模拟', 'cfg-font-resource-refresh', '', 'small')}${button('导入新增字体到本机 · 模拟', 'cfg-font-resource-import', 'plus', 'primary small', !pending || blocked || !newFonts.length ? 'disabled' : '')}${button('前往发布中心', 'cfg-open-font-delivery', 'right', 'quiet small')}</div></section>`;
+  }
+  function syncFontResourceCard() {
+    const current = $('[data-cfg-font-resources]');
+    if (!current) return;
+    const markup = fontResourceCard();
+    current.innerHTML = markup.slice(markup.indexOf('>') + 1, markup.lastIndexOf('</section>'));
+    const scenario = current.querySelector('#cfg-font-resource-scenario');
+    if (scenario) scenario.onchange = () => {
+      if (!['current', 'available', 'blocked', 'failed'].includes(scenario.value)) return;
+      fontResourceDemo = { scenario: scenario.value, imported: false, error: '' }; syncFontResourceCard();
+    };
+  }
   function settingsBody() {
     if (cfg.tab === 'security') return `<h2>账号与安全</h2><p>管理员登录需要明确的等待与恢复反馈。这里使用禁用的示例密码，只演示页面状态。</p><div class="nx-cfg-reset-row"><div><strong>登录反馈预览</strong><p>检查登录中、密码错误、限流、服务不可用与网络中断；不会连接真实登录接口。</p></div>${button('预览登录页', 'cfg-login-preview', 'right', 'small')}</div>${technicalNotes('安全与验证范围', '真实密码输入已禁用，模拟不会改变登录状态或账号。网络与服务错误保留示例输入，重新尝试需要点击按钮。')}`;
     if (cfg.tab === 'workflow') return `<h2>内容处理</h2><p>处理方式用于批量流程与自动任务。新增和编辑内容始终需要点击保存。</p><div class="field-grid">${configField('处理方式', 'workflow.mode', 'select', [['auto', '自动推进批量步骤'], ['manual', '人工分步处理']])}${configField('复核方式', 'workflow.review', 'select', [['rules', '系统规则复核'], ['manual', '人工逐条复核']])}</div>${toggleRow('保护人工标签', '自动任务保留已确认的人工标签。', 'workflow.protectLabels')}${toggleRow('保护已锁定配图', '自动配图不会替换明确锁定的素材。', 'workflow.protectImages')}${toggleRow('整理前检查重复', '检查正文及出处，冲突保留人工处理。', 'workflow.deduplicate')}<div class="notice">系统规则结果与人工确认分别表达；本页设置仅影响共享演示偏好，不生成真实审核证据。</div>`;
     if (cfg.tab === 'models') return poolModelsPage();
-    if (cfg.tab === 'channels') return `<h2>发布与资源渠道</h2><p>先核对保存的渠道配置和当前会话；发布条件请到发布中心重新预演。</p>${settingsReadNotice()}<div class="nx-cfg-channel-tabs">${[['images', '图床'], ['wechat', '公众号'], ['resources', '资源分发'], ['fonts', 'UploadThing 字体上传']].map(([id, label]) => `<section data-cfg-channel-card="${id}"><div class="nx-cfg-section-head"><h3>${label}</h3>${status(id === 'fonts' && !publicationReady() ? fontAccountReadStatus() : cfg.draft.channels[id].enabled ? '演示启用' : '演示停用', id === 'fonts' && !publicationReady() ? 'warn' : cfg.draft.channels[id].enabled ? 'good' : '')}</div><p>${h(cfg.draft.channels[id].name)}</p><small>${id === 'fonts' ? `生产 TTF · 逐字体公开直链 · 示例 Token${cfg.draft.channels.fonts.sampleToken ? '已配置' : '未配置'}` : `${h(cfg.draft.channels[id].namespace)} · ${h(cfg.draft.channels[id].provider)}`}</small><div class="button-row">${button('编辑配置', 'cfg-channel-edit', '', 'small', `data-id="${id}"${id === 'fonts' && !publicationReady() ? ' disabled' : ''}`)}${id === 'fonts' ? button('前往发布中心', 'cfg-open-font-delivery', 'right', 'quiet small') : button('模拟连通测试', 'cfg-channel-test', '', 'quiet small', `data-id="${id}"`)}</div></section>`).join('')}</div>${routingPage()}<div class="notice">公众号操作停在草稿；图床、整包资源与字体上传分别配置，修改后需保存设置。UploadThing 只登记生产 TTF 的已核验直链，完整许可继续随公开包分发。</div>${technicalNotes('示例账号与远端操作边界', '正式后台在这里查看保存账号和当前会话；整包校验与发布预演在发布中心完成，页面读取不登录或查询远端。UploadThing Token 加密保存在后台所在设备，上传时独立核验。本原型不接受真实账号或密钥，不上传，不发起远端请求。模拟连通结果不能替代真实账号、字节与发布验收。')}`;
+    if (cfg.tab === 'channels') return `<h2>发布与资源渠道</h2><p>先核对保存的渠道配置和当前会话；发布条件请到发布中心重新预演。</p>${settingsReadNotice()}${fontResourceCard()}<div class="nx-cfg-channel-tabs">${[['images', '图床'], ['wechat', '公众号'], ['resources', '资源分发'], ['fonts', 'UploadThing 字体上传']].map(([id, label]) => `<section data-cfg-channel-card="${id}"><div class="nx-cfg-section-head"><h3>${label}</h3>${status(id === 'fonts' && !publicationReady() ? fontAccountReadStatus() : cfg.draft.channels[id].enabled ? '演示启用' : '演示停用', id === 'fonts' && !publicationReady() ? 'warn' : cfg.draft.channels[id].enabled ? 'good' : '')}</div><p>${h(cfg.draft.channels[id].name)}</p><small>${id === 'fonts' ? `生产 TTF · 逐字体公开直链 · 示例 Token${cfg.draft.channels.fonts.sampleToken ? '已配置' : '未配置'}` : `${h(cfg.draft.channels[id].namespace)} · ${h(cfg.draft.channels[id].provider)}`}</small><div class="button-row">${button('编辑配置', 'cfg-channel-edit', '', 'small', `data-id="${id}"${id === 'fonts' && !publicationReady() ? ' disabled' : ''}`)}${id === 'fonts' ? button('前往发布中心', 'cfg-open-font-delivery', 'right', 'quiet small') : button('模拟连通测试', 'cfg-channel-test', '', 'quiet small', `data-id="${id}"`)}</div></section>`).join('')}</div>${routingPage()}<div class="notice">公众号操作停在草稿；图床、整包资源与字体上传分别配置，修改后需保存设置。UploadThing 只登记生产 TTF 的已核验直链，完整许可继续随公开包分发。</div>${technicalNotes('示例账号与远端操作边界', '正式后台在这里查看保存账号和当前会话；整包校验与发布预演在发布中心完成，页面读取不登录或查询远端。UploadThing Token 加密保存在后台所在设备，上传时独立核验。本原型不接受真实账号或密钥，不上传，不发起远端请求。模拟连通结果不能替代真实账号、字节与发布验收。')}`;
     if (cfg.tab === 'range') {
       const outside = Object.keys(model().bindings).filter(date => date < cfg.draft.range.start || date > cfg.draft.range.end);
       return `<h2>内容有效日期范围</h2><p>先预演范围外日期，再确认保存到本页共享排期模型。真实后台核对日期配置与排期版本，保存不自动构建或发布。</p><div class="field-grid">${configField('开始日期', 'range.start', 'date')}${configField('结束日期', 'range.end', 'date')}</div><div class="notice ${outside.length ? 'warn' : ''}">当前已安排 ${Object.keys(model().bindings).length} 天；新范围外有 ${outside.length} 天。范围变更保留这些绑定，不覆盖、删除或补齐内容。</div><div class="nx-cfg-current-range"><span>当前已保存范围</span><strong>${h(cfg.saved.range.start)} — ${h(cfg.saved.range.end)}</strong>${button('查看内容排期', 'cfg-open-schedule', 'arrow', 'quiet small')}</div>`;
@@ -342,9 +430,10 @@ export function createWorkflowPages(api) {
     return `<h2>工作台偏好</h2><p>调整工作空间的阅读密度和常用入口。真实后台偏好保存在当前浏览器，减少动效偏好优先。</p><div class="field-grid">${configField('界面密度', 'preferences.density', 'select', [['comfortable', '舒适留白'], ['compact', '紧凑列表']])}${configField('默认打开页面', 'preferences.startPage', 'select', [['review', '内容管理'], ['collect', '采集候选'], ['schedule', '内容排期']])}</div>${toggleRow('显示操作提示', '为当前步骤显示简短的说明。', 'preferences.hints')}${toggleRow('界面过渡动效', '减少动效偏好仍优先生效。', 'preferences.motion')}<div class="nx-cfg-reset-row"><div><strong>恢复默认偏好</strong><p>仅恢复本页界面偏好，不改变内容、候选或排期。</p></div>${button('恢复默认', 'cfg-preferences-reset', 'undo', 'small')}</div><div class="nx-cfg-reset-row"><div><strong>重置本页设置演示</strong><p>恢复此模块最初的示例配置；保存后同步初始有效日期范围。</p></div>${button('重置设置', 'cfg-reset', '', 'quiet small')}</div>`;
   }
   function settingsPage() {
-    return `<div class="nx-cfg">${heading('工作台设置', '先核对当前分类，修改进入草稿，点击保存后在本页生效。', button('刷新已保存配置', 'cfg-refresh', '', 'small', settingsRead.state === 'loading' ? 'disabled' : ''))}<div class="settings-grid"><div class="nx-cfg-navigation"><nav class="settings-nav panel" role="tablist" aria-label="工作台设置分类" aria-orientation="vertical">${settingTabs.map(([id, label]) => `<button type="button" role="tab" id="nx-cfg-tab-${id}" aria-controls="nx-cfg-panel" aria-selected="${cfg.tab === id}" tabindex="${cfg.tab === id ? '0' : '-1'}" data-action="cfg-tab" data-value="${id}" ${cfg.tab === id ? 'aria-current="true"' : ''}>${label}</button>`).join('')}</nav><p class="nx-cfg-nav-hint" data-cfg-nav-hint hidden>左右滑动查看更多分类</p></div><section class="panel nx-cfg-panel" id="nx-cfg-panel" role="tabpanel" aria-labelledby="nx-cfg-tab-${cfg.tab}"><div class="settings-content">${settingsBody()}</div><div class="nx-cfg-savebar"><span id="nx-cfg-save-status" role="status">${settingsStatus()}</span><div class="button-row">${button('放弃修改', 'cfg-cancel', '', 'quiet', dirty() ? '' : 'disabled')}${button('保存设置', 'cfg-save', 'check', 'primary', dirty() && !blockedSettingsSave() ? '' : 'disabled')}</div></div></section></div></div>`;
+    return `<div class="nx-cfg">${heading('工作台设置', cfg.tab === 'models' ? '按用途整理渠道和模型，资源池与工作参数分别保存。' : '先核对当前分类，修改进入草稿，点击保存后在本页生效。', button('刷新已保存配置', 'cfg-refresh', '', 'small', settingsRead.state === 'loading' ? 'disabled' : ''))}<div class="settings-grid"><div class="nx-cfg-navigation"><nav class="settings-nav panel" role="tablist" aria-label="工作台设置分类" aria-orientation="vertical">${settingTabs.map(([id, label]) => `<button type="button" role="tab" id="nx-cfg-tab-${id}" aria-controls="nx-cfg-panel" aria-selected="${cfg.tab === id}" tabindex="${cfg.tab === id ? '0' : '-1'}" data-action="cfg-tab" data-value="${id}" ${cfg.tab === id ? 'aria-current="true"' : ''}>${label}</button>`).join('')}</nav><p class="nx-cfg-nav-hint" data-cfg-nav-hint hidden>左右滑动查看更多分类</p></div><section class="panel nx-cfg-panel" id="nx-cfg-panel" role="tabpanel" aria-labelledby="nx-cfg-tab-${cfg.tab}"><div class="settings-content">${settingsBody()}</div>${cfg.tab === 'models' ? '' : `<div class="nx-cfg-savebar"><span id="nx-cfg-save-status" role="status">${settingsStatus()}</span><div class="button-row">${button('放弃修改', 'cfg-cancel', '', 'quiet', dirty() ? '' : 'disabled')}${button('保存设置', 'cfg-save', 'check', 'primary', dirty() && !blockedSettingsSave() ? '' : 'disabled')}</div></div>`}</section></div></div>`;
   }
   async function refreshSettings() {
+    if (cfg.tab === 'models') { await refreshAiPools(); return; }
     if (settingsRead.state === 'loading') return;
     const run = ++settingsReadRun, revision = settingsRead.revision || 'demo-publication';
     const repaint = () => {
@@ -375,7 +464,7 @@ export function createWorkflowPages(api) {
     if (correctingError) api.clearNotice?.();
     syncSettingsDraftControls();
   }
-  function settingsChanged() { api.render(); }
+  function settingsChanged() { rememberPoolDisclosures(); api.render(); }
   function loginPreview(result = 'idle') {
     const busy = result === 'busy';
     const messages = { failed: '登录失败：密码不正确，请重新核对。', rate_limited: '请求过于频繁，请稍后重试。', unavailable: '登录服务暂时不可用，可稍后重试。示例输入已保留。', network: '网络连接中断，请检查网络后重试。示例输入已保留。' };
@@ -385,6 +474,104 @@ export function createWorkflowPages(api) {
   function requestNavigation(page) {
     pendingNavigation = page;
     openModal('cfg-unsaved', '设置有未保存的修改', '<p>可以保存本次设置后离开，放弃修改，或返回继续编辑。</p>', button('放弃修改并离开', 'cfg-leave-discard', '', 'quiet') + button('继续编辑', 'cfg-close') + button('保存并离开', 'cfg-leave-save', 'check', 'primary'));
+  }
+  async function refreshAiPools() {
+    if (aiAccess.readState === 'loading') return;
+    const current = ++aiReadRun;
+    aiAccess.readState = 'loading'; api.render();
+    try {
+      // One example snapshot represents the page's combined configuration, pools and access read.
+      const incoming = await (api.readAiResourcePools ? api.readAiResourcePools() : { pools: clone(cfg.saved.resourcePool), workParameters: clone(cfg.saved.workParameters) });
+      if (current !== aiReadRun) return;
+      if (poolKinds.some(([kind]) => !incoming?.pools?.[kind]?.revision || !Array.isArray(incoming.pools[kind].channels))) throw new Error('Invalid example pool');
+      for (const [kind] of poolKinds) {
+        const changed = poolDirty(kind), parameterChanged = parametersDirty(kind);
+        cfg.saved.resourcePool[kind] = clone(incoming.pools[kind]);
+        if (!changed) { cfg.draft.resourcePool[kind] = clone(incoming.pools[kind]); poolBaselineRevisions[kind] = incoming.pools[kind].revision; delete cfg.poolStates[kind]; }
+        if (incoming.workParameters?.[kind]) {
+          cfg.saved.workParameters[kind] = clone(incoming.workParameters[kind]);
+          if (!parameterChanged) { cfg.draft.workParameters[kind] = clone(incoming.workParameters[kind]); parameterBaselines[kind] = clone(incoming.workParameters[kind]); delete cfg.parameterStates[kind]; }
+        }
+      }
+      if (typeof incoming.canEditConfig === 'boolean') aiAccess.canEditConfig = incoming.canEditConfig;
+      if (typeof incoming.safeMode === 'boolean') aiAccess.safeMode = incoming.safeMode;
+      model().demoAiResourcePool = clone(cfg.saved.resourcePool); model().demoAiWorkParameters = clone(cfg.saved.workParameters); api.syncAiResourcePool?.();
+      aiAccess.readState = 'ready'; api.render(); api.notify('已重新读取本页保存快照，未保存草稿保留；没有检测模型。');
+    } catch { if (current === aiReadRun) { aiAccess.readState = 'failed'; api.render(); api.notify('模型配置或资源池读取失败，已保存快照与草稿保留；读取成功前不能修改或保存。', { tone: 'error' }); } }
+  }
+  function resetPoolDrafts() {
+    for (const [kind] of poolKinds) { poolBaselineRevisions[kind] = poolSlot(kind, cfg.saved).revision; parameterBaselines[kind] = clone(cfg.saved.workParameters[kind]); }
+    cfg.poolStates = {}; cfg.parameterStates = {};
+  }
+  function importLegacyPool(kind) {
+    if (!poolSlot(kind) || !editablePool() || poolDirty(kind)) return false;
+    const initial = createStudioAiResourcePool()[kind].channels[0];
+    const profiles = api.initialAiLegacyConfigurations?.[kind] || [
+      { name: '当前兼容渠道 · 示例', baseUrl: initial.baseUrl, model: `legacy-${kind}-current-demo`, keyStored: true },
+      { name: '历史兼容渠道 · 示例', baseUrl: initial.baseUrl, model: `legacy-${kind}-history-demo`, keyStored: true },
+    ];
+    const next = clone(poolSlot(kind, cfg.saved));
+    for (const profile of profiles) {
+      const endpoint = demoEndpoint(profile.baseUrl);
+      if (!endpoint || !profile.keyStored || !/^[^\s\u0000-\u001f\u007f]{1,200}$/u.test(profile.model)) continue;
+      let channel = next.channels.find(row => demoEndpoint(row.baseUrl) === endpoint);
+      if (!channel) { channel = { id: `demo-import-${kind}-${++sequence}`, name: profile.name || '历史导入渠道 · 示例', baseUrl: endpoint, enabled: true, keyStored: true, priority: next.channels.length + 1, channelRevision: 'demo-unsaved', models: [] }; next.channels.push(channel); }
+      channel.keyStored = true;
+      if (!channel.models.some(row => row.id === profile.model)) channel.models.push({ id: profile.model, priority: channel.models.length + 1, enabled: true, source: 'manual' });
+    }
+    if (next.channels.length > 8 || next.channels.some(row => row.models.length > 64)) { api.notify('历史导入将超过 8 个渠道或每渠道 64 个模型，原资源池保留。', { tone: 'error' }); return false; }
+    cfg.draft.resourcePool[kind] = next;
+    if (!savePool(kind, false)) return false;
+    api.render(); api.notify('已将本用途当前与全部历史导入示例资源池；未连接模型服务。', { tone: 'success' }); return true;
+  }
+  function savePool(kind, repaint = true) {
+    if (!poolSlot(kind)) return false;
+    if (!poolDirty(kind)) return true;
+    if (!editablePool()) { api.notify('资源池尚不可编辑，请刷新并核对权限。', { tone: 'error' }); return false; }
+    if (poolBaselineRevisions[kind] !== poolSlot(kind, cfg.saved).revision) {
+      cfg.poolStates[kind] = 'failed'; api.notify('资源池版本已变化，草稿保留；请先核对，再明确放弃草稿重新填写。', { tone: 'error' }); return false;
+    }
+    const next = clone(poolSlot(kind)), previous = poolSlot(kind, cfg.saved);
+    const invalidChannel = next.channels.length > 8 || next.channels.some((channel, index) => !channel.name.trim() || channel.name.trim().length > 60 || !demoEndpoint(channel.baseUrl) || channel.priority !== index + 1 || channel.models.length > 64 || channel.models.some((row, position) => !/^[^\s\u0000-\u001f\u007f]{1,200}$/u.test(row.id) || row.priority !== position + 1) || new Set(channel.models.map(row => row.id)).size !== channel.models.length || (previous.channels.find(row => row.id === channel.id)?.keyStored && demoEndpoint(channel.baseUrl) !== demoEndpoint(previous.channels.find(row => row.id === channel.id).baseUrl) && !channel.sampleKeyPending && !channel.removeApiKey));
+    if (invalidChannel) { cfg.poolStates[kind] = 'failed'; api.notify('渠道字段或密钥绑定尚未完成，请编辑渠道核对后保存。', { tone: 'error' }); syncSettingsDraftControls(); return false; }
+    next.revision = `demo-${kind}-${++poolSequence}`; next.configured = true;
+    for (const channel of next.channels) {
+      if (channel.removeApiKey) channel.keyStored = false;
+      else if (channel.sampleKeyPending) channel.keyStored = true;
+      delete channel.sampleKeyPending; delete channel.removeApiKey;
+      if (JSON.stringify(channel) !== JSON.stringify(previous.channels.find(row => row.id === channel.id))) channel.channelRevision = `${next.revision}-${channel.id}`;
+    }
+    cfg.saved.resourcePool[kind] = next; cfg.draft.resourcePool[kind] = clone(next); poolBaselineRevisions[kind] = next.revision; cfg.poolStates[kind] = 'saved'; cfg.saveFailed = false;
+    model().demoAiResourcePool = clone(cfg.saved.resourcePool); api.syncAiResourcePool?.();
+    if (repaint) { closeModal(); api.render(); api.notify(`${poolLabel(kind)}资源池已保存到本页演示，工作参数草稿保留。`, { tone: 'success' }); const channelId = cfg.openChannels[kind] || next.channels[0]?.id; poolFocus(channelId ? 'cfg-pool-channel-edit' : 'cfg-pool-channel-new', kind, channelId); }
+    return true;
+  }
+  function saveParameters(kind, repaint = true) {
+    if (!cfg.draft.workParameters[kind]) return false;
+    if (!parametersDirty(kind)) return true;
+    if (!editablePool()) return false;
+    if (JSON.stringify(parameterBaselines[kind]) !== JSON.stringify(cfg.saved.workParameters[kind])) { cfg.parameterStates[kind] = 'failed'; api.notify('工作参数已由其他窗口更新，草稿保留；请先核对保存版本。', { tone: 'error' }); syncSettingsDraftControls(); return false; }
+    const values = clone(cfg.draft.workParameters[kind]), errors = {}, limits = { concurrency: [1, 8], timeoutMs: [1000, 600000], ...(kind === 'annotation' ? { temperature: [0, 2], batchSize: [1, 50], maxBatchChars: [1, 12000] } : { countPerItem: [1, 4] }) };
+    for (const name of Object.keys(limits)) if (values[name] === '') values[name] = cfg.saved.workParameters[kind][name];
+    for (const [name, [minimum, maximum]] of Object.entries(limits)) if (!Number.isFinite(values[name]) || values[name] < minimum || values[name] > maximum || name !== 'temperature' && !Number.isInteger(values[name])) errors[`parameters.${kind}.${name}`] = `请填写 ${minimum}–${maximum} 范围内的${name === 'temperature' ? '数值' : '整数'}。`;
+    if (kind === 'generation') {
+      if (typeof values.size !== 'string' || values.size.length > 1000) errors['parameters.generation.size'] = '尺寸最多 1000 字符，按模型支持值填写。';
+      if (!IMAGE_GENERATION_STYLES.some(row => row.id === values.imageStyle)) errors['parameters.generation.imageStyle'] = '请选择支持的配图风格。';
+      for (const name of Object.keys(IMAGE_GENERATION_DEFAULTS).filter(name => name !== 'imageStyle')) if (typeof values[name] !== 'string' || values[name].length > 4000 || name !== 'stylePrefix' && !values[name].trim()) errors[`parameters.generation.${name}`] = name === 'stylePrefix' ? '提示词最多 4000 字符。' : '请填写 1–4000 字符的提示词。';
+    }
+    for (const key of Object.keys(cfg.errors).filter(key => key.startsWith(`parameters.${kind}.`))) delete cfg.errors[key];
+    Object.assign(cfg.errors, errors);
+    if (Object.keys(errors).length) {
+      cfg.parameterStates[kind] = 'failed'; cfg.tab = 'models'; cfg.poolKind = kind; closeModal(); api.render();
+      const section = $(`[data-cfg-work-parameters="${kind}"]`); if (section) section.open = true;
+      const invalid = $(`[data-cfg-parameter][data-kind="${kind}"][aria-invalid="true"]`);
+      for (let parent = invalid?.parentElement; parent; parent = parent.parentElement) if (parent.tagName?.toLowerCase() === 'details') parent.open = true;
+      invalid?.focus?.({ preventScroll: true }); invalid?.scrollIntoView?.({ block: 'center', behavior: 'auto' });
+      api.notify('工作参数尚未保存，请修正标出的字段。', { tone: 'error' }); return false;
+    }
+    cfg.saved.workParameters[kind] = clone(values); cfg.draft.workParameters[kind] = clone(values); parameterBaselines[kind] = clone(values); cfg.parameterStates[kind] = 'saved'; cfg.saveFailed = false; model().demoAiWorkParameters = clone(cfg.saved.workParameters); api.syncAiResourcePool?.();
+    if (repaint) { closeModal(); api.render(); const section = $(`[data-cfg-work-parameters="${kind}"]`); if (section) { section.open = true; section.querySelector('summary')?.focus?.({ preventScroll: true }); } api.notify(`${poolLabel(kind)}工作参数已保存到本页演示，渠道草稿保留。`, { tone: 'success' }); }
+    return true;
   }
   function saveSettings() {
     if (blockedSettingsSave()) { api.notify(settingsReadStatus(), { tone: 'error' }); return false; }
@@ -409,6 +596,7 @@ export function createWorkflowPages(api) {
       return false;
     }
     cfg.saveFailed = false;
+    for (const [kind] of poolKinds) if (!saveParameters(kind, false) || !savePool(kind, false)) return false;
     const next = clone(cfg.draft), routingChanged = routingDraftChanged();
     for (const [kind] of poolKinds) {
       if (JSON.stringify(next.resourcePool[kind].channels) === JSON.stringify(poolSlot(kind, cfg.saved).channels)) continue;
@@ -428,6 +616,7 @@ export function createWorkflowPages(api) {
       settingsRead.revision = `demo-routing-${++routingSequence}`;
     }
     model().demoAiResourcePool = clone(cfg.saved.resourcePool);
+    model().demoAiWorkParameters = clone(cfg.saved.workParameters);
     api.syncAiResourcePool?.();
     cfg.savedAt = formatStudioDateTime(new Date().toISOString());
     document.documentElement.dataset.density = cfg.saved.preferences.density;
@@ -440,22 +629,22 @@ export function createWorkflowPages(api) {
     if (!keep) {
       let newId = '';
       if (!existing) do { newId = `demo-channel-${++sequence}`; } while (poolKinds.some(([purpose]) => poolChannel(purpose, newId)));
-      cfg.editor = { scope: 'ai-channel', kind, ...(existing ? clone(existing) : { id: newId, name: '', priority: poolSlot(kind).channels.length + 1, enabled: true, keyStored: false, channelRevision: 'demo-unsaved', models: [] }), removeApiKey: false };
+      cfg.editor = { scope: 'ai-channel', kind, ...(existing ? clone(existing) : { id: newId, name: '', baseUrl: '', priority: poolSlot(kind).channels.length + 1, enabled: true, keyStored: false, channelRevision: 'demo-unsaved', models: [] }), sampleKey: existing?.sampleKeyPending === true, removeApiKey: existing?.removeApiKey === true };
       cfg.editorOriginal = JSON.stringify(cfg.editor); cfg.errors = {}; cfg.editorFailed = false;
     }
     const row = cfg.editor;
     openModal('cfg-pool-channel', existing ? '编辑 AI 渠道' : '新增 AI 渠道', `<form>
       <section class="nx-cfg-form-section"><h3>${poolKinds.find(([id]) => id === kind)?.[1]}渠道</h3>
         ${field('渠道名称', `<input data-cfg-pool="name" value="${h(row.name)}" maxlength="60" placeholder="如：标注备用渠道">`, 'pool.name', cfg.errors)}
-        ${field('渠道优先级 · 1 最高', `<input type="number" data-cfg-pool="priority" value="${row.priority}" min="1" max="${poolSlot(kind).channels.length + (existing ? 0 : 1)}" step="1">`, 'pool.priority', cfg.errors)}
-        ${field('接口地址 · 真实输入已禁用', '<input value="示例兼容接口 · 仅内存" disabled autocomplete="off" aria-label="AI 渠道示例接口，禁止真实地址输入">')}
-        <label class="nx-cfg-check"><input type="checkbox" data-cfg-pool="enabled" ${checked(row.enabled)}>启用本渠道</label>
-      </section><details class="nx-cfg-details"><summary>管理示例凭据</summary><div>
-        <div class="nx-cfg-key-summary"><span>API Key 状态</span><span data-cfg-key-status>${row.keyStored && !row.removeApiKey ? '示例密钥已配置' : '示例密钥未配置'}</span></div>
-        ${field('API Key · 真实输入已禁用', '<input type="password" disabled autocomplete="off" placeholder="留空保留已保存凭据" aria-label="AI 渠道 API Key，禁止真实凭据输入">')}
-        <label class="nx-cfg-check"><input type="checkbox" data-cfg-pool="keyStored" ${checked(row.keyStored)}>使用已配置的示例凭据 · 仅内存标记</label>
-        <label class="nx-cfg-check"><input type="checkbox" data-cfg-pool="removeApiKey" ${checked(row.removeApiKey)}>明确移除本渠道的示例凭据</label>
-      </div></details><p class="nx-form-help">手动添加模型无需检测。检测只针对保存后的渠道，保存到设置草稿后还需点击页面「保存设置」。</p>
+        ${field('HTTPS 接口地址', `<input type="url" data-cfg-pool="baseUrl" value="${h(row.baseUrl)}" maxlength="2048" placeholder="https://service.example.test/v1" autocomplete="off" spellcheck="false">`, 'pool.baseUrl', cfg.errors)}
+        <div class="field-grid">${field('渠道优先级 · 1 最高', `<input type="number" data-cfg-pool="priority" value="${row.priority}" min="1" max="${poolSlot(kind).channels.length + (existing ? 0 : 1)}" step="1">`, 'pool.priority', cfg.errors)}<label class="nx-cfg-check"><input type="checkbox" data-cfg-pool="enabled" ${checked(row.enabled)}>启用本渠道</label></div>
+      </section><details class="nx-cfg-details" data-cfg-pool-credentials${row.sampleKey || row.removeApiKey || !row.keyStored || cfg.errors['pool.key'] ? ' open' : ''}><summary>管理示例凭据</summary><div>
+        <div class="nx-cfg-key-summary"><span>API 密钥状态</span><span data-cfg-key-status>${row.removeApiKey ? '保存时移除' : row.sampleKey ? '新示例密钥待保存' : row.keyStored ? '已保存 · 尚未联网验证' : '未配置'}</span></div>
+        ${field('API 密钥', '<input type="password" disabled autocomplete="new-password" maxlength="4096" spellcheck="false" placeholder="留空保留已保存密钥" aria-label="AI 渠道 API Key，禁止真实凭据输入">')}
+        ${button('使用新示例密钥', 'cfg-pool-sample-key', '', 'quiet small')}
+        <label class="nx-cfg-check"><input type="checkbox" data-cfg-pool="removeApiKey" ${checked(row.removeApiKey)}${row.keyStored ? '' : ' disabled'}>保存时移除该渠道密钥</label>
+        <p class="nx-form-help">原型只演示凭据状态，不接收真实密钥。更换接口时，须使用新示例密钥或明确移除原密钥。</p>${errorLine(cfg.errors, 'pool.key')}
+      </div></details><p class="nx-form-help">仅允许 .example.test 示例地址，完整路径与端口会保留。渠道先加入资源池草稿，再点击「保存${kind === 'annotation' ? '标注' : '生图'}资源池」。</p>
     </form>`, editorFooter('cfg-pool-channel-save'));
   }
   function poolModelDialog(kind, channelId, id = '', keep = false) {
@@ -495,11 +684,11 @@ export function createWorkflowPages(api) {
     const detection = poolDetection;
     if (!detection || detection.state === 'running' || modalKind !== 'cfg-pool-detection' || !$('#modal')?.open) return;
     const channel = poolChannel(detection.kind, detection.channelId, cfg.saved);
-    if (!channel || !sameSavedChannel(detection.kind, detection.channelId) || poolSlot(detection.kind, cfg.saved).revision !== detection.revision || !channel.enabled || !channel.keyStored) { api.notify('渠道已有修改或不可用，请先保存配置再检测。', { tone: 'error' }); return; }
+    if (!channel || !savedPoolConnection(detection.kind, detection.channelId) || poolSlot(detection.kind, cfg.saved).revision !== detection.revision) { api.notify('先保存接口或密钥修改，再检测模型。', { tone: 'error' }); return; }
     detection.outcome = $('#nx-pool-detection-outcome')?.value || 'success'; detection.state = 'running';
     const run = ++detectionRun; poolDetectionDialog(detection.kind, detection.channelId, true);
     detectionTimer = setTimeout(() => {
-      if (run !== detectionRun || poolDetection !== detection || modalKind !== 'cfg-pool-detection' || !$('#modal')?.open || !$('[data-workflow-modal="cfg-pool-detection"]') || poolSlot(detection.kind, cfg.saved).revision !== detection.revision || !sameSavedChannel(detection.kind, detection.channelId)) return;
+      if (run !== detectionRun || poolDetection !== detection || modalKind !== 'cfg-pool-detection' || !$('#modal')?.open || !$('[data-workflow-modal="cfg-pool-detection"]') || poolSlot(detection.kind, cfg.saved).revision !== detection.revision || !savedPoolConnection(detection.kind, detection.channelId)) return;
       detectionTimer = null;
       detection.errorCode = detection.outcome === 'timeout' ? 'TIMEOUT' : detection.outcome === 'invalid' ? 'INVALID_RESPONSE' : '';
       detection.state = detection.errorCode ? 'failed' : 'success';
@@ -544,14 +733,16 @@ export function createWorkflowPages(api) {
       const poolKey = node.dataset.cfgPool, channelKey = node.dataset.cfgChannel;
       if (cfg.editor && (poolKey || channelKey)) {
         if (cfg.editor.channel === 'fonts' && !publicationReady()) return;
-        if (poolKey && !(cfg.editor.scope === 'ai-channel' ? ['name', 'priority', 'enabled', 'keyStored', 'removeApiKey'] : ['id', 'priority', 'enabled']).includes(poolKey)) return;
+        if (poolKey && !(cfg.editor.scope === 'ai-channel' ? ['name', 'baseUrl', 'priority', 'enabled', 'removeApiKey'] : ['id', 'priority', 'enabled']).includes(poolKey)) return;
         const key = poolKey || channelKey;
         cfg.editor[key] = key === 'priority' ? Number(node.value) : node.type === 'checkbox' ? node.checked : node.value;
+        if (key === 'baseUrl') cfg.editor.sampleKey = false;
+        if (key === 'removeApiKey' && node.checked) cfg.editor.sampleKey = false;
         cfg.editorFailed = false;
         const statusNode = $('#nx-cfg-editor-status'); if (statusNode) statusNode.textContent = editorStatus();
         const dialog = root.closest('dialog');
         for (const action of ['cfg-editor-close', 'cfg-pool-channel-save', 'cfg-pool-model-save', 'cfg-channel-save']) dialog?.querySelector(`.dialog-footer [data-action="${action}"]`)?.toggleAttribute?.('disabled', !editorDirty() || (action === 'cfg-channel-save' && cfg.editor.channel === 'fonts' && !publicationReady()));
-        const keyStatus = root.querySelector?.('[data-cfg-key-status]'); if (keyStatus) keyStatus.textContent = cfg.editor.keyStored && !cfg.editor.removeApiKey ? '示例密钥已配置' : '示例密钥未配置';
+        const keyStatus = root.querySelector?.('[data-cfg-key-status]'); if (keyStatus) keyStatus.textContent = cfg.editor.removeApiKey ? '保存时移除' : cfg.editor.sampleKey ? '新示例密钥待保存' : cfg.editor.keyStored ? '已保存 · 尚未联网验证' : '未配置';
       }
     };
     root.onchange = root.oninput;
@@ -593,8 +784,28 @@ export function createWorkflowPages(api) {
     }
     const cfgRoot = $('#main .nx-cfg');
     if (cfgRoot) {
-      cfgRoot.oninput = event => { const node = event.target; if (node.dataset.cfgPath) setPath(node.dataset.cfgPath, node.type === 'checkbox' ? node.checked : node.value); else if (node.dataset.cfgRouteBase) setRoutingBase(node.dataset.cfgRouteBase, node.value); };
-      cfgRoot.onchange = event => { const node = event.target; if (node.dataset.cfgPath) { setPath(node.dataset.cfgPath, node.type === 'checkbox' ? node.checked : node.value); if (node.type === 'date') api.render(); } else if (node.dataset.cfgRouteBase) setRoutingBase(node.dataset.cfgRouteBase, node.value); };
+      syncFontResourceCard();
+      cfgRoot.querySelectorAll?.('[data-cfg-work-parameters], [data-cfg-pool-history], [data-cfg-pool-prompts], [data-cfg-style-editor]').forEach(node => {
+        const key = node.dataset.cfgWorkParameters ? `parameters-${node.dataset.cfgWorkParameters}` : node.dataset.cfgPoolHistory ? `history-${node.dataset.cfgPoolHistory}` : node.dataset.cfgStyleEditor ? `style-${node.dataset.cfgStyleEditor}` : 'prompts';
+        if (poolDisclosures.has(key)) node.open = poolDisclosures.get(key);
+      });
+      const parameterInput = node => {
+        const kind = node.dataset.kind, name = node.dataset.cfgParameter, values = cfg.draft.workParameters[kind];
+        if (!editablePool() || !values || !Object.hasOwn(values, name)) return;
+        values[name] = node.type === 'number' ? node.value === '' ? '' : Number(node.value) : node.value;
+        delete cfg.parameterStates[kind]; delete cfg.errors[`parameters.${kind}.${name}`];
+        if (name === 'imageStyle') cfgRoot.querySelectorAll?.('[data-cfg-style-editor]').forEach(editor => { editor.open = editor.dataset.cfgStyleEditor === node.value; });
+        syncSettingsDraftControls();
+      };
+      cfgRoot.oninput = event => { const node = event.target; if (node.dataset.cfgParameter) parameterInput(node); else if (node.dataset.cfgPath) setPath(node.dataset.cfgPath, node.type === 'checkbox' ? node.checked : node.value); else if (node.dataset.cfgRouteBase) setRoutingBase(node.dataset.cfgRouteBase, node.value); };
+      cfgRoot.onchange = event => { const node = event.target; if (node.dataset.cfgParameter) parameterInput(node); else if (node.dataset.cfgModelEnabled && editablePool()) { const row = poolChannel(node.dataset.kind, node.dataset.channelId)?.models.find(row => row.id === node.dataset.cfgModelEnabled); if (row) { row.enabled = node.checked; delete cfg.poolStates[node.dataset.kind]; settingsChanged(); const target = [...document.querySelectorAll('[data-cfg-model-enabled]')].find(input => input.dataset.kind === node.dataset.kind && input.dataset.channelId === node.dataset.channelId && input.dataset.cfgModelEnabled === row.id); target?.focus?.({ preventScroll: true }); } } else if (node.dataset.cfgPath) { setPath(node.dataset.cfgPath, node.type === 'checkbox' ? node.checked : node.value); if (node.type === 'date') api.render(); } else if (node.dataset.cfgRouteBase) setRoutingBase(node.dataset.cfgRouteBase, node.value); };
+      cfgRoot.querySelectorAll?.('[data-cfg-parameters]').forEach(form => form.addEventListener?.('submit', event => { event.preventDefault(); saveParameters(form.dataset.cfgParameters); }));
+      if (!editablePool()) cfgRoot.querySelectorAll?.('[data-cfg-parameter]').forEach(node => { node.disabled = true; });
+      cfgRoot.querySelector?.('.nx-ai-pool-tabs')?.addEventListener?.('keydown', event => {
+        const current = poolKinds.findIndex(([kind]) => kind === event.target.dataset.kind); if (current < 0) return;
+        const index = event.key === 'Home' ? 0 : event.key === 'End' ? 1 : event.key === 'ArrowLeft' || event.key === 'ArrowRight' ? 1 - current : -1;
+        if (index < 0) return; event.preventDefault(); cfg.poolKind = poolKinds[index][0]; api.render(); poolFocus('cfg-pool-purpose', cfg.poolKind);
+      });
       const navigation = cfgRoot.querySelector?.('.settings-nav');
       if (navigation) {
         syncSettingsNavigation(true);
@@ -630,6 +841,8 @@ export function createWorkflowPages(api) {
   async function handle(action, target) {
     if (!action.startsWith('col-') && !action.startsWith('cfg-')) return false;
     const { id, value, kind, channelId } = target.dataset;
+    rememberPoolDisclosures();
+    if ((action.startsWith('cfg-pool-') || action.startsWith('cfg-parameters-')) && !['cfg-pool-purpose', 'cfg-pool-channel-models', 'cfg-pool-discard', 'cfg-pool-discard-confirm', 'cfg-parameters-discard', 'cfg-parameters-discard-confirm'].includes(action) && !editablePool()) { api.notify('当前资源池不可编辑，请刷新并核对权限。', { tone: 'error' }); return true; }
     switch (action) {
       case 'col-new': if (['running', 'paused'].includes(col.task?.state)) taskDialog(); else newCollection(); break;
       case 'col-close': closeModal(); break;
@@ -710,24 +923,38 @@ export function createWorkflowPages(api) {
       case 'cfg-route-down': moveRoutingDraft(kind, id, 1); break;
       case 'cfg-save': saveSettings(); break;
       case 'cfg-cancel': api.clearNotice?.(); openModal('cfg-cancel', '放弃未保存的设置？', '<p>将恢复最近保存的设置。已经保存的内容与排期保留。</p>', button('继续编辑', 'cfg-close', '', 'quiet') + button('放弃修改', 'cfg-cancel-confirm', '', 'primary')); break;
-      case 'cfg-cancel-confirm': cfg.draft = clone(cfg.saved); cfg.errors = {}; cfg.saveFailed = false; closeModal(); api.render(); break;
+      case 'cfg-cancel-confirm': cfg.draft = clone(cfg.saved); resetPoolDrafts(); cfg.errors = {}; cfg.saveFailed = false; closeModal(); api.render(); break;
       case 'cfg-open-schedule': if (dirty()) requestNavigation('schedule'); else api.navigate('schedule'); break;
-      case 'cfg-leave-discard': { const next = pendingNavigation; cfg.draft = clone(cfg.saved); cfg.errors = {}; cfg.saveFailed = false; pendingNavigation = null; closeModal(); api.navigate(next); break; }
+      case 'cfg-leave-discard': { const next = pendingNavigation; cfg.draft = clone(cfg.saved); resetPoolDrafts(); cfg.errors = {}; cfg.saveFailed = false; pendingNavigation = null; closeModal(); api.navigate(next); break; }
       case 'cfg-leave-save': { const next = pendingNavigation; if (saveSettings()) { pendingNavigation = null; api.navigate(next); } break; }
       case 'cfg-open-ai': if (dirty()) requestNavigation('ai'); else api.navigate('ai'); break;
+      case 'cfg-pool-purpose': if (poolSlot(kind)) { cfg.poolKind = kind; api.render(); poolFocus('cfg-pool-purpose', kind); } break;
+      case 'cfg-pool-channel-models': if (poolChannel(kind, channelId)) { cfg.openChannels[kind] = cfg.openChannels[kind] === channelId ? '' : channelId; api.render(); poolFocus('cfg-pool-channel-models', kind, channelId); } break;
+      case 'cfg-pool-save': savePool(kind); break;
+      case 'cfg-pool-import': importLegacyPool(kind); break;
+      case 'cfg-parameters-save': saveParameters(kind); break;
+      case 'cfg-pool-discard': case 'cfg-parameters-discard': {
+        const parameters = action === 'cfg-parameters-discard';
+        if (!(parameters ? parametersDirty(kind) : poolDirty(kind))) break;
+        openModal('cfg-pool-discard', `放弃${poolLabel(kind)}${parameters ? '工作参数' : '资源池'}修改？`, `<p>恢复此用途${parameters ? '工作参数' : '渠道与模型'}上次读取的保存版本。其他用途与${parameters ? '渠道' : '工作参数'}草稿保留。</p>`, button('继续编辑', 'cfg-close', '', 'quiet') + button('放弃修改', parameters ? 'cfg-parameters-discard-confirm' : 'cfg-pool-discard-confirm', '', 'primary', `data-kind="${kind}"`)); break;
+      }
+      case 'cfg-pool-discard-confirm': if (poolSlot(kind)) { cfg.draft.resourcePool[kind] = clone(poolSlot(kind, cfg.saved)); poolBaselineRevisions[kind] = poolSlot(kind, cfg.saved).revision; delete cfg.poolStates[kind]; closeModal(); api.render(); poolFocus('cfg-pool-discard', kind); } break;
+      case 'cfg-parameters-discard-confirm': if (cfg.saved.workParameters[kind]) { cfg.draft.workParameters[kind] = clone(cfg.saved.workParameters[kind]); parameterBaselines[kind] = clone(cfg.saved.workParameters[kind]); delete cfg.parameterStates[kind]; for (const key of Object.keys(cfg.errors).filter(key => key.startsWith(`parameters.${kind}.`))) delete cfg.errors[key]; closeModal(); api.render(); const section = $(`[data-cfg-work-parameters="${kind}"]`); if (section) section.open = true; } break;
+      case 'cfg-pool-sample-key': if (cfg.editor?.scope === 'ai-channel') { cfg.editor.sampleKey = true; cfg.editor.removeApiKey = false; delete cfg.errors['pool.key']; cfg.editorFailed = false; poolChannelDialog(cfg.editor.kind, cfg.editor.id, true); } break;
       case 'cfg-pool-channel-new': if (poolSlot(kind)?.channels.length < 8) poolChannelDialog(kind); break;
       case 'cfg-pool-channel-edit': if (poolChannel(kind, channelId)) poolChannelDialog(kind, channelId); break;
       case 'cfg-pool-channel-save': {
         const row = cfg.editor; if (row?.scope !== 'ai-channel') break;
         const slot = poolSlot(row.kind), existing = poolChannel(row.kind, row.id); cfg.errors = {};
         if (!row.name.trim() || row.name.trim().length > 60) cfg.errors['pool.name'] = '请填写 1–60 字的渠道名称。';
-        else if (slot.channels.some(item => item.id !== row.id && item.name === row.name.trim())) cfg.errors['pool.name'] = '渠道名称已存在，请使用其他名称。';
+        if (!demoEndpoint(row.baseUrl)) cfg.errors['pool.baseUrl'] = '请填写完整 HTTPS 示例地址（.example.test），不含账号、查询或片段。';
         if (!Number.isInteger(row.priority) || row.priority < 1 || row.priority > slot.channels.length + (existing ? 0 : 1)) cfg.errors['pool.priority'] = '请填写当前渠道范围内的整数优先级，1 最高。';
         if (!existing && slot.channels.length >= 8) cfg.errors['pool.name'] = '每个用途最多配置 8 个渠道。';
+        if (row.keyStored && demoEndpoint(row.baseUrl) !== demoEndpoint(existing?.baseUrl) && !row.sampleKey && !row.removeApiKey) cfg.errors['pool.key'] = '接口地址已改变，请使用新示例密钥或明确移除原密钥。';
         if (Object.keys(cfg.errors).length) { cfg.editorFailed = true; poolChannelDialog(row.kind, row.id, true); break; }
-        const values = { id: row.id, name: row.name.trim(), priority: row.priority, enabled: row.enabled, keyStored: row.removeApiKey ? false : row.keyStored, channelRevision: row.channelRevision, models: clone(row.models) };
+        const values = { id: row.id, name: row.name.trim(), baseUrl: demoEndpoint(row.baseUrl), priority: row.priority, enabled: row.enabled, keyStored: row.keyStored, channelRevision: row.channelRevision, models: clone(row.models), ...(row.sampleKey ? { sampleKeyPending: true } : {}), ...(row.removeApiKey ? { removeApiKey: true } : {}) };
         const index = slot.channels.findIndex(item => item.id === row.id); if (index < 0) slot.channels.push(values); else slot.channels[index] = values;
-        reorderPool(slot.channels, row.id, row.priority); cfg.editor = null; closeModal(); settingsChanged(); api.notify('渠道已加入设置草稿，请保存设置后生效。', { tone: 'success' }); break;
+        reorderPool(slot.channels, row.id, row.priority); cfg.openChannels[row.kind] = row.id; delete cfg.poolStates[row.kind]; cfg.editor = null; closeModal(); settingsChanged(); poolFocus('cfg-pool-channel-edit', row.kind, row.id); api.notify('渠道已加入资源池草稿，请保存资源池后生效。', { tone: 'success' }); break;
       }
       case 'cfg-pool-model-new': if ((poolChannel(kind, channelId)?.models.length ?? 64) < 64) poolModelDialog(kind, channelId); break;
       case 'cfg-pool-model-edit': if (poolChannel(kind, channelId)?.models.some(row => row.id === id)) poolModelDialog(kind, channelId, id); break;
@@ -742,15 +969,15 @@ export function createWorkflowPages(api) {
         if (Object.keys(cfg.errors).length) { cfg.editorFailed = true; poolModelDialog(row.kind, row.channelId, row.originalId, true); break; }
         const values = { id: row.id, priority: row.priority, enabled: row.enabled, source: row.id !== row.originalId ? 'manual' : row.source };
         if (index < 0) channel.models.push(values); else channel.models[index] = values;
-        reorderPool(channel.models, row.id, row.priority); cfg.editor = null; closeModal(); settingsChanged(); api.notify('模型已加入设置草稿，请保存设置后生效。', { tone: 'success' }); break;
+        reorderPool(channel.models, row.id, row.priority); cfg.openChannels[row.kind] = row.channelId; delete cfg.poolStates[row.kind]; cfg.editor = null; closeModal(); settingsChanged(); poolFocus('cfg-pool-model-edit', row.kind, row.channelId, row.id); api.notify('模型已加入资源池草稿，请保存资源池后生效。', { tone: 'success' }); break;
       }
       case 'cfg-pool-channel-up': case 'cfg-pool-channel-down': {
         const channel = poolChannel(kind, channelId); if (!channel) break;
-        if (reorderPool(poolSlot(kind).channels, channel.id, channel.priority + (action.endsWith('-up') ? -1 : 1))) api.render(); break;
+        if (reorderPool(poolSlot(kind).channels, channel.id, channel.priority + (action.endsWith('-up') ? -1 : 1))) { delete cfg.poolStates[kind]; api.render(); poolFocus(action, kind, channelId); api.notify(`${channel.name}渠道优先级已调整为 ${channel.priority}，保存后生效。`); } break;
       }
       case 'cfg-pool-model-up': case 'cfg-pool-model-down': {
         const channel = poolChannel(kind, channelId), row = channel?.models.find(row => row.id === id); if (!row) break;
-        if (reorderPool(channel.models, row.id, row.priority + (action.endsWith('-up') ? -1 : 1))) api.render(); break;
+        if (reorderPool(channel.models, row.id, row.priority + (action.endsWith('-up') ? -1 : 1))) { delete cfg.poolStates[kind]; api.render(); poolFocus(action, kind, channelId, id); api.notify(`${row.id}模型优先级已调整为 ${row.priority}，保存后生效。`); } break;
       }
       case 'cfg-pool-channel-delete': {
         const channel = poolChannel(kind, channelId); if (channel) openModal('cfg-pool-delete', '删除 AI 渠道？', `<p>将“${h(channel.name)}”及其模型移出设置草稿。已有任务的实际渠道与模型记录保留；保存设置后供新任务选择。</p>`, button('保留渠道', 'cfg-close', '', 'quiet') + button('删除渠道', 'cfg-pool-channel-delete-confirm', '', 'primary', poolAttrs(kind, channelId))); break;
@@ -767,7 +994,7 @@ export function createWorkflowPages(api) {
       case 'cfg-pool-detect': {
         if (poolDetection?.state === 'running' && modalKind === 'cfg-pool-detection') break;
         const channel = poolChannel(kind, channelId, cfg.saved);
-        if (channel && sameSavedChannel(kind, channelId) && channel.enabled && channel.keyStored) poolDetectionDialog(kind, channelId); else api.notify('先保存可用渠道的修改，再检测模型。', { tone: 'error' }); break;
+        if (channel && savedPoolConnection(kind, channelId)) poolDetectionDialog(kind, channelId); else api.notify('先保存接口或密钥修改，再检测模型。', { tone: 'error' }); break;
       }
       case 'cfg-pool-detect-run': beginPoolDetection(); break;
       case 'cfg-pool-availability-reset': {
@@ -778,7 +1005,7 @@ export function createWorkflowPages(api) {
       case 'cfg-pool-detect-merge': {
         const detection = poolDetection; if (detection?.state !== 'success') break;
         const channel = poolChannel(detection.kind, detection.channelId);
-        if (!channel || !sameSavedChannel(detection.kind, detection.channelId) || poolSlot(detection.kind, cfg.saved).revision !== detection.revision) { api.notify('渠道配置已变化，请重新检测后核对候选。', { tone: 'error' }); break; }
+        if (!channel || !savedPoolConnection(detection.kind, detection.channelId) || poolSlot(detection.kind, cfg.saved).revision !== detection.revision) { api.notify('渠道配置已变化，请重新检测后核对候选。', { tone: 'error' }); break; }
         const additions = detection.detectedModels.filter(id => !channel.models.some(row => row.id === id));
         if (channel.models.length + additions.length > 64) { api.notify('合并后超过 64 个模型，请先清理手工列表。', { tone: 'error' }); break; }
         channel.models.push(...additions.map(id => ({ id, priority: 0, enabled: false, source: 'detected' }))); normalizePriorities(channel.models);
@@ -795,7 +1022,9 @@ export function createWorkflowPages(api) {
         const { channel, ...values } = clone(row); cfg.draft.channels[channel] = values; cfg.editor = null; cfg.saveFailed = false; closeModal(); api.render(); api.notify('渠道配置已加入设置草稿。', { tone: 'success' }); break;
       }
       case 'cfg-channel-test': testDialog('channel', id); break;
-      case 'cfg-open-font-delivery': api.navigate('release'); break;
+      case 'cfg-font-resource-refresh': fontResourceDemo.error = ''; if (fontResourceDemo.scenario === 'failed') fontResourceDemo.scenario = 'available'; syncFontResourceCard(); break;
+      case 'cfg-font-resource-import': if (fontResourceDemo.scenario === 'available' && !fontResourceDemo.imported) { fontResourceDemo.imported = true; syncFontResourceCard(); api.notify('已完成本页字体导入演示。正式后台需刷新字体菜单，再到发布中心发布资源。', { tone: 'success' }); } break;
+      case 'cfg-open-font-delivery': if (dirty()) requestNavigation('release'); else api.navigate('release'); break;
       case 'cfg-editor-close': editorClose(); break;
       case 'cfg-editor-discard': cfg.editor = null; cfg.editorFailed = false; closeModal(); break;
       case 'cfg-editor-continue': reopenPoolEditor(); break;
@@ -825,13 +1054,17 @@ export function createWorkflowPages(api) {
     },
     reset() {
       ++settingsReadRun; settingsRead = { state: 'ready', revision: 'demo-publication', error: '' };
+      fontResourceDemo = { scenario: 'current', imported: false, error: '' };
+      ++aiReadRun; Object.assign(aiAccess, { readState: 'ready', canEditConfig: true, safeMode: false, ...api.initialAiResourceState });
       routingUpgrade = clone(initialRoutingUpgrade); routingSequence = 0;
       clearTimeout(detectionTimer); detectionTimer = null; ++detectionRun; poolDetection = null; poolSequence = 1;
       clearTimeout(timer); clearTimeout(loginTimer); timer = null; loginTimer = null; ++loginRun; sequence = 20; modalKind = ''; pendingNavigation = null;
       Object.assign(col, { rows: seedCandidates(), search: '', source: 'all', filter: 'pending', page: 0, selected: new Set(), selectionMode: false, selectedMatching: false, task: null, edit: null, original: '', errors: {}, preview: null, undo: null, result: null });
       const initial = defaultSettings();
       Object.keys(defaults).forEach(key => { defaults[key] = clone(initial[key]); });
-      Object.assign(cfg, { tab: 'workflow', saved: clone(initial), draft: clone(initial), errors: {}, editor: null, editorOriginal: '', test: null, savedAt: '', saveFailed: false, editorFailed: false, loginOutcome: 'success' });
+      Object.assign(cfg, { tab: 'workflow', poolKind: 'annotation', openChannels: {}, poolStates: {}, parameterStates: {}, saved: clone(initial), draft: clone(initial), errors: {}, editor: null, editorOriginal: '', test: null, savedAt: '', saveFailed: false, editorFailed: false, loginOutcome: 'success' });
+      resetPoolDrafts();
+      poolDisclosures.clear();
       document.documentElement.dataset.density = initial.preferences.density;
       document.documentElement.dataset.demoMotion = initial.preferences.motion ? 'on' : 'off';
     },

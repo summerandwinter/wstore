@@ -3,6 +3,7 @@ import { POOLS, WEEK, createStudioModel, boundDates, cardSettings, moveEntry } f
 import { createResourcePages } from './studio-resources.js';
 import { createDeliveryPages } from './studio-delivery.js';
 import { createWorkflowPages } from './studio-workflows.js';
+import { CONTENT_IMPORT_MAX_BYTES, CONTENT_IMPORT_MAX_ROWS, contentImportTemplate, parseContentImport, contentImportKey } from '../runtime/content-import.mjs';
 
 // Public studio prototype. All business changes stay in memory; production uses editor/.
 let model = createStudioModel();
@@ -45,6 +46,7 @@ let draft = null, draftTab = 'content', draftOriginal = '', toastTimer, newSeque
 let pendingClose = false;
 let undo = null, draftScope = 'default', draftDate = '', moveScope = null, activeDay = '';
 let detailPreviewCollapsed = false, detailReturnPosition, drawerState;
+let contentImport = null, contentImportRead = 0;
 let pendingDetailEntry = null, detailPaintKey = '', scheduleChoice = null, detailQueueActive = '', detailQueueSearch = '', detailQueueReturn = null, detailSaveError = '';
 const drawerMedia = window.matchMedia('(max-width:800px)');
 const detailMobileMedia = window.matchMedia('(max-width:700px)');
@@ -140,6 +142,7 @@ function focusContentStart() {
 function allDates() { const start = new Date(`${model.schedule.start}T00:00:00Z`), end = new Date(`${model.schedule.end}T00:00:00Z`); const count = Math.min(366, Math.max(0, Math.round((end - start) / 86400000) + 1)); return Array.from({ length: count }, (_, index) => { const date = new Date(start); date.setUTCDate(date.getUTCDate() + index); return date.toISOString().slice(0, 10); }); }
 function navigate(page, replace = false, bypass = false) {
   if (!Object.hasOwn(pages, page)) return false;
+  if (!bypass && contentImportDirty()) { requestCloseContentImport(); return false; }
   if (!bypass && !guardDetailNavigation()) return false;
   if (!bypass && page !== state.page && modules.some(module => module.beforeNavigate?.(page) === false)) return false;
   if (page !== state.page) clearNotice();
@@ -178,7 +181,7 @@ function reviewPage() {
   const allChecked = current.length && current.every(row => state.selected.has(row.id));
   const compact = window.matchMedia('(max-width:700px)').matches;
   const views = `<div class="view-control" aria-label="显示方式">${['list', 'grid'].map(view => `<button class="icon-button ${state.view === view ? 'active' : ''}" data-action="view" data-value="${view}" aria-label="${view === 'list' ? '列表视图' : '卡片视图'}" aria-pressed="${state.view === view}">${icon(view)}</button>`).join('')}</div>`;
-  return pageHead(state.pool === 'trash' ? '回收站' : '内容管理', state.pool === 'trash' ? '保留被移除的内容，需要时可以恢复。' : '收集灵感，打磨内容，安排每一次分享。', button('新增内容', 'new', 'plus', 'primary')) + statsMarkup() + `
+  return pageHead(state.pool === 'trash' ? '回收站' : '内容管理', state.pool === 'trash' ? '保留被移除的内容，需要时可以恢复。' : '收集灵感，打磨内容，安排每一次分享。', `<div class="button-row content-entry-actions">${button('批量导入', 'content-import', 'collect')}${button('新增内容', 'new', 'plus', 'primary')}</div>`) + statsMarkup() + `
   <section class="panel content-panel${state.selected.size ? ' content-selecting' : ''}" aria-label="内容列表"><div class="panel-top"><div class="tabs" role="tablist" aria-label="内容状态">${pools.map(([id, label, count]) => `<button class="tab" role="tab" aria-selected="${state.pool === id}" data-action="pool" data-value="${id}">${label}<span class="count">${count}</span></button>`).join('')}</div>${compact ? '' : views}</div>
   <div class="toolbar"><label class="search-field">${icon('search')}<input id="content-search" type="search" placeholder="搜索正文、作者或标签…" aria-label="搜索正文、作者或标签" value="${h(state.search)}"></label><div class="toolbar-right">${compact ? views : ''}<select class="filter-select" id="category" aria-label="内容类型"><option value="">全部类型</option>${['诗词', '散文', '小说', '语录', '台词'].map(value => `<option ${state.category === value ? 'selected' : ''}>${value}</option>`).join('')}</select>${button('筛选', 'filter', 'filter', `small ${state.imageState || state.from || state.category ? 'filter-active' : ''}`)}${button('更多', 'list-more', 'more', 'small')}${filters ? button('清除', 'clear-filters', '', 'quiet small') : ''}</div></div>
   ${state.pool === 'trash' ? '<div class="notice" style="margin:0 24px 18px">内容移除前需先处理关联排期；恢复后进入草稿，不恢复旧排期。</div>' : ''}
@@ -210,6 +213,106 @@ function showModal(title, body, footer = button('知道了', 'close-modal', '', 
   modal.innerHTML = `<div class="dialog-top"><h2 id="modal-title">${h(title)}</h2><button class="icon-button" data-action="close-modal" aria-label="关闭">${icon('close')}</button></div><div class="modal-body">${body}</div><div class="dialog-footer">${footer}</div>`;
   modal.showModal();
 }
+function contentImportDirty() {
+  return !!contentImport && !contentImport.finished && !!(contentImport.reading || contentImport.fileName || contentImport.csv || contentImport.tsv);
+}
+function contentImportCurrentText() { return contentImport?.mode === 'file' ? contentImport.csv : contentImport?.tsv || ''; }
+function contentImportCurrentFormat() { return contentImport.mode === 'file' ? contentImport.fileFormat : contentImport.pasteFormat; }
+function contentImportPlan(text = contentImportCurrentText()) {
+  const format = contentImportCurrentFormat(), parsed = parseContentImport(text, { format });
+  const existing = new Set(model.entries.map(row => contentImportKey({ ...row, work: row.source })));
+  const seen = new Set();
+  const rows = parsed.rows.map(row => {
+    const key = contentImportKey(row.record), status = row.issues.length ? 'invalid' : existing.has(key) ? 'existing' : seen.has(key) ? 'duplicate' : 'ready';
+    if (!row.issues.length) seen.add(key);
+    return { ...row, status };
+  });
+  return { rows, total: parsed.total, ready: rows.filter(row => row.status === 'ready').length, invalid: rows.filter(row => row.status === 'invalid').length, duplicates: rows.filter(row => ['existing', 'duplicate'].includes(row.status)).length, text, format, mode: contentImport.mode, signature: JSON.stringify(model.entries.map(row => contentImportKey({ ...row, work: row.source }))) };
+}
+function contentImportFeedback() {
+  const plan = contentImport.preview;
+  if (!plan) return '<p class="content-import-empty">选好文件或粘贴表格后，先预览并检查每一行。</p>';
+  return `<div class="content-import-counts" role="status"><span><strong>${plan.total}</strong> 总条数</span><span><strong>${plan.ready}</strong> 可导入</span><span><strong>${plan.duplicates}</strong> 重复跳过</span><span class="${plan.invalid ? 'content-import-invalid' : ''}"><strong>${plan.invalid}</strong> 需修正</span></div>${plan.invalid ? '<p class="content-import-warning" role="alert">请先修正所有错误并重新预览，本次还没有导入任何内容。</p>' : '<p class="content-import-note">同正文、作者与出处的重复内容将跳过，包含回收站和文件内重复项。</p>'}<div class="content-import-table-wrap"><table class="content-import-table"><thead><tr><th>文件行号</th><th>正文与出处</th><th>检查结果</th></tr></thead><tbody>${plan.rows.map(row => `<tr><td data-label="文件行号">${row.rowNumber}</td><td data-label="正文与出处"><strong>${h(row.record.text)}</strong><small>${h(row.record.author || '未填写作者')} · ${h(row.record.work || '出处待补充')} · ${h(row.record.category)}</small></td><td data-label="检查结果" class="${row.status === 'invalid' ? 'content-import-invalid' : ''}">${row.status === 'invalid' ? h(row.issues.join('；')) : row.status === 'existing' ? '已有内容 · 跳过' : row.status === 'duplicate' ? '文件内重复 · 跳过' : '可导入草稿'}</td></tr>`).join('')}</tbody></table></div>`;
+}
+function renderContentImport() {
+  if (!contentImport) return;
+  if (contentImport.closePending) {
+    showModal('保留这次导入？', '<div data-content-import><p>文件与校验结果尚未导入草稿，可以继续核对，也可以放弃这次输入。</p></div>', button('放弃导入', 'content-import-discard', '', 'quiet') + button('继续导入', 'content-import-continue', '', 'primary'));
+    return;
+  }
+  if (contentImport.finished) {
+    const done = contentImport.finished;
+    showModal('批量导入完成', `<section class="content-import" data-content-import><div class="content-import-result" role="status">${icon('check')}<h3>${done.imported} 条内容已加入草稿</h3><p>${done.duplicates} 条重复内容已跳过。</p></div><p class="content-import-note">本页仅演示内存操作，刷新后恢复示例内容；正式工作台会保存到内容草稿。</p></section>`, button('完成', 'content-import-discard', '', 'quiet') + button('查看草稿', 'content-import-view', 'arrow', 'primary'));
+    return;
+  }
+  const canImport = !!contentImport.preview?.ready && !contentImport.preview.invalid && !contentImport.reading;
+  showModal('批量导入内容', `<section class="content-import" data-content-import><div class="content-import-template"><div><strong>用表格一次录入多条内容</strong><p>正文、作者、作品 / 出处、内容类型。每次最多 ${CONTENT_IMPORT_MAX_ROWS} 条，文件不超过 1 MiB。</p></div>${button('下载 CSV 模板', 'content-import-template', 'collect', 'small')}</div><div class="content-import-modes" role="group" aria-label="导入方式">${button('选择文件', 'content-import-mode', '', contentImport.mode === 'file' ? 'small primary' : 'small', 'data-value="file"')}${button('粘贴表格', 'content-import-mode', '', contentImport.mode === 'paste' ? 'small primary' : 'small', 'data-value="paste"')}</div>${contentImport.mode === 'file' ? `<label class="field content-import-file"><span>UTF-8 CSV / TSV 文件</span><input id="content-import-file" type="file" accept=".csv,.tsv,text/csv,text/tab-separated-values" aria-describedby="content-import-file-help"><small id="content-import-file-help">支持 CSV UTF-8 / TSV；Excel / WPS 填写后另存为 CSV UTF-8，不支持直接导入 .xlsx。</small><strong>${h(contentImport.fileName || '尚未选择文件')}</strong></label>` : `<label class="field"><span>文本格式</span><select id="content-import-format"><option value="tsv"${contentImport.pasteFormat === 'tsv' ? ' selected' : ''}>从 Excel / WPS 复制的表格（制表符）</option><option value="csv"${contentImport.pasteFormat === 'csv' ? ' selected' : ''}>CSV 文本（逗号）</option></select></label><label class="field"><span>粘贴内容（包含表头）</span><textarea id="content-import-text" rows="7" spellcheck="false" placeholder="从模板中复制表头和填写的数据，一起粘贴到这里。">${h(contentImport.tsv)}</textarea></label>`}<p class="content-import-reading" role="status"${contentImport.reading ? '' : ' hidden'}>正在读取文件…</p><p class="form-error content-import-error" role="alert"${contentImport.error ? '' : ' hidden'}>${h(contentImport.error)}</p><div data-content-import-preview>${contentImportFeedback()}</div><p class="content-import-note">导入后进入草稿，配图和标签可随后完善。本页为内存演示。</p></section>`, button('取消', 'content-import-close', '', 'quiet') + button('预览并校验', 'content-import-preview', '', '', contentImport.reading || !contentImportCurrentText().trim() ? 'disabled' : '') + button(`导入 ${contentImport.preview?.ready || 0} 条到草稿`, 'content-import-confirm', 'check', 'primary', canImport ? '' : 'disabled'));
+}
+function openContentImport() {
+  if (!guardDetailNavigation()) return false;
+  contentImport ||= { mode: 'file', csv: '', tsv: '', fileFormat: 'csv', pasteFormat: 'tsv', fileName: '', reading: false, preview: null, error: '', finished: null, closePending: false };
+  renderContentImport(); return true;
+}
+function requestCloseContentImport() {
+  if (!contentImport) return false;
+  if (contentImportDirty()) { contentImport.closePending = true; renderContentImport(); }
+  else discardContentImport();
+  return true;
+}
+function discardContentImport() { contentImportRead++; contentImport = null; modal.close(); }
+function setContentImportText(text) {
+  if (!contentImport || contentImport.finished) return;
+  contentImportRead++; contentImport.reading = false; contentImport.tsv = text; contentImport.preview = null; contentImport.error = '';
+  const preview = modal.querySelector('[data-content-import-preview]'); if (preview) preview.innerHTML = contentImportFeedback();
+  const confirm = modal.querySelector('[data-action="content-import-confirm"]'); if (confirm) { confirm.disabled = true; confirm.textContent = '导入 0 条到草稿'; }
+  const check = modal.querySelector('[data-action="content-import-preview"]'); if (check) check.disabled = !text.trim();
+  const error = modal.querySelector('.content-import-error'); if (error) { error.textContent = ''; error.hidden = true; }
+}
+async function readContentImportFile(file) {
+  if (!contentImport || contentImport.finished || !file) return;
+  const current = contentImport, request = ++contentImportRead;
+  current.preview = null; current.csv = ''; current.fileName = file.name || ''; current.error = ''; current.reading = false;
+  if (!/\.(csv|tsv)$/i.test(file.name || '')) { current.error = '请选择 CSV UTF-8 或 TSV 文件；Excel / WPS 工作簿请先另存为 CSV UTF-8。'; renderContentImport(); return; }
+  if (!file.size || file.size > CONTENT_IMPORT_MAX_BYTES) { current.error = '文件不能为空，且不能超过 1 MiB。'; renderContentImport(); return; }
+  current.fileFormat = /\.tsv$/i.test(file.name) ? 'tsv' : 'csv';
+  current.reading = true; renderContentImport();
+  try {
+    const bytes = await file.arrayBuffer();
+    if (contentImport !== current || request !== contentImportRead) return;
+    if (!bytes.byteLength || bytes.byteLength > CONTENT_IMPORT_MAX_BYTES) throw new Error('size');
+    current.csv = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+  } catch {
+    if (contentImport !== current || request !== contentImportRead) return;
+    current.error = '文件读取失败，请确认使用 CSV UTF-8 编码后重新选择。';
+  }
+  if (contentImport !== current || request !== contentImportRead) return;
+  current.reading = false; renderContentImport();
+}
+function previewContentImport() {
+  if (!contentImport || contentImport.reading || contentImport.finished) return;
+  contentImport.preview = null; contentImport.error = '';
+  try { contentImport.preview = contentImportPlan(); }
+  catch (error) { contentImport.error = error.message || '表格无法读取，请核对表头与格式。'; }
+  renderContentImport();
+}
+function confirmContentImport() {
+  if (!contentImport || contentImport.reading || contentImport.finished || !contentImport.preview || contentImport.preview.invalid || !contentImport.preview.ready) return false;
+  let next;
+  try { next = contentImportPlan(); } catch { contentImport.preview = null; contentImport.error = '输入已变化，请重新预览并校验。'; renderContentImport(); return false; }
+  const beforePlan = contentImport.preview;
+  if (next.text !== beforePlan.text || next.format !== beforePlan.format || next.mode !== beforePlan.mode || next.signature !== beforePlan.signature) { contentImport.preview = null; contentImport.error = '输入或内容库已变化，请重新预览并校验。'; renderContentImport(); return false; }
+  if (next.invalid || !next.ready) return false;
+  const before = structuredClone(model), date = new Date().toISOString().slice(0, 10);
+  const additions = next.rows.filter(row => row.status === 'ready').map(({ record }) => ({ id: `proposal-import-${++newSequence}`, text: record.text, author: record.author, source: record.work, category: record.category, pool: 'draft', created: date, entered: date, tags: [], note: '', annotationConfirmed: false, protected: false, defaults: { template: 'paper', fontId: 'system', imageId: '', showDate: true, showBrand: true } }));
+  model.entries.push(...additions);
+  undo = { label: '批量导入草稿', before, after: JSON.stringify(model) };
+  contentImport.finished = { imported: additions.length, duplicates: next.duplicates }; contentImport.csv = ''; contentImport.tsv = ''; contentImport.fileName = ''; contentImport.preview = null;
+  render(); renderContentImport(); return true;
+}
+function downloadContentImportTemplate() {
+  const url = URL.createObjectURL(new Blob([contentImportTemplate()], { type: 'text/csv;charset=utf-8' })), link = document.createElement('a');
+  link.href = url; link.download = 'daylight-content-import-template.csv'; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
 function openEntry(id = '', date = '') {
   const source = id ? entry(id) : null;
   if (id && !source) return;
@@ -226,7 +329,7 @@ function openEntry(id = '', date = '') {
   fitEditorText();
 }
 function editorMarkup() {
-  if (draftTab === 'content') return `<label class="field"><span>正文 <small id="text-count">${Array.from(draft.text).length} / 240</small></span><textarea id="edit-text" data-editor-autogrow maxlength="480" placeholder="把值得留下的文字，写在这里…">${h(draft.text)}</textarea></label><div class="field-grid"><label class="field"><span>作者</span><input id="edit-author" maxlength="60" value="${h(draft.author)}" placeholder="如：王维"></label><label class="field"><span>出处</span><input id="edit-source" maxlength="100" value="${h(draft.source)}" placeholder="如：终南别业"></label></div><label class="field"><span>内容类型</span><select id="edit-category">${['诗词', '散文', '小说', '语录', '台词', '歌词', '动漫', '游戏'].map(value => `<option ${draft.category === value ? 'selected' : ''}>${value}</option>`).join('')}</select></label>`;
+  if (draftTab === 'content') return `<label class="field"><span>正文 <small id="text-count">${Array.from(draft.text).length} / 240</small></span><textarea id="edit-text" data-editor-autogrow maxlength="480" placeholder="把值得留下的文字，写在这里…">${h(draft.text)}</textarea></label><div class="field-grid"><label class="field"><span>作者</span><input id="edit-author" maxlength="60" value="${h(draft.author)}" placeholder="如：王维"></label><label class="field"><span>出处</span><input id="edit-source" maxlength="100" value="${h(draft.source)}" placeholder="如：终南别业"></label></div><label class="field"><span>内容类型</span><select id="edit-category">${[...new Set([draft.category, '诗词', '散文', '小说', '语录', '台词', '歌词', '动漫', '游戏'].filter(Boolean))].map(value => `<option ${draft.category === value ? 'selected' : ''}>${h(value)}</option>`).join('')}</select></label>`;
   if (draftTab === 'style') return `<label class="field"><span>选择版式 <small>共享正式目录</small></span></label><div class="template-choices">${catalog.templates.map(row => `<button class="template-choice" data-action="draft-template" data-value="${row.id}" aria-pressed="${draft.defaults.template === row.id}">${h(row.name)}<small>${h(row.description)}</small></button>`).join('')}</div><label class="field"><span>卡片字体</span><select id="edit-font">${catalog.fonts.map(row => `<option value="${row.id}" ${row.id === draft.defaults.fontId ? 'selected' : ''}>${h(row.name)}</option>`).join('')}</select></label><div class="button-row"><label class="label-option"><input id="edit-show-date" type="checkbox" ${draft.defaults.showDate ? 'checked' : ''}>显示日期</label><label class="label-option"><input id="edit-show-brand" type="checkbox" ${draft.defaults.showBrand ? 'checked' : ''}>显示品牌</label></div>`;
   if (draftTab === 'image') return `<label class="field"><span>选择配图 <small>仅展示已审核样例</small></span></label><div class="image-choices">${model.assets.filter(row => row.review === '已审核').map(row => `<button class="image-choice" data-action="draft-image" data-value="${row.id}" aria-pressed="${row.id === draft.defaults.imageId}"><img src="${h(backgroundImage(row.art))}" alt=""><span>${h(row.name)}</span></button>`).join('')}</div><div class="editor-hint">预览使用现有批准背景；素材状态来自共享演示模型。</div>`;
   const options = [...new Set([...draft.tags, ...initialModel.entries.flatMap(row => row.tags)])];
@@ -535,10 +638,19 @@ document.addEventListener('click', async event => {
     case 'dismiss-notice': clearNotice(); break;
     case 'search': if (navigate('review')) $('#content-search')?.focus(); break;
     case 'new': openEntry(); break;
+    case 'content-import': openContentImport(); break;
+    case 'content-import-template': downloadContentImportTemplate(); break;
+    case 'content-import-close': requestCloseContentImport(); break;
+    case 'content-import-discard': discardContentImport(); break;
+    case 'content-import-continue': if (contentImport) { contentImport.closePending = false; renderContentImport(); } break;
+    case 'content-import-mode': if (contentImport && ['file', 'paste'].includes(value)) { contentImportRead++; contentImport.reading = false; contentImport.mode = value; contentImport.preview = null; contentImport.error = ''; renderContentImport(); } break;
+    case 'content-import-preview': previewContentImport(); break;
+    case 'content-import-confirm': confirmContentImport(); break;
+    case 'content-import-view': discardContentImport(); state.pool = 'draft'; state.search = ''; state.category = ''; state.imageState = ''; state.from = ''; state.pageIndex = 0; state.selected.clear(); navigate('review'); break;
     case 'edit': openEntry(id, date || ''); break;
     case 'toggle-editor-preview': detailPreviewCollapsed = !detailPreviewCollapsed; detail.querySelector('.dialog-body').dataset.previewCollapsed = String(detailPreviewCollapsed); target.setAttribute('aria-expanded', String(!detailPreviewCollapsed)); target.textContent = detailPreviewCollapsed ? '展开预览' : '收起预览'; break;
     case 'close-detail': closeDetail(); break;
-    case 'close-modal': cancelDetailModal(); break;
+    case 'close-modal': if (!requestCloseContentImport()) cancelDetailModal(); break;
     case 'discard': { const nextEntry = pendingDetailEntry; pendingDetailEntry = null; modal.close(); if (nextEntry) openEntry(nextEntry.id, nextEntry.date); else closeDetail(true); break; }
     case 'save': saveDraft(); break;
     case 'edit-tab': draftTab = value; renderDetail(); break;
@@ -611,6 +723,7 @@ document.addEventListener('click', async event => {
 });
 document.addEventListener('input', event => {
   const target = event.target;
+  if (target.id === 'content-import-text') { setContentImportText(target.value); return; }
   if (target.id === 'detail-queue-search') { searchDetailQueue(target.value); return; }
   if (target.id === 'content-search') {
     state.search = target.value; state.selected.clear(); state.pageIndex = 0; const start = target.selectionStart; render(); $('#content-search').focus();
@@ -630,6 +743,8 @@ document.addEventListener('input', event => {
 });
 document.addEventListener('change', event => {
   const target = event.target;
+  if (target.id === 'content-import-file') { void readContentImportFile(target.files?.[0]); return; }
+  if (target.id === 'content-import-format') { if (contentImport && !contentImport.finished && ['csv', 'tsv'].includes(target.value)) { contentImport.pasteFormat = target.value; setContentImportText(contentImport.tsv); } return; }
   if (target.dataset.select) { target.checked ? state.selected.add(target.dataset.select) : state.selected.delete(target.dataset.select); render(); }
   else if (target.id === 'select-all') { for (const row of filteredEntries().slice(state.pageIndex * state.limit, (state.pageIndex + 1) * state.limit)) target.checked ? state.selected.add(row.id) : state.selected.delete(row.id); render(); }
   else if (target.id === 'category') { state.category = target.value; state.selected.clear(); state.pageIndex = 0; render(); }
@@ -643,7 +758,7 @@ document.addEventListener('change', event => {
   if (draft && detail.contains(target)) updateDetailSaveStatus();
 });
 detail.addEventListener('cancel', event => { event.preventDefault(); closeDetail(); });
-modal.addEventListener('cancel', event => { if (detailQueueReturn) { event.preventDefault(); cancelDetailModal(); } else { pendingClose = false; pendingDetailEntry = null; } });
+modal.addEventListener('cancel', event => { if (contentImport) { event.preventDefault(); requestCloseContentImport(); } else if (detailQueueReturn) { event.preventDefault(); cancelDetailModal(); } else { pendingClose = false; pendingDetailEntry = null; } });
 modal.addEventListener('close', () => { if (pendingClose) pendingClose = false; });
 document.addEventListener('submit', event => { event.preventDefault(); if (event.target.id === 'schedule-search-form') searchScheduleChoices(); });
 $('#sidebar').addEventListener('click', event => { if (event.target.closest('[data-page],a.brand,[data-action="operation-map"],[data-action="about"]')) closeDrawer({ restoreFocus: false }); }, true);
@@ -679,14 +794,14 @@ document.addEventListener('keydown', event => {
 });
 window.addEventListener('popstate', () => {
   const params = new URLSearchParams(location.search), value = params.get('page'), page = Object.hasOwn(pages, value) ? value : 'review';
-  if (!guardDetailNavigation() || page !== state.page && modules.some(module => module.beforeNavigate?.(page) === false)) {
+  if ((contentImportDirty() && requestCloseContentImport()) || !guardDetailNavigation() || page !== state.page && modules.some(module => module.beforeNavigate?.(page) === false)) {
     const url = new URL(location.href); url.searchParams.set('page', state.page); history.pushState({}, '', url); return;
   }
   if (modules.some(module => module.setRoute?.({ page, template: params.get('template'), tab: params.get('tab'), sample: params.get('sample') }) === false)) return;
   if (page !== state.page) clearNotice();
   state.page = page; state.selected.clear(); render();
 });
-window.addEventListener('beforeunload', event => { if (draft && JSON.stringify(draft) !== draftOriginal) { event.preventDefault(); event.returnValue = ''; } });
+window.addEventListener('beforeunload', event => { if (contentImportDirty() || draft && JSON.stringify(draft) !== draftOriginal) { event.preventDefault(); event.returnValue = ''; } });
 syncDrawer();
 try { catalog = await loadCatalog(); render(); }
 catch { main.innerHTML = catalogErrorMarkup(); }
