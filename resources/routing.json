@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "routing-v1-2b237740bb2cd5793e38250ccb7fbd1e3595648c059c2c3ee792ca4c00cd92b6",
+  "version": "routing-v1-bd81fdcbeb0ab8d8625d5c3a85aa67c0c9cc913258e7e7bbcd55399e510beecc",
   "authorityRoot": "https://www.axxiu.cn/project/AWNgdZoT",
   "trustedOrigins": [
     "https://gh-proxy.com",
@@ -10,10 +10,10 @@
   ],
   "manifests": {
     "content": {
-      "url": "content/manifest-b546aac2fad4d2e2202c699e6d57fcde137ce909b12d1be4e942cb4d7fac846f.json",
-      "sha256": "b546aac2fad4d2e2202c699e6d57fcde137ce909b12d1be4e942cb4d7fac846f",
+      "url": "content/manifest-fa17e147ff7632d427b373f64fb78366e6462f9a65e806573e3a6be8980c39b4.json",
+      "sha256": "fa17e147ff7632d427b373f64fb78366e6462f9a65e806573e3a6be8980c39b4",
       "bytes": 616,
-      "version": "929c44964677"
+      "version": "d760fe2cb6f4"
     },
     "fonts": {
       "url": "fonts/manifest-v5-b49e77422865d4b323e98955429f2d3c14a6a4e2496fa88ef301bd57af1cfc9f.json",
@@ -22,10 +22,10 @@
       "version": "font-v5-ec07f6ff5f835080aa945be3294a7caa7fcc591600aa88209942da6edea1e27b"
     },
     "imagery": {
-      "url": "imagery/manifest-c1ac7d6f8ff4d762c0ab86d11b5e874708b9b369303e5d619adec252ab6ad4b3.json",
-      "sha256": "c1ac7d6f8ff4d762c0ab86d11b5e874708b9b369303e5d619adec252ab6ad4b3",
-      "bytes": 12499,
-      "version": "e5ccbad5a77f"
+      "url": "imagery/manifest-19dcbf2b30fe39573eff09fa66cb3cb252f3495eb46fb9440c03196da24a724a.json",
+      "sha256": "19dcbf2b30fe39573eff09fa66cb3cb252f3495eb46fb9440c03196da24a724a",
+      "bytes": 12841,
+      "version": "251b69a2c871"
     }
   },
   "channels": {
@@ -55,6 +55,31 @@
     ]
   },
   "images": [
+    {
+      "id": "gen-0e96bcf8c5ee34f7700cc3780429",
+      "artifactId": "sha256:2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7:147944",
+      "sha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+      "bytes": 147944,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg"
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abde8ab-8e884fad.jpg"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg"
+        }
+      ],
+      "aliases": [
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg",
+        "https://p.ipic.vip/daylight-gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abde8ab-8e884fad.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg"
+      ]
+    },
     {
       "id": "gen-1793792546422",
       "artifactId": "sha256:c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8:43548",

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 3,
+  "version": "release-v3-e6c9205636e1a35155e1c92b2ba10fe92ac10cf0a915c5b174049a74e2e4aafe",
+  "contentVersion": "d760fe2cb6f4",
+  "manifests": {
+    "content": {
+      "url": "content/manifest-fa17e147ff7632d427b373f64fb78366e6462f9a65e806573e3a6be8980c39b4.json",
+      "sha256": "fa17e147ff7632d427b373f64fb78366e6462f9a65e806573e3a6be8980c39b4",
+      "bytes": 616,
+      "version": "d760fe2cb6f4"
+    },
+    "fonts": {
+      "url": "fonts/manifest-v5-b49e77422865d4b323e98955429f2d3c14a6a4e2496fa88ef301bd57af1cfc9f.json",
+      "sha256": "b49e77422865d4b323e98955429f2d3c14a6a4e2496fa88ef301bd57af1cfc9f",
+      "bytes": 185262,
+      "version": "font-v5-ec07f6ff5f835080aa945be3294a7caa7fcc591600aa88209942da6edea1e27b"
+    },
+    "imagery": {
+      "url": "imagery/manifest-19dcbf2b30fe39573eff09fa66cb3cb252f3495eb46fb9440c03196da24a724a.json",
+      "sha256": "19dcbf2b30fe39573eff09fa66cb3cb252f3495eb46fb9440c03196da24a724a",
+      "bytes": 12841,
+      "version": "251b69a2c871"
+    }
+  },
+  "routing": {
+    "url": "resources/routing-a16edf22e429586277f89ac2f291856255e21087d6ea6e420d34b8aa32aae68b.json",
+    "sha256": "a16edf22e429586277f89ac2f291856255e21087d6ea6e420d34b8aa32aae68b",
+    "bytes": 150325,
+    "version": "routing-v3-e6eb7191e905f5aae29f30ef732b63c2c1f8388d44a376f3f1b8b6ada76dafc0"
+  }
+}

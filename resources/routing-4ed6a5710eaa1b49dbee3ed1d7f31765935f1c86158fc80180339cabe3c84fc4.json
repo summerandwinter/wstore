@@ -1,0 +1,3019 @@
+{
+  "schemaVersion": 2,
+  "version": "routing-v2-6ec18610e6cb5aa056368d39bc6694c9fd886b2ef2ad73bad396335493092ebc",
+  "authorityRoot": "https://www.axxiu.cn/project/AWNgdZoT",
+  "trustedOrigins": [
+    "https://gh-proxy.com",
+    "https://mmbiz.qpic.cn",
+    "https://p.ipic.vip",
+    "https://raw.githubusercontent.com",
+    "https://www.axxiu.cn"
+  ],
+  "manifests": {
+    "content": {
+      "url": "content/manifest-fa17e147ff7632d427b373f64fb78366e6462f9a65e806573e3a6be8980c39b4.json",
+      "sha256": "fa17e147ff7632d427b373f64fb78366e6462f9a65e806573e3a6be8980c39b4",
+      "bytes": 616,
+      "version": "d760fe2cb6f4"
+    },
+    "fonts": {
+      "url": "fonts/manifest-v5-b49e77422865d4b323e98955429f2d3c14a6a4e2496fa88ef301bd57af1cfc9f.json",
+      "sha256": "b49e77422865d4b323e98955429f2d3c14a6a4e2496fa88ef301bd57af1cfc9f",
+      "bytes": 185262,
+      "version": "font-v5-ec07f6ff5f835080aa945be3294a7caa7fcc591600aa88209942da6edea1e27b"
+    },
+    "imagery": {
+      "url": "imagery/manifest-19dcbf2b30fe39573eff09fa66cb3cb252f3495eb46fb9440c03196da24a724a.json",
+      "sha256": "19dcbf2b30fe39573eff09fa66cb3cb252f3495eb46fb9440c03196da24a724a",
+      "bytes": 12841,
+      "version": "251b69a2c871"
+    }
+  },
+  "channels": {
+    "images": [
+      {
+        "providerId": "wechat-material",
+        "baseUrl": "https://mmbiz.qpic.cn"
+      },
+      {
+        "providerId": "ipic",
+        "baseUrl": "https://p.ipic.vip"
+      },
+      {
+        "providerId": "axxiu",
+        "baseUrl": "https://www.axxiu.cn/project/AWNgdZoT"
+      },
+      {
+        "providerId": "github-mirror",
+        "baseUrl": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main"
+      }
+    ],
+    "fonts": [
+      {
+        "providerId": "axxiu",
+        "baseUrl": "https://www.axxiu.cn/project/AWNgdZoT"
+      },
+      {
+        "providerId": "github-mirror",
+        "baseUrl": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main"
+      }
+    ]
+  },
+  "images": [
+    {
+      "id": "gen-0e96bcf8c5ee34f7700cc3780429",
+      "artifactId": "sha256:2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7:147944",
+      "sha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+      "bytes": 147944,
+      "assetVersion": 1,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjvWpCHVjDPdj15kSZX3ITmiaOcuZ27Wky0wWSfv9oj5adkCkibxghCxFXX9ibibV14rpxWVXywnzDOYNEKYe7aibwVcOjwmwqt1P2Y/0",
+          "assetId": "gen-0e96bcf8c5ee34f7700cc3780429",
+          "assetVersion": 1,
+          "sourceSha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "sourceBytes": 147944,
+          "sha256": "c522b669a74c65969bf016a8d9e7716467276345ea472928c05a3fe862759428",
+          "bytes": 123895
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abde8ab-8e884fad.jpg",
+          "assetId": "gen-0e96bcf8c5ee34f7700cc3780429",
+          "assetVersion": 1,
+          "sourceSha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "sourceBytes": 147944,
+          "sha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "bytes": 147944
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg",
+          "assetId": "gen-0e96bcf8c5ee34f7700cc3780429",
+          "assetVersion": 1,
+          "sourceSha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "sourceBytes": 147944,
+          "sha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "bytes": 147944
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg",
+          "assetId": "gen-0e96bcf8c5ee34f7700cc3780429",
+          "assetVersion": 1,
+          "sourceSha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "sourceBytes": 147944,
+          "sha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "bytes": 147944
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjvWpCHVjDPdj15kSZX3ITmiaOcuZ27Wky0wWSfv9oj5adkCkibxghCxFXX9ibibV14rpxWVXywnzDOYNEKYe7aibwVcOjwmwqt1P2Y/0",
+        "https://p.ipic.vip/daylight-gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abde8ab-8e884fad.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg"
+      ]
+    },
+    {
+      "id": "gen-1793792546422",
+      "artifactId": "sha256:c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8:43548",
+      "sha256": "c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8",
+      "bytes": 43548,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYgXogb30CmpVWku9siavpxUocBquDRe8mr2U0icNuc3kDU0wRjeFlSujmW03rFbBMu1u9oPqEvgMEsCQp7o5icbqf7geX22eT4op0/0",
+          "assetId": "gen-1793792546422",
+          "assetVersion": 2,
+          "sourceSha256": "c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8",
+          "sourceBytes": 43548,
+          "sha256": "b410878cbe735d0036fed173df1456642d3622d784d7b7bf6153f0e3e31287f4",
+          "bytes": 17972
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-1793792546422-c9e41a48bcfeffd5.jpg",
+          "assetId": "gen-1793792546422",
+          "assetVersion": 2,
+          "sourceSha256": "c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8",
+          "sourceBytes": 43548,
+          "sha256": "c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8",
+          "bytes": 43548
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793792546422-c9e41a48bcfe.jpg",
+          "assetId": "gen-1793792546422",
+          "assetVersion": 2,
+          "sourceSha256": "c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8",
+          "sourceBytes": 43548,
+          "sha256": "c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8",
+          "bytes": 43548
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793792546422-c9e41a48bcfe.jpg",
+          "assetId": "gen-1793792546422",
+          "assetVersion": 2,
+          "sourceSha256": "c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8",
+          "sourceBytes": 43548,
+          "sha256": "c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8",
+          "bytes": 43548
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYgXogb30CmpVWku9siavpxUocBquDRe8mr2U0icNuc3kDU0wRjeFlSujmW03rFbBMu1u9oPqEvgMEsCQp7o5icbqf7geX22eT4op0/0",
+        "https://p.ipic.vip/daylight-gen-1793792546422-c9e41a48bcfeffd5.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793792546422-c9e41a48bcfe.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793792546422-c9e41a48bcfe.jpg",
+        "https://p.ipic.vip/light-gen-1793792546422-c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8.jpg"
+      ]
+    },
+    {
+      "id": "gen-1793794949153",
+      "artifactId": "sha256:9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2:53643",
+      "sha256": "9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2",
+      "bytes": 53643,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYiapWk4qnRicccO4jVFbuSd9fYPO0vkP24MtqSWvKic1I0XuiaW7LFXZMmu7yia634liarYEayavjU3dMGwVibk1OjWdIeFFvbkJpiaK30/0",
+          "assetId": "gen-1793794949153",
+          "assetVersion": 2,
+          "sourceSha256": "9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2",
+          "sourceBytes": 53643,
+          "sha256": "471f70574d306f0bfd669b5c74f3bed2927fe38ffc3f9bc47ccc7416bf8a37b4",
+          "bytes": 33425
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-1793794949153-9b1de62327d221e5.jpg",
+          "assetId": "gen-1793794949153",
+          "assetVersion": 2,
+          "sourceSha256": "9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2",
+          "sourceBytes": 53643,
+          "sha256": "9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2",
+          "bytes": 53643
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793794949153-9b1de62327d2.jpg",
+          "assetId": "gen-1793794949153",
+          "assetVersion": 2,
+          "sourceSha256": "9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2",
+          "sourceBytes": 53643,
+          "sha256": "9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2",
+          "bytes": 53643
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793794949153-9b1de62327d2.jpg",
+          "assetId": "gen-1793794949153",
+          "assetVersion": 2,
+          "sourceSha256": "9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2",
+          "sourceBytes": 53643,
+          "sha256": "9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2",
+          "bytes": 53643
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYiapWk4qnRicccO4jVFbuSd9fYPO0vkP24MtqSWvKic1I0XuiaW7LFXZMmu7yia634liarYEayavjU3dMGwVibk1OjWdIeFFvbkJpiaK30/0",
+        "https://p.ipic.vip/daylight-gen-1793794949153-9b1de62327d221e5.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793794949153-9b1de62327d2.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793794949153-9b1de62327d2.jpg",
+        "https://p.ipic.vip/light-gen-1793794949153-9b1de62327d221e59ee62015640cc74f17b0a7416c5d81c40f4d6fa15d5fc6f2.jpg"
+      ]
+    },
+    {
+      "id": "gen-1793799217632",
+      "artifactId": "sha256:a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547:36571",
+      "sha256": "a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547",
+      "bytes": 36571,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYiaS4RuMnlcqZtWg4xf9CcsyicWXa0WLiaDCZDycNmiaFYpiaiaxOicz1p7sP45p41Z9LxlvBzC83rhK8IfYjbuicakDH1icXktxONrjYtk/0",
+          "assetId": "gen-1793799217632",
+          "assetVersion": 2,
+          "sourceSha256": "a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547",
+          "sourceBytes": 36571,
+          "sha256": "bb87fd5a8714e64a8cef02e1957a858cd412feed82c57c5ff4a55d65a2bd0a67",
+          "bytes": 14754
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-1793799217632-a4e3566f87be597b.jpg",
+          "assetId": "gen-1793799217632",
+          "assetVersion": 2,
+          "sourceSha256": "a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547",
+          "sourceBytes": 36571,
+          "sha256": "a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547",
+          "bytes": 36571
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793799217632-a4e3566f87be.jpg",
+          "assetId": "gen-1793799217632",
+          "assetVersion": 2,
+          "sourceSha256": "a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547",
+          "sourceBytes": 36571,
+          "sha256": "a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547",
+          "bytes": 36571
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793799217632-a4e3566f87be.jpg",
+          "assetId": "gen-1793799217632",
+          "assetVersion": 2,
+          "sourceSha256": "a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547",
+          "sourceBytes": 36571,
+          "sha256": "a4e3566f87be597b6ffd4db15c4f2ae7219dfcf9a96d8bb7aa3d703d2c437547",
+          "bytes": 36571
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYiaS4RuMnlcqZtWg4xf9CcsyicWXa0WLiaDCZDycNmiaFYpiaiaxOicz1p7sP45p41Z9LxlvBzC83rhK8IfYjbuicakDH1icXktxONrjYtk/0",
+        "https://p.ipic.vip/daylight-gen-1793799217632-a4e3566f87be597b.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-1793799217632-a4e3566f87be.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-1793799217632-a4e3566f87be.jpg"
+      ]
+    },
+    {
+      "id": "gen-26abc27f5efb47c90d51f683e93c",
+      "artifactId": "sha256:5616ae409897b8cb5eda9febdf00b1afdc2d0a89da2df497d7726d3c92916291:145071",
+      "sha256": "5616ae409897b8cb5eda9febdf00b1afdc2d0a89da2df497d7726d3c92916291",
+      "bytes": 145071,
+      "assetVersion": 1,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYiaBA0uHrgLAANHzTReSSEAFoJ7TOafh7K1uhKiaT0amQxo50D6RXPSKkWUkWtrebUF1cf1ib9UHjAyeKSRC0uc1WwWry8xqTFjicU/0",
+          "assetId": "gen-26abc27f5efb47c90d51f683e93c",
+          "assetVersion": 1,
+          "sourceSha256": "5616ae409897b8cb5eda9febdf00b1afdc2d0a89da2df497d7726d3c92916291",
+          "sourceBytes": 145071,
+          "sha256": "1dd98271c8d895c026c7f83f8ebc94ac5e003ce4f153e896103d2e5f3439006f",
+          "bytes": 147844
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-26abc27f5efb47c90d51f683e93c-5616ae409897b8cb-9565db3f.jpg",
+          "assetId": "gen-26abc27f5efb47c90d51f683e93c",
+          "assetVersion": 1,
+          "sourceSha256": "5616ae409897b8cb5eda9febdf00b1afdc2d0a89da2df497d7726d3c92916291",
+          "sourceBytes": 145071,
+          "sha256": "5616ae409897b8cb5eda9febdf00b1afdc2d0a89da2df497d7726d3c92916291",
+          "bytes": 145071
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-26abc27f5efb47c90d51f683e93c-5616ae409897.jpg",
+          "assetId": "gen-26abc27f5efb47c90d51f683e93c",
+          "assetVersion": 1,
+          "sourceSha256": "5616ae409897b8cb5eda9febdf00b1afdc2d0a89da2df497d7726d3c92916291",
+          "sourceBytes": 145071,
+          "sha256": "5616ae409897b8cb5eda9febdf00b1afdc2d0a89da2df497d7726d3c92916291",
+          "bytes": 145071
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-26abc27f5efb47c90d51f683e93c-5616ae409897.jpg",
+          "assetId": "gen-26abc27f5efb47c90d51f683e93c",
+          "assetVersion": 1,
+          "sourceSha256": "5616ae409897b8cb5eda9febdf00b1afdc2d0a89da2df497d7726d3c92916291",
+          "sourceBytes": 145071,
+          "sha256": "5616ae409897b8cb5eda9febdf00b1afdc2d0a89da2df497d7726d3c92916291",
+          "bytes": 145071
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYiaBA0uHrgLAANHzTReSSEAFoJ7TOafh7K1uhKiaT0amQxo50D6RXPSKkWUkWtrebUF1cf1ib9UHjAyeKSRC0uc1WwWry8xqTFjicU/0",
+        "https://p.ipic.vip/daylight-gen-26abc27f5efb47c90d51f683e93c-5616ae409897b8cb-9565db3f.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-26abc27f5efb47c90d51f683e93c-5616ae409897.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-26abc27f5efb47c90d51f683e93c-5616ae409897.jpg"
+      ]
+    },
+    {
+      "id": "gen-db15182c6fa9fa6a99cdd24d6afe",
+      "artifactId": "sha256:76b81f4453c1b960d4010a1568ec891332dc15c7295666250604d6eb6bcdc276:90397",
+      "sha256": "76b81f4453c1b960d4010a1568ec891332dc15c7295666250604d6eb6bcdc276",
+      "bytes": 90397,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYgyiau5YicSECY1EuF2KaqngQx0cygxDnAwtReTDdjOuABCslGDaJqE8OJfbazfVCxPpOvYXbqY4vL7MXWQBbkEH9Zeo1FGcrhGg/0",
+          "assetId": "gen-db15182c6fa9fa6a99cdd24d6afe",
+          "assetVersion": 3,
+          "sourceSha256": "76b81f4453c1b960d4010a1568ec891332dc15c7295666250604d6eb6bcdc276",
+          "sourceBytes": 90397,
+          "sha256": "c441d2e3420e02708e6d95f621047b3624d2fc3689258cd28d2f0e0ec9fc8f14",
+          "bytes": 67174
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1b960.jpg",
+          "assetId": "gen-db15182c6fa9fa6a99cdd24d6afe",
+          "assetVersion": 3,
+          "sourceSha256": "76b81f4453c1b960d4010a1568ec891332dc15c7295666250604d6eb6bcdc276",
+          "sourceBytes": 90397,
+          "sha256": "76b81f4453c1b960d4010a1568ec891332dc15c7295666250604d6eb6bcdc276",
+          "bytes": 90397
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1.jpg",
+          "assetId": "gen-db15182c6fa9fa6a99cdd24d6afe",
+          "assetVersion": 3,
+          "sourceSha256": "76b81f4453c1b960d4010a1568ec891332dc15c7295666250604d6eb6bcdc276",
+          "sourceBytes": 90397,
+          "sha256": "76b81f4453c1b960d4010a1568ec891332dc15c7295666250604d6eb6bcdc276",
+          "bytes": 90397
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1.jpg",
+          "assetId": "gen-db15182c6fa9fa6a99cdd24d6afe",
+          "assetVersion": 3,
+          "sourceSha256": "76b81f4453c1b960d4010a1568ec891332dc15c7295666250604d6eb6bcdc276",
+          "sourceBytes": 90397,
+          "sha256": "76b81f4453c1b960d4010a1568ec891332dc15c7295666250604d6eb6bcdc276",
+          "bytes": 90397
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYgyiau5YicSECY1EuF2KaqngQx0cygxDnAwtReTDdjOuABCslGDaJqE8OJfbazfVCxPpOvYXbqY4vL7MXWQBbkEH9Zeo1FGcrhGg/0",
+        "https://p.ipic.vip/daylight-gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1b960.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-db15182c6fa9fa6a99cdd24d6afe-76b81f4453c1.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-01",
+      "artifactId": "sha256:c1df7d83a8b3e2964d56c400fb3a366b6f049979fdb420111ac8f21a2ce86e94:102265",
+      "sha256": "c1df7d83a8b3e2964d56c400fb3a366b6f049979fdb420111ac8f21a2ce86e94",
+      "bytes": 102265,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYiaezoC5cZNAzVuib83duCMarctFZL1yPbEicj2ZqyEoESkBpTYzunP9PKUic0DWMSaictVweAribJ5iaDicWGaVtHKWaPKXuicibn7icibO7s/0",
+          "assetId": "gen-gap-01",
+          "assetVersion": 3,
+          "sourceSha256": "c1df7d83a8b3e2964d56c400fb3a366b6f049979fdb420111ac8f21a2ce86e94",
+          "sourceBytes": 102265,
+          "sha256": "e7a19c8b8f33b6b871cf1c8978098c56e001ce1dc13ddd06afc387a12395ee2a",
+          "bytes": 86368
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-01-c1df7d83a8b3e296.jpg",
+          "assetId": "gen-gap-01",
+          "assetVersion": 3,
+          "sourceSha256": "c1df7d83a8b3e2964d56c400fb3a366b6f049979fdb420111ac8f21a2ce86e94",
+          "sourceBytes": 102265,
+          "sha256": "c1df7d83a8b3e2964d56c400fb3a366b6f049979fdb420111ac8f21a2ce86e94",
+          "bytes": 102265
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-01-c1df7d83a8b3.jpg",
+          "assetId": "gen-gap-01",
+          "assetVersion": 3,
+          "sourceSha256": "c1df7d83a8b3e2964d56c400fb3a366b6f049979fdb420111ac8f21a2ce86e94",
+          "sourceBytes": 102265,
+          "sha256": "c1df7d83a8b3e2964d56c400fb3a366b6f049979fdb420111ac8f21a2ce86e94",
+          "bytes": 102265
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-01-c1df7d83a8b3.jpg",
+          "assetId": "gen-gap-01",
+          "assetVersion": 3,
+          "sourceSha256": "c1df7d83a8b3e2964d56c400fb3a366b6f049979fdb420111ac8f21a2ce86e94",
+          "sourceBytes": 102265,
+          "sha256": "c1df7d83a8b3e2964d56c400fb3a366b6f049979fdb420111ac8f21a2ce86e94",
+          "bytes": 102265
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYiaezoC5cZNAzVuib83duCMarctFZL1yPbEicj2ZqyEoESkBpTYzunP9PKUic0DWMSaictVweAribJ5iaDicWGaVtHKWaPKXuicibn7icibO7s/0",
+        "https://p.ipic.vip/daylight-gen-gap-01-c1df7d83a8b3e296.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-01-c1df7d83a8b3.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-01-c1df7d83a8b3.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-02",
+      "artifactId": "sha256:376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119:41671",
+      "sha256": "376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119",
+      "bytes": 41671,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYh4ibK9dicjPf81qzfeYkjp9wHuW3vMsE0RWoqCpiat2tlbNibJ9Wfo7HJdWcuAdDM4wjdHHjfgRTjfkZOdqvicFIgicppLTicicv1Bv5Y/0",
+          "assetId": "gen-gap-02",
+          "assetVersion": 2,
+          "sourceSha256": "376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119",
+          "sourceBytes": 41671,
+          "sha256": "8ec73ff934d2e2025321fbdbab4032cc90cdb73fa63499cf73a0b77ecb38f03e",
+          "bytes": 20407
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-02-376c7ef308187a9b.jpg",
+          "assetId": "gen-gap-02",
+          "assetVersion": 2,
+          "sourceSha256": "376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119",
+          "sourceBytes": 41671,
+          "sha256": "376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119",
+          "bytes": 41671
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-02-376c7ef30818.jpg",
+          "assetId": "gen-gap-02",
+          "assetVersion": 2,
+          "sourceSha256": "376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119",
+          "sourceBytes": 41671,
+          "sha256": "376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119",
+          "bytes": 41671
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-02-376c7ef30818.jpg",
+          "assetId": "gen-gap-02",
+          "assetVersion": 2,
+          "sourceSha256": "376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119",
+          "sourceBytes": 41671,
+          "sha256": "376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119",
+          "bytes": 41671
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYh4ibK9dicjPf81qzfeYkjp9wHuW3vMsE0RWoqCpiat2tlbNibJ9Wfo7HJdWcuAdDM4wjdHHjfgRTjfkZOdqvicFIgicppLTicicv1Bv5Y/0",
+        "https://p.ipic.vip/daylight-gen-gap-02-376c7ef308187a9b.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-02-376c7ef30818.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-02-376c7ef30818.jpg",
+        "https://p.ipic.vip/light-gen-gap-02-376c7ef308187a9b07b2e1a4491f2306768e33427b227f9c87669a41b7d2e119.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-03",
+      "artifactId": "sha256:191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6:45578",
+      "sha256": "191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6",
+      "bytes": 45578,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYjBBMUXI4FGOzZFiaXhCqfUiaMm4YlfG4MLJe1kFkU6au5xwYErL1W2FicfRRxNNQVoo3uJWEh6he00oVlJG6V18ZNYiceQrF5bGzo/0",
+          "assetId": "gen-gap-03",
+          "assetVersion": 2,
+          "sourceSha256": "191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6",
+          "sourceBytes": 45578,
+          "sha256": "14050dfde77b0801251332e87e1510cb60598d496aaf856eaaa44fc3f1afb394",
+          "bytes": 18507
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-03-191610bad6e60cd6-f7ecd4f1.jpg",
+          "assetId": "gen-gap-03",
+          "assetVersion": 2,
+          "sourceSha256": "191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6",
+          "sourceBytes": 45578,
+          "sha256": "191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6",
+          "bytes": 45578
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-03-191610bad6e6.jpg",
+          "assetId": "gen-gap-03",
+          "assetVersion": 2,
+          "sourceSha256": "191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6",
+          "sourceBytes": 45578,
+          "sha256": "191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6",
+          "bytes": 45578
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-03-191610bad6e6.jpg",
+          "assetId": "gen-gap-03",
+          "assetVersion": 2,
+          "sourceSha256": "191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6",
+          "sourceBytes": 45578,
+          "sha256": "191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6",
+          "bytes": 45578
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYjBBMUXI4FGOzZFiaXhCqfUiaMm4YlfG4MLJe1kFkU6au5xwYErL1W2FicfRRxNNQVoo3uJWEh6he00oVlJG6V18ZNYiceQrF5bGzo/0",
+        "https://p.ipic.vip/daylight-gen-gap-03-191610bad6e60cd6-f7ecd4f1.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-03-191610bad6e6.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-03-191610bad6e6.jpg",
+        "https://p.ipic.vip/light-gen-gap-03-191610bad6e60cd647cbe99f60654f5b332f6c280c8016a3d47170f937a426f6.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-04",
+      "artifactId": "sha256:eb973fe22cf438e64b511282a37eb95a724972d920f1a5b39a11dd5942235a8c:36614",
+      "sha256": "eb973fe22cf438e64b511282a37eb95a724972d920f1a5b39a11dd5942235a8c",
+      "bytes": 36614,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYgWXPibreAiahjVRibnecJ3yuDqNOqNEyQTgJU0icv9I23ia5vTl4vA35QGR2jEE0taibbYDmY7O1ibQeyFt9Nyobc1B5TMkDGWmoLumw/0",
+          "assetId": "gen-gap-04",
+          "assetVersion": 2,
+          "sourceSha256": "eb973fe22cf438e64b511282a37eb95a724972d920f1a5b39a11dd5942235a8c",
+          "sourceBytes": 36614,
+          "sha256": "3eace439b5b0ac2b7b260b50c35d82fe9df87ebd7099c94e282fc2ecb216f017",
+          "bytes": 15339
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-04-eb973fe22cf438e6.jpg",
+          "assetId": "gen-gap-04",
+          "assetVersion": 2,
+          "sourceSha256": "eb973fe22cf438e64b511282a37eb95a724972d920f1a5b39a11dd5942235a8c",
+          "sourceBytes": 36614,
+          "sha256": "eb973fe22cf438e64b511282a37eb95a724972d920f1a5b39a11dd5942235a8c",
+          "bytes": 36614
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-04-eb973fe22cf4.jpg",
+          "assetId": "gen-gap-04",
+          "assetVersion": 2,
+          "sourceSha256": "eb973fe22cf438e64b511282a37eb95a724972d920f1a5b39a11dd5942235a8c",
+          "sourceBytes": 36614,
+          "sha256": "eb973fe22cf438e64b511282a37eb95a724972d920f1a5b39a11dd5942235a8c",
+          "bytes": 36614
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-04-eb973fe22cf4.jpg",
+          "assetId": "gen-gap-04",
+          "assetVersion": 2,
+          "sourceSha256": "eb973fe22cf438e64b511282a37eb95a724972d920f1a5b39a11dd5942235a8c",
+          "sourceBytes": 36614,
+          "sha256": "eb973fe22cf438e64b511282a37eb95a724972d920f1a5b39a11dd5942235a8c",
+          "bytes": 36614
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYgWXPibreAiahjVRibnecJ3yuDqNOqNEyQTgJU0icv9I23ia5vTl4vA35QGR2jEE0taibbYDmY7O1ibQeyFt9Nyobc1B5TMkDGWmoLumw/0",
+        "https://p.ipic.vip/daylight-gen-gap-04-eb973fe22cf438e6.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-04-eb973fe22cf4.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-04-eb973fe22cf4.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-05",
+      "artifactId": "sha256:fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f:52179",
+      "sha256": "fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f",
+      "bytes": 52179,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjds4MKBMfS3qjqWBfDRiaNaPgsJYMT9Ac6Vbp7uEkrAxUmbo8St37iaNyZGyicFhEsLGZaibhjkneZms2xBozMgKMqeMnI3N6CtFM/0",
+          "assetId": "gen-gap-05",
+          "assetVersion": 2,
+          "sourceSha256": "fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f",
+          "sourceBytes": 52179,
+          "sha256": "f5a6e7dd01da3eb6eed3f547779c79efbc4a067b36fa99fadc33247801da4352",
+          "bytes": 30763
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-05-fe4876ecd44ff763.jpg",
+          "assetId": "gen-gap-05",
+          "assetVersion": 2,
+          "sourceSha256": "fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f",
+          "sourceBytes": 52179,
+          "sha256": "fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f",
+          "bytes": 52179
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-05-fe4876ecd44f.jpg",
+          "assetId": "gen-gap-05",
+          "assetVersion": 2,
+          "sourceSha256": "fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f",
+          "sourceBytes": 52179,
+          "sha256": "fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f",
+          "bytes": 52179
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-05-fe4876ecd44f.jpg",
+          "assetId": "gen-gap-05",
+          "assetVersion": 2,
+          "sourceSha256": "fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f",
+          "sourceBytes": 52179,
+          "sha256": "fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f",
+          "bytes": 52179
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjds4MKBMfS3qjqWBfDRiaNaPgsJYMT9Ac6Vbp7uEkrAxUmbo8St37iaNyZGyicFhEsLGZaibhjkneZms2xBozMgKMqeMnI3N6CtFM/0",
+        "https://p.ipic.vip/daylight-gen-gap-05-fe4876ecd44ff763.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-05-fe4876ecd44f.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-05-fe4876ecd44f.jpg",
+        "https://p.ipic.vip/light-gen-gap-05-fe4876ecd44ff763dc413a1bed1f9a69514b4b26830af72b8802a837456d615f.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-06",
+      "artifactId": "sha256:9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb:60396",
+      "sha256": "9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb",
+      "bytes": 60396,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjXbWWzSnibicPc6eicZHiaBmNTGFkmFzhn1wLNohPibH2215mR1Q1Nriafxsawnc3YvebiaVUAia1YIAib4icqvcPQmP5v3uq4lnU26NOvs/0",
+          "assetId": "gen-gap-06",
+          "assetVersion": 2,
+          "sourceSha256": "9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb",
+          "sourceBytes": 60396,
+          "sha256": "36ea3bb8cec7017bbf176154e8bce9b98fecbe6cca51068808adf9720df8b59e",
+          "bytes": 34749
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-06-9d70a16be0f2e66d.jpg",
+          "assetId": "gen-gap-06",
+          "assetVersion": 2,
+          "sourceSha256": "9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb",
+          "sourceBytes": 60396,
+          "sha256": "9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb",
+          "bytes": 60396
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-06-9d70a16be0f2.jpg",
+          "assetId": "gen-gap-06",
+          "assetVersion": 2,
+          "sourceSha256": "9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb",
+          "sourceBytes": 60396,
+          "sha256": "9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb",
+          "bytes": 60396
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-06-9d70a16be0f2.jpg",
+          "assetId": "gen-gap-06",
+          "assetVersion": 2,
+          "sourceSha256": "9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb",
+          "sourceBytes": 60396,
+          "sha256": "9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb",
+          "bytes": 60396
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjXbWWzSnibicPc6eicZHiaBmNTGFkmFzhn1wLNohPibH2215mR1Q1Nriafxsawnc3YvebiaVUAia1YIAib4icqvcPQmP5v3uq4lnU26NOvs/0",
+        "https://p.ipic.vip/daylight-gen-gap-06-9d70a16be0f2e66d.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-06-9d70a16be0f2.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-06-9d70a16be0f2.jpg",
+        "https://p.ipic.vip/light-gen-gap-06-9d70a16be0f2e66dd8acc0420437915c5512b6cae894995dc6d1ade0bff0a2fb.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-07",
+      "artifactId": "sha256:3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4:46345",
+      "sha256": "3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4",
+      "bytes": 46345,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhdiategC2BF1zreObm9vNrebAdmXks3OibEq19vkBBaJqHXRWdoh47fvbkAk1Kpf5qBOV8ldjkN15pVDYGLhCqLUjhIj3AH9uBo/0",
+          "assetId": "gen-gap-07",
+          "assetVersion": 2,
+          "sourceSha256": "3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4",
+          "sourceBytes": 46345,
+          "sha256": "623fe45dacfb3a175515099c2db44205f61ee83ae669431ec7d3eec24d52992f",
+          "bytes": 23806
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-07-3ab21488c346cbe4.jpg",
+          "assetId": "gen-gap-07",
+          "assetVersion": 2,
+          "sourceSha256": "3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4",
+          "sourceBytes": 46345,
+          "sha256": "3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4",
+          "bytes": 46345
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-07-3ab21488c346.jpg",
+          "assetId": "gen-gap-07",
+          "assetVersion": 2,
+          "sourceSha256": "3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4",
+          "sourceBytes": 46345,
+          "sha256": "3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4",
+          "bytes": 46345
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-07-3ab21488c346.jpg",
+          "assetId": "gen-gap-07",
+          "assetVersion": 2,
+          "sourceSha256": "3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4",
+          "sourceBytes": 46345,
+          "sha256": "3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4",
+          "bytes": 46345
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhdiategC2BF1zreObm9vNrebAdmXks3OibEq19vkBBaJqHXRWdoh47fvbkAk1Kpf5qBOV8ldjkN15pVDYGLhCqLUjhIj3AH9uBo/0",
+        "https://p.ipic.vip/daylight-gen-gap-07-3ab21488c346cbe4.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-07-3ab21488c346.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-07-3ab21488c346.jpg",
+        "https://p.ipic.vip/light-gen-gap-07-3ab21488c346cbe408336936b5d18953481135754eb69dd67ca715515ba558e4.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-08",
+      "artifactId": "sha256:db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d:45981",
+      "sha256": "db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d",
+      "bytes": 45981,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYgV9hEFLHWWdibVfLSS53wZKof1apS8DiazfBvhIArvX9jib6urA4IspALZbVnWPXkYHGksun8oK4lOLAW5YMoL9sjEOqibT26GlbI/0",
+          "assetId": "gen-gap-08",
+          "assetVersion": 2,
+          "sourceSha256": "db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d",
+          "sourceBytes": 45981,
+          "sha256": "cd3b92eec8c633a5305afd0af9ab0f16aa3eb0e690d9fdc12c28b51a4c1d9041",
+          "bytes": 19027
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-08-db18bc0fd61849b8.jpg",
+          "assetId": "gen-gap-08",
+          "assetVersion": 2,
+          "sourceSha256": "db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d",
+          "sourceBytes": 45981,
+          "sha256": "db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d",
+          "bytes": 45981
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-08-db18bc0fd618.jpg",
+          "assetId": "gen-gap-08",
+          "assetVersion": 2,
+          "sourceSha256": "db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d",
+          "sourceBytes": 45981,
+          "sha256": "db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d",
+          "bytes": 45981
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-08-db18bc0fd618.jpg",
+          "assetId": "gen-gap-08",
+          "assetVersion": 2,
+          "sourceSha256": "db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d",
+          "sourceBytes": 45981,
+          "sha256": "db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d",
+          "bytes": 45981
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYgV9hEFLHWWdibVfLSS53wZKof1apS8DiazfBvhIArvX9jib6urA4IspALZbVnWPXkYHGksun8oK4lOLAW5YMoL9sjEOqibT26GlbI/0",
+        "https://p.ipic.vip/daylight-gen-gap-08-db18bc0fd61849b8.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-08-db18bc0fd618.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-08-db18bc0fd618.jpg",
+        "https://p.ipic.vip/light-gen-gap-08-db18bc0fd61849b872caec188acfe9f13d998220937d8d9bcc64393f57486a4d.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-09",
+      "artifactId": "sha256:adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0:45641",
+      "sha256": "adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0",
+      "bytes": 45641,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYgOXqYgQ7la9JAkk0Ecgydzib3ibmiaHF3rMibcGEh7iamIntg3UaO7pddJZRk3jmmIDObuzsKp95GRpmB9fjh5mhN2jLdD4dxaYrI0/0",
+          "assetId": "gen-gap-09",
+          "assetVersion": 2,
+          "sourceSha256": "adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0",
+          "sourceBytes": 45641,
+          "sha256": "a0a5a3e45e5d96e95d99b5568e5c4e83b395e303185098c0acb01e417f6a3972",
+          "bytes": 23487
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-09-adb42d1d6a794941.jpg",
+          "assetId": "gen-gap-09",
+          "assetVersion": 2,
+          "sourceSha256": "adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0",
+          "sourceBytes": 45641,
+          "sha256": "adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0",
+          "bytes": 45641
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-09-adb42d1d6a79.jpg",
+          "assetId": "gen-gap-09",
+          "assetVersion": 2,
+          "sourceSha256": "adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0",
+          "sourceBytes": 45641,
+          "sha256": "adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0",
+          "bytes": 45641
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-09-adb42d1d6a79.jpg",
+          "assetId": "gen-gap-09",
+          "assetVersion": 2,
+          "sourceSha256": "adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0",
+          "sourceBytes": 45641,
+          "sha256": "adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0",
+          "bytes": 45641
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYgOXqYgQ7la9JAkk0Ecgydzib3ibmiaHF3rMibcGEh7iamIntg3UaO7pddJZRk3jmmIDObuzsKp95GRpmB9fjh5mhN2jLdD4dxaYrI0/0",
+        "https://p.ipic.vip/daylight-gen-gap-09-adb42d1d6a794941.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-09-adb42d1d6a79.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-09-adb42d1d6a79.jpg",
+        "https://p.ipic.vip/light-gen-gap-09-adb42d1d6a794941248f6e3b3cd2104e3e38ab3c52e81a391825c5dee1d9f1f0.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-10",
+      "artifactId": "sha256:40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e:43657",
+      "sha256": "40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e",
+      "bytes": 43657,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjDortyys4Ck6AOfs4ANVW0eWFr9rPPLcER93QwukoI7f5OLia9xv8eHyZNCww9QM2ib23I9WxOiaR8qYpibgllbKZlsTpDN0AlzK0/0",
+          "assetId": "gen-gap-10",
+          "assetVersion": 2,
+          "sourceSha256": "40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e",
+          "sourceBytes": 43657,
+          "sha256": "8871f09445cf614b5ef0712586d3c6d198535fdb3ffcc756eb3dd122f80db5aa",
+          "bytes": 22358
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-10-40d38b07205ec8d3.jpg",
+          "assetId": "gen-gap-10",
+          "assetVersion": 2,
+          "sourceSha256": "40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e",
+          "sourceBytes": 43657,
+          "sha256": "40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e",
+          "bytes": 43657
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-10-40d38b07205e.jpg",
+          "assetId": "gen-gap-10",
+          "assetVersion": 2,
+          "sourceSha256": "40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e",
+          "sourceBytes": 43657,
+          "sha256": "40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e",
+          "bytes": 43657
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-10-40d38b07205e.jpg",
+          "assetId": "gen-gap-10",
+          "assetVersion": 2,
+          "sourceSha256": "40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e",
+          "sourceBytes": 43657,
+          "sha256": "40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e",
+          "bytes": 43657
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjDortyys4Ck6AOfs4ANVW0eWFr9rPPLcER93QwukoI7f5OLia9xv8eHyZNCww9QM2ib23I9WxOiaR8qYpibgllbKZlsTpDN0AlzK0/0",
+        "https://p.ipic.vip/daylight-gen-gap-10-40d38b07205ec8d3.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-10-40d38b07205e.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-10-40d38b07205e.jpg",
+        "https://p.ipic.vip/light-gen-gap-10-40d38b07205ec8d38629d3b742e763302878059106cbfbf8c6a5d6ea64ddb97e.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-11",
+      "artifactId": "sha256:934654c7176cbf01f991421c627af9e3e59d209658326fa5c03592cdde3c61da:59156",
+      "sha256": "934654c7176cbf01f991421c627af9e3e59d209658326fa5c03592cdde3c61da",
+      "bytes": 59156,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYgTNPicibwtb6EFHoJr1UovDAGoYkeKlDaFia4Ah6XyyV3iaTqYCSUADu2ibnHIqfTgocr3AC1jjc7QmmD3tl2L4zPOJPOl1GUDicPsg/0",
+          "assetId": "gen-gap-11",
+          "assetVersion": 3,
+          "sourceSha256": "934654c7176cbf01f991421c627af9e3e59d209658326fa5c03592cdde3c61da",
+          "sourceBytes": 59156,
+          "sha256": "23d639201d636a35f22aacd36492cda604c2bd6c75ef5aa8a992c5f5c3682099",
+          "bytes": 27811
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-11-934654c7176cbf01.jpg",
+          "assetId": "gen-gap-11",
+          "assetVersion": 3,
+          "sourceSha256": "934654c7176cbf01f991421c627af9e3e59d209658326fa5c03592cdde3c61da",
+          "sourceBytes": 59156,
+          "sha256": "934654c7176cbf01f991421c627af9e3e59d209658326fa5c03592cdde3c61da",
+          "bytes": 59156
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-11-934654c7176c.jpg",
+          "assetId": "gen-gap-11",
+          "assetVersion": 3,
+          "sourceSha256": "934654c7176cbf01f991421c627af9e3e59d209658326fa5c03592cdde3c61da",
+          "sourceBytes": 59156,
+          "sha256": "934654c7176cbf01f991421c627af9e3e59d209658326fa5c03592cdde3c61da",
+          "bytes": 59156
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-11-934654c7176c.jpg",
+          "assetId": "gen-gap-11",
+          "assetVersion": 3,
+          "sourceSha256": "934654c7176cbf01f991421c627af9e3e59d209658326fa5c03592cdde3c61da",
+          "sourceBytes": 59156,
+          "sha256": "934654c7176cbf01f991421c627af9e3e59d209658326fa5c03592cdde3c61da",
+          "bytes": 59156
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYgTNPicibwtb6EFHoJr1UovDAGoYkeKlDaFia4Ah6XyyV3iaTqYCSUADu2ibnHIqfTgocr3AC1jjc7QmmD3tl2L4zPOJPOl1GUDicPsg/0",
+        "https://p.ipic.vip/daylight-gen-gap-11-934654c7176cbf01.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-11-934654c7176c.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-11-934654c7176c.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-12",
+      "artifactId": "sha256:6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6:55269",
+      "sha256": "6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6",
+      "bytes": 55269,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYj4L9zxWwwCdTB1CwL6k2UrGZic9ZAC3aCkbPWpPRD1icYrAO4Giang94icG9oxc9iaCjfYlmlzIfjWAic3qdeCAs17Im8rdxIOV1g80/0",
+          "assetId": "gen-gap-12",
+          "assetVersion": 2,
+          "sourceSha256": "6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6",
+          "sourceBytes": 55269,
+          "sha256": "3d4d108812adb0aace14843fa04836847e8d05bc7854f1abd65061a0e73bdded",
+          "bytes": 32238
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-12-6a0813dad2938346.jpg",
+          "assetId": "gen-gap-12",
+          "assetVersion": 2,
+          "sourceSha256": "6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6",
+          "sourceBytes": 55269,
+          "sha256": "6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6",
+          "bytes": 55269
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-12-6a0813dad293.jpg",
+          "assetId": "gen-gap-12",
+          "assetVersion": 2,
+          "sourceSha256": "6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6",
+          "sourceBytes": 55269,
+          "sha256": "6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6",
+          "bytes": 55269
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-12-6a0813dad293.jpg",
+          "assetId": "gen-gap-12",
+          "assetVersion": 2,
+          "sourceSha256": "6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6",
+          "sourceBytes": 55269,
+          "sha256": "6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6",
+          "bytes": 55269
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYj4L9zxWwwCdTB1CwL6k2UrGZic9ZAC3aCkbPWpPRD1icYrAO4Giang94icG9oxc9iaCjfYlmlzIfjWAic3qdeCAs17Im8rdxIOV1g80/0",
+        "https://p.ipic.vip/daylight-gen-gap-12-6a0813dad2938346.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-12-6a0813dad293.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-12-6a0813dad293.jpg",
+        "https://p.ipic.vip/light-gen-gap-12-6a0813dad293834619cc840e2115bc3331013c6dc32b5e311de81da4eb319df6.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-13",
+      "artifactId": "sha256:2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430:36679",
+      "sha256": "2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430",
+      "bytes": 36679,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhClxudkxKSibwKnbiaCZdRObDNRibDPRjorMkd1AFaLXv46CBD5TdxIbwMvibCDV2ryWd7qOSRd0rAcgGlXNtibmTFYDRFAf7B62yo/0",
+          "assetId": "gen-gap-13",
+          "assetVersion": 2,
+          "sourceSha256": "2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430",
+          "sourceBytes": 36679,
+          "sha256": "5b36c219715903c53204b47de8483f8c8e2bf17d6d927c7bd73ed51f04609733",
+          "bytes": 15166
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-13-2e897a6be0bb7295.jpg",
+          "assetId": "gen-gap-13",
+          "assetVersion": 2,
+          "sourceSha256": "2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430",
+          "sourceBytes": 36679,
+          "sha256": "2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430",
+          "bytes": 36679
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-13-2e897a6be0bb.jpg",
+          "assetId": "gen-gap-13",
+          "assetVersion": 2,
+          "sourceSha256": "2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430",
+          "sourceBytes": 36679,
+          "sha256": "2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430",
+          "bytes": 36679
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-13-2e897a6be0bb.jpg",
+          "assetId": "gen-gap-13",
+          "assetVersion": 2,
+          "sourceSha256": "2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430",
+          "sourceBytes": 36679,
+          "sha256": "2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430",
+          "bytes": 36679
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhClxudkxKSibwKnbiaCZdRObDNRibDPRjorMkd1AFaLXv46CBD5TdxIbwMvibCDV2ryWd7qOSRd0rAcgGlXNtibmTFYDRFAf7B62yo/0",
+        "https://p.ipic.vip/daylight-gen-gap-13-2e897a6be0bb7295.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-13-2e897a6be0bb.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-13-2e897a6be0bb.jpg",
+        "https://p.ipic.vip/light-gen-gap-13-2e897a6be0bb7295bf98a94cba6b26013be3c92ba9049c38a0becd8c35990430.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-14",
+      "artifactId": "sha256:9239114bdbb7bce7bcc5375aa4228959a61ddec185ae1899b61739b7e88c36c8:86502",
+      "sha256": "9239114bdbb7bce7bcc5375aa4228959a61ddec185ae1899b61739b7e88c36c8",
+      "bytes": 86502,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhs5KquXVKdEI3p7fqWFOUcTZHicDVQ6lvCibicR7uDsM2Tat4CAZmw6eGMrCBBibqXia42VqfdJKqP1fr9x4FgoZeKf6eq8XuQrKIM/0",
+          "assetId": "gen-gap-14",
+          "assetVersion": 3,
+          "sourceSha256": "9239114bdbb7bce7bcc5375aa4228959a61ddec185ae1899b61739b7e88c36c8",
+          "sourceBytes": 86502,
+          "sha256": "90526bc3f9e54194b5e9472693eb70ad7d3bd052b42f5d7d3f818d9e58a6a5dd",
+          "bytes": 59027
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-14-9239114bdbb7bce7.jpg",
+          "assetId": "gen-gap-14",
+          "assetVersion": 3,
+          "sourceSha256": "9239114bdbb7bce7bcc5375aa4228959a61ddec185ae1899b61739b7e88c36c8",
+          "sourceBytes": 86502,
+          "sha256": "9239114bdbb7bce7bcc5375aa4228959a61ddec185ae1899b61739b7e88c36c8",
+          "bytes": 86502
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-14-9239114bdbb7.jpg",
+          "assetId": "gen-gap-14",
+          "assetVersion": 3,
+          "sourceSha256": "9239114bdbb7bce7bcc5375aa4228959a61ddec185ae1899b61739b7e88c36c8",
+          "sourceBytes": 86502,
+          "sha256": "9239114bdbb7bce7bcc5375aa4228959a61ddec185ae1899b61739b7e88c36c8",
+          "bytes": 86502
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-14-9239114bdbb7.jpg",
+          "assetId": "gen-gap-14",
+          "assetVersion": 3,
+          "sourceSha256": "9239114bdbb7bce7bcc5375aa4228959a61ddec185ae1899b61739b7e88c36c8",
+          "sourceBytes": 86502,
+          "sha256": "9239114bdbb7bce7bcc5375aa4228959a61ddec185ae1899b61739b7e88c36c8",
+          "bytes": 86502
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhs5KquXVKdEI3p7fqWFOUcTZHicDVQ6lvCibicR7uDsM2Tat4CAZmw6eGMrCBBibqXia42VqfdJKqP1fr9x4FgoZeKf6eq8XuQrKIM/0",
+        "https://p.ipic.vip/daylight-gen-gap-14-9239114bdbb7bce7.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-14-9239114bdbb7.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-14-9239114bdbb7.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-15",
+      "artifactId": "sha256:07b07fa91a94c41fd3c3efb7e61c7080d329aa47deeb206230422564cd38f53c:82518",
+      "sha256": "07b07fa91a94c41fd3c3efb7e61c7080d329aa47deeb206230422564cd38f53c",
+      "bytes": 82518,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhqiaXrfyFwuWabczicQY8ibF0J8koB23KOe7RyDOs4IDDO6hVL36z5CHcanGoyucOtBnrmvD8IUTfziaFfSDU9wGrfoHUmNhBRes4/0",
+          "assetId": "gen-gap-15",
+          "assetVersion": 3,
+          "sourceSha256": "07b07fa91a94c41fd3c3efb7e61c7080d329aa47deeb206230422564cd38f53c",
+          "sourceBytes": 82518,
+          "sha256": "be66dca663290fcd0b113d6fae23a80691a62518ee5bd62602828c57405e1135",
+          "bytes": 68566
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-15-07b07fa91a94c41f.jpg",
+          "assetId": "gen-gap-15",
+          "assetVersion": 3,
+          "sourceSha256": "07b07fa91a94c41fd3c3efb7e61c7080d329aa47deeb206230422564cd38f53c",
+          "sourceBytes": 82518,
+          "sha256": "07b07fa91a94c41fd3c3efb7e61c7080d329aa47deeb206230422564cd38f53c",
+          "bytes": 82518
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-15-07b07fa91a94.jpg",
+          "assetId": "gen-gap-15",
+          "assetVersion": 3,
+          "sourceSha256": "07b07fa91a94c41fd3c3efb7e61c7080d329aa47deeb206230422564cd38f53c",
+          "sourceBytes": 82518,
+          "sha256": "07b07fa91a94c41fd3c3efb7e61c7080d329aa47deeb206230422564cd38f53c",
+          "bytes": 82518
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-15-07b07fa91a94.jpg",
+          "assetId": "gen-gap-15",
+          "assetVersion": 3,
+          "sourceSha256": "07b07fa91a94c41fd3c3efb7e61c7080d329aa47deeb206230422564cd38f53c",
+          "sourceBytes": 82518,
+          "sha256": "07b07fa91a94c41fd3c3efb7e61c7080d329aa47deeb206230422564cd38f53c",
+          "bytes": 82518
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhqiaXrfyFwuWabczicQY8ibF0J8koB23KOe7RyDOs4IDDO6hVL36z5CHcanGoyucOtBnrmvD8IUTfziaFfSDU9wGrfoHUmNhBRes4/0",
+        "https://p.ipic.vip/daylight-gen-gap-15-07b07fa91a94c41f.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-15-07b07fa91a94.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-15-07b07fa91a94.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-16",
+      "artifactId": "sha256:0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83:44626",
+      "sha256": "0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83",
+      "bytes": 44626,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYhibxzic0BM8Yl8CAkwN31Ej7RQjdmAlkyw6HqMdN9EUOreS6GfMSTefWk76IjWe53bwmZvd8BtFBrHNfADuwdv6AMcALxspdHGE/0",
+          "assetId": "gen-gap-16",
+          "assetVersion": 2,
+          "sourceSha256": "0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83",
+          "sourceBytes": 44626,
+          "sha256": "a7df4cf14811c947dfe9f207ac0b56f115057f472933a30285afa7592de124db",
+          "bytes": 22000
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-16-0a6bf50b51b39721.jpg",
+          "assetId": "gen-gap-16",
+          "assetVersion": 2,
+          "sourceSha256": "0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83",
+          "sourceBytes": 44626,
+          "sha256": "0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83",
+          "bytes": 44626
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-16-0a6bf50b51b3.jpg",
+          "assetId": "gen-gap-16",
+          "assetVersion": 2,
+          "sourceSha256": "0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83",
+          "sourceBytes": 44626,
+          "sha256": "0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83",
+          "bytes": 44626
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-16-0a6bf50b51b3.jpg",
+          "assetId": "gen-gap-16",
+          "assetVersion": 2,
+          "sourceSha256": "0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83",
+          "sourceBytes": 44626,
+          "sha256": "0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83",
+          "bytes": 44626
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYhibxzic0BM8Yl8CAkwN31Ej7RQjdmAlkyw6HqMdN9EUOreS6GfMSTefWk76IjWe53bwmZvd8BtFBrHNfADuwdv6AMcALxspdHGE/0",
+        "https://p.ipic.vip/daylight-gen-gap-16-0a6bf50b51b39721.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-16-0a6bf50b51b3.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-16-0a6bf50b51b3.jpg",
+        "https://p.ipic.vip/light-gen-gap-16-0a6bf50b51b39721cda1412a4e7cdfb9e7fa0a8cc433559c0ca94209da24da83.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-17",
+      "artifactId": "sha256:d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328:50566",
+      "sha256": "d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328",
+      "bytes": 50566,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhiaEvlLO1f2Ww6C1IDyibxFiaZP9kOd6JC36bmqFmjCDdpZGJKlO5womjCnBH6by8sgpZglkT8H51dg7Rg6Y5tStMtMVlTnib26nw/0",
+          "assetId": "gen-gap-17",
+          "assetVersion": 2,
+          "sourceSha256": "d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328",
+          "sourceBytes": 50566,
+          "sha256": "47d9d37382eab332727f8119a726731e10f3f12b6d36190c4fef2f0eadee5347",
+          "bytes": 29078
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-17-d25f0ea7c07638ce.jpg",
+          "assetId": "gen-gap-17",
+          "assetVersion": 2,
+          "sourceSha256": "d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328",
+          "sourceBytes": 50566,
+          "sha256": "d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328",
+          "bytes": 50566
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-17-d25f0ea7c076.jpg",
+          "assetId": "gen-gap-17",
+          "assetVersion": 2,
+          "sourceSha256": "d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328",
+          "sourceBytes": 50566,
+          "sha256": "d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328",
+          "bytes": 50566
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-17-d25f0ea7c076.jpg",
+          "assetId": "gen-gap-17",
+          "assetVersion": 2,
+          "sourceSha256": "d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328",
+          "sourceBytes": 50566,
+          "sha256": "d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328",
+          "bytes": 50566
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhiaEvlLO1f2Ww6C1IDyibxFiaZP9kOd6JC36bmqFmjCDdpZGJKlO5womjCnBH6by8sgpZglkT8H51dg7Rg6Y5tStMtMVlTnib26nw/0",
+        "https://p.ipic.vip/daylight-gen-gap-17-d25f0ea7c07638ce.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-17-d25f0ea7c076.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-17-d25f0ea7c076.jpg",
+        "https://p.ipic.vip/light-gen-gap-17-d25f0ea7c07638ce75f873e74c97ea0ed11d2037e4400aa5fcdda1f431bf2328.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-18",
+      "artifactId": "sha256:8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e:56354",
+      "sha256": "8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e",
+      "bytes": 56354,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYgKNb3p42r8ZsjibxsqvQUGXgavwVupVZspicO4ytmibbF4vNzFsufIlU8EvjdthYCo3D2UACgZZ5n725icJIssgyO14J41icMex8gE/0",
+          "assetId": "gen-gap-18",
+          "assetVersion": 2,
+          "sourceSha256": "8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e",
+          "sourceBytes": 56354,
+          "sha256": "d4593b434571d18ad64eac46465066c1e73002fdc5cdd56fe1a7843253715ca9",
+          "bytes": 31895
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-18-8b1ac50a83dac4ef.jpg",
+          "assetId": "gen-gap-18",
+          "assetVersion": 2,
+          "sourceSha256": "8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e",
+          "sourceBytes": 56354,
+          "sha256": "8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e",
+          "bytes": 56354
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-18-8b1ac50a83da.jpg",
+          "assetId": "gen-gap-18",
+          "assetVersion": 2,
+          "sourceSha256": "8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e",
+          "sourceBytes": 56354,
+          "sha256": "8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e",
+          "bytes": 56354
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-18-8b1ac50a83da.jpg",
+          "assetId": "gen-gap-18",
+          "assetVersion": 2,
+          "sourceSha256": "8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e",
+          "sourceBytes": 56354,
+          "sha256": "8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e",
+          "bytes": 56354
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYgKNb3p42r8ZsjibxsqvQUGXgavwVupVZspicO4ytmibbF4vNzFsufIlU8EvjdthYCo3D2UACgZZ5n725icJIssgyO14J41icMex8gE/0",
+        "https://p.ipic.vip/daylight-gen-gap-18-8b1ac50a83dac4ef.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-18-8b1ac50a83da.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-18-8b1ac50a83da.jpg",
+        "https://p.ipic.vip/light-gen-gap-18-8b1ac50a83dac4eff614551a44ffd09adb79a0f7b1f28145de6f8cab706dd43e.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-19",
+      "artifactId": "sha256:8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090:45172",
+      "sha256": "8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090",
+      "bytes": 45172,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhV9JyXuJic2ricFYDrE4o6ql6Vl3kbA73Nj4hHaQJwBL8DiaQqwtD7xv0gNaXEa8bq82mObAAKnwxibC8d9VSjuQuDd3niavBMNsww/0",
+          "assetId": "gen-gap-19",
+          "assetVersion": 2,
+          "sourceSha256": "8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090",
+          "sourceBytes": 45172,
+          "sha256": "99c35e9eda787e864d99070e4085f802ed8d4e63c46102d7c7e4ccc7cfc26c0c",
+          "bytes": 23188
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-19-8a2cc3e81e566ae4.jpg",
+          "assetId": "gen-gap-19",
+          "assetVersion": 2,
+          "sourceSha256": "8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090",
+          "sourceBytes": 45172,
+          "sha256": "8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090",
+          "bytes": 45172
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-19-8a2cc3e81e56.jpg",
+          "assetId": "gen-gap-19",
+          "assetVersion": 2,
+          "sourceSha256": "8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090",
+          "sourceBytes": 45172,
+          "sha256": "8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090",
+          "bytes": 45172
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-19-8a2cc3e81e56.jpg",
+          "assetId": "gen-gap-19",
+          "assetVersion": 2,
+          "sourceSha256": "8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090",
+          "sourceBytes": 45172,
+          "sha256": "8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090",
+          "bytes": 45172
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhV9JyXuJic2ricFYDrE4o6ql6Vl3kbA73Nj4hHaQJwBL8DiaQqwtD7xv0gNaXEa8bq82mObAAKnwxibC8d9VSjuQuDd3niavBMNsww/0",
+        "https://p.ipic.vip/daylight-gen-gap-19-8a2cc3e81e566ae4.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-19-8a2cc3e81e56.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-19-8a2cc3e81e56.jpg",
+        "https://p.ipic.vip/light-gen-gap-19-8a2cc3e81e566ae4195730f8619f8f68d767c0b1f048750bec0ea2b79c750090.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-20",
+      "artifactId": "sha256:6fd404b08f7d52ce486c5df48b638d88b3b643ba060d6a4e7266e031495dc7ea:66718",
+      "sha256": "6fd404b08f7d52ce486c5df48b638d88b3b643ba060d6a4e7266e031495dc7ea",
+      "bytes": 66718,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhz15axK4OqBNboV5QbVYDWIovey5ibjJxziaoS9qicwjhVia4ZWgkYSWNxYXbrvVIsIouYib1BLheN9rNIVico1R3oYLxBuCoibC3nU4/0",
+          "assetId": "gen-gap-20",
+          "assetVersion": 3,
+          "sourceSha256": "6fd404b08f7d52ce486c5df48b638d88b3b643ba060d6a4e7266e031495dc7ea",
+          "sourceBytes": 66718,
+          "sha256": "4d5861fd7961fa34d997641e7bb37a2d896ca081d6ddc506a87a82c5cf11aae8",
+          "bytes": 36029
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-20-6fd404b08f7d52ce.jpg",
+          "assetId": "gen-gap-20",
+          "assetVersion": 3,
+          "sourceSha256": "6fd404b08f7d52ce486c5df48b638d88b3b643ba060d6a4e7266e031495dc7ea",
+          "sourceBytes": 66718,
+          "sha256": "6fd404b08f7d52ce486c5df48b638d88b3b643ba060d6a4e7266e031495dc7ea",
+          "bytes": 66718
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-20-6fd404b08f7d.jpg",
+          "assetId": "gen-gap-20",
+          "assetVersion": 3,
+          "sourceSha256": "6fd404b08f7d52ce486c5df48b638d88b3b643ba060d6a4e7266e031495dc7ea",
+          "sourceBytes": 66718,
+          "sha256": "6fd404b08f7d52ce486c5df48b638d88b3b643ba060d6a4e7266e031495dc7ea",
+          "bytes": 66718
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-20-6fd404b08f7d.jpg",
+          "assetId": "gen-gap-20",
+          "assetVersion": 3,
+          "sourceSha256": "6fd404b08f7d52ce486c5df48b638d88b3b643ba060d6a4e7266e031495dc7ea",
+          "sourceBytes": 66718,
+          "sha256": "6fd404b08f7d52ce486c5df48b638d88b3b643ba060d6a4e7266e031495dc7ea",
+          "bytes": 66718
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhz15axK4OqBNboV5QbVYDWIovey5ibjJxziaoS9qicwjhVia4ZWgkYSWNxYXbrvVIsIouYib1BLheN9rNIVico1R3oYLxBuCoibC3nU4/0",
+        "https://p.ipic.vip/daylight-gen-gap-20-6fd404b08f7d52ce.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-20-6fd404b08f7d.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-20-6fd404b08f7d.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-21",
+      "artifactId": "sha256:1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47:45549",
+      "sha256": "1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47",
+      "bytes": 45549,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYgH0TxT1xueU2M4PXFjIx0WxIiaa4lI6pvXjZw8hzzwPHc8wXYLOxqfZjou8FxXeQXVnBmbf7dAQUP8Lia2hyStYeia7ISL86F2vQ/0",
+          "assetId": "gen-gap-21",
+          "assetVersion": 2,
+          "sourceSha256": "1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47",
+          "sourceBytes": 45549,
+          "sha256": "f62169ba0b49096edad2bdf4e1b6197ecd1e6188f795aed17d8ba94f086063e7",
+          "bytes": 24119
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-21-1956b10b25db9fd7.jpg",
+          "assetId": "gen-gap-21",
+          "assetVersion": 2,
+          "sourceSha256": "1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47",
+          "sourceBytes": 45549,
+          "sha256": "1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47",
+          "bytes": 45549
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-21-1956b10b25db.jpg",
+          "assetId": "gen-gap-21",
+          "assetVersion": 2,
+          "sourceSha256": "1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47",
+          "sourceBytes": 45549,
+          "sha256": "1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47",
+          "bytes": 45549
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-21-1956b10b25db.jpg",
+          "assetId": "gen-gap-21",
+          "assetVersion": 2,
+          "sourceSha256": "1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47",
+          "sourceBytes": 45549,
+          "sha256": "1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47",
+          "bytes": 45549
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYgH0TxT1xueU2M4PXFjIx0WxIiaa4lI6pvXjZw8hzzwPHc8wXYLOxqfZjou8FxXeQXVnBmbf7dAQUP8Lia2hyStYeia7ISL86F2vQ/0",
+        "https://p.ipic.vip/daylight-gen-gap-21-1956b10b25db9fd7.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-21-1956b10b25db.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-21-1956b10b25db.jpg",
+        "https://p.ipic.vip/light-gen-gap-21-1956b10b25db9fd770f86663a185e9ecf71f4f4811e7dd6d6513432139d07b47.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-22",
+      "artifactId": "sha256:69f7c4c0fae36100ea383ce9c9da745d3c7db262986b28e2930064d690cd1910:57776",
+      "sha256": "69f7c4c0fae36100ea383ce9c9da745d3c7db262986b28e2930064d690cd1910",
+      "bytes": 57776,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhyF5Ntvx895LuMdt3MCwwBb6TctTIBnMTYbzRpXuibs7zicib2hFgmbBicDPzkzZowADGibiclfgrXWDvZV8PLhADCWmaMkyCmoXSaE/0",
+          "assetId": "gen-gap-22",
+          "assetVersion": 3,
+          "sourceSha256": "69f7c4c0fae36100ea383ce9c9da745d3c7db262986b28e2930064d690cd1910",
+          "sourceBytes": 57776,
+          "sha256": "3a1995af80d07de2d01db737454aec580428e604b952ce08258f5b93a7645f62",
+          "bytes": 35763
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-22-69f7c4c0fae36100.jpg",
+          "assetId": "gen-gap-22",
+          "assetVersion": 3,
+          "sourceSha256": "69f7c4c0fae36100ea383ce9c9da745d3c7db262986b28e2930064d690cd1910",
+          "sourceBytes": 57776,
+          "sha256": "69f7c4c0fae36100ea383ce9c9da745d3c7db262986b28e2930064d690cd1910",
+          "bytes": 57776
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-22-69f7c4c0fae3.jpg",
+          "assetId": "gen-gap-22",
+          "assetVersion": 3,
+          "sourceSha256": "69f7c4c0fae36100ea383ce9c9da745d3c7db262986b28e2930064d690cd1910",
+          "sourceBytes": 57776,
+          "sha256": "69f7c4c0fae36100ea383ce9c9da745d3c7db262986b28e2930064d690cd1910",
+          "bytes": 57776
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-22-69f7c4c0fae3.jpg",
+          "assetId": "gen-gap-22",
+          "assetVersion": 3,
+          "sourceSha256": "69f7c4c0fae36100ea383ce9c9da745d3c7db262986b28e2930064d690cd1910",
+          "sourceBytes": 57776,
+          "sha256": "69f7c4c0fae36100ea383ce9c9da745d3c7db262986b28e2930064d690cd1910",
+          "bytes": 57776
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhyF5Ntvx895LuMdt3MCwwBb6TctTIBnMTYbzRpXuibs7zicib2hFgmbBicDPzkzZowADGibiclfgrXWDvZV8PLhADCWmaMkyCmoXSaE/0",
+        "https://p.ipic.vip/daylight-gen-gap-22-69f7c4c0fae36100.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-22-69f7c4c0fae3.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-22-69f7c4c0fae3.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-23",
+      "artifactId": "sha256:607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434:47477",
+      "sha256": "607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434",
+      "bytes": 47477,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYiaYeqkDS2w8ssicNZbRavGy5YU02sawcCnqP7m742icYvBvicmly8Nr9vqcib6axlalbab9P7udzn7nmPI5BsXQibqLqHuC0WjTE8Ko/0",
+          "assetId": "gen-gap-23",
+          "assetVersion": 2,
+          "sourceSha256": "607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434",
+          "sourceBytes": 47477,
+          "sha256": "6b91164c3a507a1df488abfdc2795c4eb93aa630226f43382d381de025bc789c",
+          "bytes": 25793
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-23-607e48f065c57580.jpg",
+          "assetId": "gen-gap-23",
+          "assetVersion": 2,
+          "sourceSha256": "607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434",
+          "sourceBytes": 47477,
+          "sha256": "607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434",
+          "bytes": 47477
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-23-607e48f065c5.jpg",
+          "assetId": "gen-gap-23",
+          "assetVersion": 2,
+          "sourceSha256": "607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434",
+          "sourceBytes": 47477,
+          "sha256": "607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434",
+          "bytes": 47477
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-23-607e48f065c5.jpg",
+          "assetId": "gen-gap-23",
+          "assetVersion": 2,
+          "sourceSha256": "607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434",
+          "sourceBytes": 47477,
+          "sha256": "607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434",
+          "bytes": 47477
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYiaYeqkDS2w8ssicNZbRavGy5YU02sawcCnqP7m742icYvBvicmly8Nr9vqcib6axlalbab9P7udzn7nmPI5BsXQibqLqHuC0WjTE8Ko/0",
+        "https://p.ipic.vip/daylight-gen-gap-23-607e48f065c57580.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-23-607e48f065c5.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-23-607e48f065c5.jpg",
+        "https://p.ipic.vip/light-gen-gap-23-607e48f065c575805911dd2e298b7dab0bcb165626271a5b06361410b7578434.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-24",
+      "artifactId": "sha256:0588c18096f1d5b3986ed9040458b666a035f63b2a6d24ba08cb1428f17d7a15:100146",
+      "sha256": "0588c18096f1d5b3986ed9040458b666a035f63b2a6d24ba08cb1428f17d7a15",
+      "bytes": 100146,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYghiawIjiccSx5vqiczeQW6qD5VbBygeJUibzIC6L9TIHGn9hCsPFKuTotwiabiaQXGmK6QLRwXW8MqWXcibNsxhkT3ouibnv8OaJZf2l4/0",
+          "assetId": "gen-gap-24",
+          "assetVersion": 3,
+          "sourceSha256": "0588c18096f1d5b3986ed9040458b666a035f63b2a6d24ba08cb1428f17d7a15",
+          "sourceBytes": 100146,
+          "sha256": "9dcc887ee6482f457a836cd6c72adfb46247433427412a5dbe4c733d6f2fe03d",
+          "bytes": 69745
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-24-0588c18096f1d5b3.jpg",
+          "assetId": "gen-gap-24",
+          "assetVersion": 3,
+          "sourceSha256": "0588c18096f1d5b3986ed9040458b666a035f63b2a6d24ba08cb1428f17d7a15",
+          "sourceBytes": 100146,
+          "sha256": "0588c18096f1d5b3986ed9040458b666a035f63b2a6d24ba08cb1428f17d7a15",
+          "bytes": 100146
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-24-0588c18096f1.jpg",
+          "assetId": "gen-gap-24",
+          "assetVersion": 3,
+          "sourceSha256": "0588c18096f1d5b3986ed9040458b666a035f63b2a6d24ba08cb1428f17d7a15",
+          "sourceBytes": 100146,
+          "sha256": "0588c18096f1d5b3986ed9040458b666a035f63b2a6d24ba08cb1428f17d7a15",
+          "bytes": 100146
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-24-0588c18096f1.jpg",
+          "assetId": "gen-gap-24",
+          "assetVersion": 3,
+          "sourceSha256": "0588c18096f1d5b3986ed9040458b666a035f63b2a6d24ba08cb1428f17d7a15",
+          "sourceBytes": 100146,
+          "sha256": "0588c18096f1d5b3986ed9040458b666a035f63b2a6d24ba08cb1428f17d7a15",
+          "bytes": 100146
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYghiawIjiccSx5vqiczeQW6qD5VbBygeJUibzIC6L9TIHGn9hCsPFKuTotwiabiaQXGmK6QLRwXW8MqWXcibNsxhkT3ouibnv8OaJZf2l4/0",
+        "https://p.ipic.vip/daylight-gen-gap-24-0588c18096f1d5b3.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-24-0588c18096f1.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-24-0588c18096f1.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-25",
+      "artifactId": "sha256:1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606:46650",
+      "sha256": "1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606",
+      "bytes": 46650,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjp0yUg5LYkP079UwwUCHJALyqo3GDbKnVZhT7vV0FQe9iaAFECunfgWoJxEcYwtmdmjt4WpibxlHddMzJbwnzwYqgEVBM6ibDdL0/0",
+          "assetId": "gen-gap-25",
+          "assetVersion": 2,
+          "sourceSha256": "1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606",
+          "sourceBytes": 46650,
+          "sha256": "8a70c3cab17ccbadbd0dbcc0380bce460bc79d4cc56eceec8c0d22a8bdc4a8ef",
+          "bytes": 23282
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-25-1fa767f961b7d272.jpg",
+          "assetId": "gen-gap-25",
+          "assetVersion": 2,
+          "sourceSha256": "1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606",
+          "sourceBytes": 46650,
+          "sha256": "1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606",
+          "bytes": 46650
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-25-1fa767f961b7.jpg",
+          "assetId": "gen-gap-25",
+          "assetVersion": 2,
+          "sourceSha256": "1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606",
+          "sourceBytes": 46650,
+          "sha256": "1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606",
+          "bytes": 46650
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-25-1fa767f961b7.jpg",
+          "assetId": "gen-gap-25",
+          "assetVersion": 2,
+          "sourceSha256": "1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606",
+          "sourceBytes": 46650,
+          "sha256": "1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606",
+          "bytes": 46650
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjp0yUg5LYkP079UwwUCHJALyqo3GDbKnVZhT7vV0FQe9iaAFECunfgWoJxEcYwtmdmjt4WpibxlHddMzJbwnzwYqgEVBM6ibDdL0/0",
+        "https://p.ipic.vip/daylight-gen-gap-25-1fa767f961b7d272.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-25-1fa767f961b7.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-25-1fa767f961b7.jpg",
+        "https://p.ipic.vip/light-gen-gap-25-1fa767f961b7d2725330f3fd4bd3ca005cbab1d25149050d550f176e485e3606.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-26",
+      "artifactId": "sha256:d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e:41609",
+      "sha256": "d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e",
+      "bytes": 41609,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjYQgLC9xlRAjoG6C0QLjcibH56S3CEgxu6X3HNMd3Imu9yIF6UFZibRHe8iaiaIRuicmicibuwPyh7S6M0LlwKCTibrOicj37h3dh90dP4/0",
+          "assetId": "gen-gap-26",
+          "assetVersion": 2,
+          "sourceSha256": "d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e",
+          "sourceBytes": 41609,
+          "sha256": "bc2b65cbe9af1e7b41f08ab9312e1303ee1a16f98d8acff015adebffba83effd",
+          "bytes": 20881
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-26-d62f6a4eed5cfb41.jpg",
+          "assetId": "gen-gap-26",
+          "assetVersion": 2,
+          "sourceSha256": "d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e",
+          "sourceBytes": 41609,
+          "sha256": "d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e",
+          "bytes": 41609
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-26-d62f6a4eed5c.jpg",
+          "assetId": "gen-gap-26",
+          "assetVersion": 2,
+          "sourceSha256": "d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e",
+          "sourceBytes": 41609,
+          "sha256": "d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e",
+          "bytes": 41609
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-26-d62f6a4eed5c.jpg",
+          "assetId": "gen-gap-26",
+          "assetVersion": 2,
+          "sourceSha256": "d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e",
+          "sourceBytes": 41609,
+          "sha256": "d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e",
+          "bytes": 41609
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjYQgLC9xlRAjoG6C0QLjcibH56S3CEgxu6X3HNMd3Imu9yIF6UFZibRHe8iaiaIRuicmicibuwPyh7S6M0LlwKCTibrOicj37h3dh90dP4/0",
+        "https://p.ipic.vip/daylight-gen-gap-26-d62f6a4eed5cfb41.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-26-d62f6a4eed5c.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-26-d62f6a4eed5c.jpg",
+        "https://p.ipic.vip/light-gen-gap-26-d62f6a4eed5cfb413b7446a97e97a0c4e8d5dcc11dd8c2e3d139f62ab3c9a35e.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-27",
+      "artifactId": "sha256:79c4f6e95d70ab549bdabac45272398f5399af3148811a8aface6b710786eb54:91294",
+      "sha256": "79c4f6e95d70ab549bdabac45272398f5399af3148811a8aface6b710786eb54",
+      "bytes": 91294,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYia4jkBUMoLKdJxwb1cQYs5JYB9FketYhNwSNNjtf30V9sZZIjokStpotsiaETWUDDsXDamS3fcEibibQf4siahxkLdiaQI3UlicgyXwg/0",
+          "assetId": "gen-gap-27",
+          "assetVersion": 3,
+          "sourceSha256": "79c4f6e95d70ab549bdabac45272398f5399af3148811a8aface6b710786eb54",
+          "sourceBytes": 91294,
+          "sha256": "a27ea18e90da85503b354f0f22c0070d8cd60b669f591e6f0d53809d456a1985",
+          "bytes": 58227
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-27-79c4f6e95d70ab54.jpg",
+          "assetId": "gen-gap-27",
+          "assetVersion": 3,
+          "sourceSha256": "79c4f6e95d70ab549bdabac45272398f5399af3148811a8aface6b710786eb54",
+          "sourceBytes": 91294,
+          "sha256": "79c4f6e95d70ab549bdabac45272398f5399af3148811a8aface6b710786eb54",
+          "bytes": 91294
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-27-79c4f6e95d70.jpg",
+          "assetId": "gen-gap-27",
+          "assetVersion": 3,
+          "sourceSha256": "79c4f6e95d70ab549bdabac45272398f5399af3148811a8aface6b710786eb54",
+          "sourceBytes": 91294,
+          "sha256": "79c4f6e95d70ab549bdabac45272398f5399af3148811a8aface6b710786eb54",
+          "bytes": 91294
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-27-79c4f6e95d70.jpg",
+          "assetId": "gen-gap-27",
+          "assetVersion": 3,
+          "sourceSha256": "79c4f6e95d70ab549bdabac45272398f5399af3148811a8aface6b710786eb54",
+          "sourceBytes": 91294,
+          "sha256": "79c4f6e95d70ab549bdabac45272398f5399af3148811a8aface6b710786eb54",
+          "bytes": 91294
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYia4jkBUMoLKdJxwb1cQYs5JYB9FketYhNwSNNjtf30V9sZZIjokStpotsiaETWUDDsXDamS3fcEibibQf4siahxkLdiaQI3UlicgyXwg/0",
+        "https://p.ipic.vip/daylight-gen-gap-27-79c4f6e95d70ab54.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-27-79c4f6e95d70.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-27-79c4f6e95d70.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-28",
+      "artifactId": "sha256:2f01a92b9715dc5e152cacf84df2a5243f389dcb577d5a7f03aeee9d05899594:57239",
+      "sha256": "2f01a92b9715dc5e152cacf84df2a5243f389dcb577d5a7f03aeee9d05899594",
+      "bytes": 57239,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYgy75ibibfjtQWbZTDNLRr4JBbCv9we2c0k78XDpomctVTkC2H5eTK75ovcfxBxqL1FmeiaZiaichh41BhCAYwERdKibn538YDf8PwQ8/0",
+          "assetId": "gen-gap-28",
+          "assetVersion": 3,
+          "sourceSha256": "2f01a92b9715dc5e152cacf84df2a5243f389dcb577d5a7f03aeee9d05899594",
+          "sourceBytes": 57239,
+          "sha256": "9960ddf210be03bf99740f50a703e59395c3b9fe5b13ddcc8cf7e61b079ba766",
+          "bytes": 24675
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-28-2f01a92b9715dc5e.jpg",
+          "assetId": "gen-gap-28",
+          "assetVersion": 3,
+          "sourceSha256": "2f01a92b9715dc5e152cacf84df2a5243f389dcb577d5a7f03aeee9d05899594",
+          "sourceBytes": 57239,
+          "sha256": "2f01a92b9715dc5e152cacf84df2a5243f389dcb577d5a7f03aeee9d05899594",
+          "bytes": 57239
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-28-2f01a92b9715.jpg",
+          "assetId": "gen-gap-28",
+          "assetVersion": 3,
+          "sourceSha256": "2f01a92b9715dc5e152cacf84df2a5243f389dcb577d5a7f03aeee9d05899594",
+          "sourceBytes": 57239,
+          "sha256": "2f01a92b9715dc5e152cacf84df2a5243f389dcb577d5a7f03aeee9d05899594",
+          "bytes": 57239
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-28-2f01a92b9715.jpg",
+          "assetId": "gen-gap-28",
+          "assetVersion": 3,
+          "sourceSha256": "2f01a92b9715dc5e152cacf84df2a5243f389dcb577d5a7f03aeee9d05899594",
+          "sourceBytes": 57239,
+          "sha256": "2f01a92b9715dc5e152cacf84df2a5243f389dcb577d5a7f03aeee9d05899594",
+          "bytes": 57239
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYgy75ibibfjtQWbZTDNLRr4JBbCv9we2c0k78XDpomctVTkC2H5eTK75ovcfxBxqL1FmeiaZiaichh41BhCAYwERdKibn538YDf8PwQ8/0",
+        "https://p.ipic.vip/daylight-gen-gap-28-2f01a92b9715dc5e.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-28-2f01a92b9715.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-28-2f01a92b9715.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-29",
+      "artifactId": "sha256:5c4af7e50936309e417a7b228830805c1ff2a6d9f5ae599560de2d9ee8711870:59406",
+      "sha256": "5c4af7e50936309e417a7b228830805c1ff2a6d9f5ae599560de2d9ee8711870",
+      "bytes": 59406,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjqR6L16OyNjyTXCRP49krgicx9wxEbgIRgnSNaibxFZ4HDVjP1zwhmWZG3wXNIHObd94ibGLlIpGwhngG82Wl41EdloGcGPldX5c/0",
+          "assetId": "gen-gap-29",
+          "assetVersion": 3,
+          "sourceSha256": "5c4af7e50936309e417a7b228830805c1ff2a6d9f5ae599560de2d9ee8711870",
+          "sourceBytes": 59406,
+          "sha256": "e17bb992511fef21d6996611b8fac441c7b71aad9a175a0e89f6d94147dd6ae1",
+          "bytes": 34848
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-29-5c4af7e50936309e.jpg",
+          "assetId": "gen-gap-29",
+          "assetVersion": 3,
+          "sourceSha256": "5c4af7e50936309e417a7b228830805c1ff2a6d9f5ae599560de2d9ee8711870",
+          "sourceBytes": 59406,
+          "sha256": "5c4af7e50936309e417a7b228830805c1ff2a6d9f5ae599560de2d9ee8711870",
+          "bytes": 59406
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-29-5c4af7e50936.jpg",
+          "assetId": "gen-gap-29",
+          "assetVersion": 3,
+          "sourceSha256": "5c4af7e50936309e417a7b228830805c1ff2a6d9f5ae599560de2d9ee8711870",
+          "sourceBytes": 59406,
+          "sha256": "5c4af7e50936309e417a7b228830805c1ff2a6d9f5ae599560de2d9ee8711870",
+          "bytes": 59406
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-29-5c4af7e50936.jpg",
+          "assetId": "gen-gap-29",
+          "assetVersion": 3,
+          "sourceSha256": "5c4af7e50936309e417a7b228830805c1ff2a6d9f5ae599560de2d9ee8711870",
+          "sourceBytes": 59406,
+          "sha256": "5c4af7e50936309e417a7b228830805c1ff2a6d9f5ae599560de2d9ee8711870",
+          "bytes": 59406
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjqR6L16OyNjyTXCRP49krgicx9wxEbgIRgnSNaibxFZ4HDVjP1zwhmWZG3wXNIHObd94ibGLlIpGwhngG82Wl41EdloGcGPldX5c/0",
+        "https://p.ipic.vip/daylight-gen-gap-29-5c4af7e50936309e.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-29-5c4af7e50936.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-29-5c4af7e50936.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-30",
+      "artifactId": "sha256:5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404:40390",
+      "sha256": "5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404",
+      "bytes": 40390,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhb14R6rqlFQlJWkqGM9oQmNmo39X5MO0iaPSSOHkV5Fvx4Fw8Lr9ObskIaCzX1aO7cc8pjmHpdqa2AYdxAznpXXNDowSCzbSa4/0",
+          "assetId": "gen-gap-30",
+          "assetVersion": 2,
+          "sourceSha256": "5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404",
+          "sourceBytes": 40390,
+          "sha256": "20955237262df6b3bf16f2aa084b318c5b00bf13faf861d6d79c482473138f64",
+          "bytes": 18142
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-30-5a5d37b056e35d3f.jpg",
+          "assetId": "gen-gap-30",
+          "assetVersion": 2,
+          "sourceSha256": "5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404",
+          "sourceBytes": 40390,
+          "sha256": "5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404",
+          "bytes": 40390
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-30-5a5d37b056e3.jpg",
+          "assetId": "gen-gap-30",
+          "assetVersion": 2,
+          "sourceSha256": "5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404",
+          "sourceBytes": 40390,
+          "sha256": "5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404",
+          "bytes": 40390
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-30-5a5d37b056e3.jpg",
+          "assetId": "gen-gap-30",
+          "assetVersion": 2,
+          "sourceSha256": "5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404",
+          "sourceBytes": 40390,
+          "sha256": "5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404",
+          "bytes": 40390
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhb14R6rqlFQlJWkqGM9oQmNmo39X5MO0iaPSSOHkV5Fvx4Fw8Lr9ObskIaCzX1aO7cc8pjmHpdqa2AYdxAznpXXNDowSCzbSa4/0",
+        "https://p.ipic.vip/daylight-gen-gap-30-5a5d37b056e35d3f.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-30-5a5d37b056e3.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-30-5a5d37b056e3.jpg",
+        "https://p.ipic.vip/light-gen-gap-30-5a5d37b056e35d3ff50701f8ebecfc4e80772d6279c24cc2264f216e5f959404.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-31",
+      "artifactId": "sha256:d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd:44193",
+      "sha256": "d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd",
+      "bytes": 44193,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYgJYGA4pBdLzoE8Bcc6siatN0yL7Cic6czPqh6r326LevXqx6ib8pBicbLE9tGjRQzYTpSxQsCPTww3WTsdSibFtaXY4uLXds41ibgk4/0",
+          "assetId": "gen-gap-31",
+          "assetVersion": 2,
+          "sourceSha256": "d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd",
+          "sourceBytes": 44193,
+          "sha256": "0bb572fc8924e13e84b9922698e22efc44329d55ae63ff6a564ff6a2741c8455",
+          "bytes": 21721
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-31-d6b6529e98f3e4ca.jpg",
+          "assetId": "gen-gap-31",
+          "assetVersion": 2,
+          "sourceSha256": "d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd",
+          "sourceBytes": 44193,
+          "sha256": "d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd",
+          "bytes": 44193
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-31-d6b6529e98f3.jpg",
+          "assetId": "gen-gap-31",
+          "assetVersion": 2,
+          "sourceSha256": "d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd",
+          "sourceBytes": 44193,
+          "sha256": "d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd",
+          "bytes": 44193
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-31-d6b6529e98f3.jpg",
+          "assetId": "gen-gap-31",
+          "assetVersion": 2,
+          "sourceSha256": "d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd",
+          "sourceBytes": 44193,
+          "sha256": "d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd",
+          "bytes": 44193
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYgJYGA4pBdLzoE8Bcc6siatN0yL7Cic6czPqh6r326LevXqx6ib8pBicbLE9tGjRQzYTpSxQsCPTww3WTsdSibFtaXY4uLXds41ibgk4/0",
+        "https://p.ipic.vip/daylight-gen-gap-31-d6b6529e98f3e4ca.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-31-d6b6529e98f3.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-31-d6b6529e98f3.jpg",
+        "https://p.ipic.vip/light-gen-gap-31-d6b6529e98f3e4caf5f3913492f7573d7a0f2430e33fec949dcbf525eed055cd.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-32",
+      "artifactId": "sha256:a9f54f64fc47aa792cfb9dd76c8030fc9c4970417ce7706a84bd8d74285b3a73:61159",
+      "sha256": "a9f54f64fc47aa792cfb9dd76c8030fc9c4970417ce7706a84bd8d74285b3a73",
+      "bytes": 61159,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjiciaaCYUbdr6iahD8m9hNzNNAMfc2jXBO0FMboXRy9Ksmqpg8nsxnn2lvThnRugeAuGbgMG4SYQFXGiau2MNjdUdSstYCjJibfd28/0",
+          "assetId": "gen-gap-32",
+          "assetVersion": 3,
+          "sourceSha256": "a9f54f64fc47aa792cfb9dd76c8030fc9c4970417ce7706a84bd8d74285b3a73",
+          "sourceBytes": 61159,
+          "sha256": "4b805f8ff89cdcb8ae69e4d03394d1d5291170f8b9027d75a1094006b01b4a60",
+          "bytes": 37658
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-32-a9f54f64fc47aa79.jpg",
+          "assetId": "gen-gap-32",
+          "assetVersion": 3,
+          "sourceSha256": "a9f54f64fc47aa792cfb9dd76c8030fc9c4970417ce7706a84bd8d74285b3a73",
+          "sourceBytes": 61159,
+          "sha256": "a9f54f64fc47aa792cfb9dd76c8030fc9c4970417ce7706a84bd8d74285b3a73",
+          "bytes": 61159
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-32-a9f54f64fc47.jpg",
+          "assetId": "gen-gap-32",
+          "assetVersion": 3,
+          "sourceSha256": "a9f54f64fc47aa792cfb9dd76c8030fc9c4970417ce7706a84bd8d74285b3a73",
+          "sourceBytes": 61159,
+          "sha256": "a9f54f64fc47aa792cfb9dd76c8030fc9c4970417ce7706a84bd8d74285b3a73",
+          "bytes": 61159
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-32-a9f54f64fc47.jpg",
+          "assetId": "gen-gap-32",
+          "assetVersion": 3,
+          "sourceSha256": "a9f54f64fc47aa792cfb9dd76c8030fc9c4970417ce7706a84bd8d74285b3a73",
+          "sourceBytes": 61159,
+          "sha256": "a9f54f64fc47aa792cfb9dd76c8030fc9c4970417ce7706a84bd8d74285b3a73",
+          "bytes": 61159
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjiciaaCYUbdr6iahD8m9hNzNNAMfc2jXBO0FMboXRy9Ksmqpg8nsxnn2lvThnRugeAuGbgMG4SYQFXGiau2MNjdUdSstYCjJibfd28/0",
+        "https://p.ipic.vip/daylight-gen-gap-32-a9f54f64fc47aa79.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-32-a9f54f64fc47.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-32-a9f54f64fc47.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-33",
+      "artifactId": "sha256:fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be:38071",
+      "sha256": "fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be",
+      "bytes": 38071,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYgNgFdf7drHvzT3k4Hw2WfC37v531JoXMEoNUYbhicf0twWCvqQiadfiaAFokM4XibVRrgSfVia5BicyHTmvMdBd9OibqYkKnG6YXEzpQ/0",
+          "assetId": "gen-gap-33",
+          "assetVersion": 2,
+          "sourceSha256": "fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be",
+          "sourceBytes": 38071,
+          "sha256": "0bc3826f79125757c6ac5d9058ef04784c7e68b1ed8d70815cfa805d2aebfec0",
+          "bytes": 16694
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-33-fc77866000c93911.jpg",
+          "assetId": "gen-gap-33",
+          "assetVersion": 2,
+          "sourceSha256": "fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be",
+          "sourceBytes": 38071,
+          "sha256": "fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be",
+          "bytes": 38071
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-33-fc77866000c9.jpg",
+          "assetId": "gen-gap-33",
+          "assetVersion": 2,
+          "sourceSha256": "fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be",
+          "sourceBytes": 38071,
+          "sha256": "fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be",
+          "bytes": 38071
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-33-fc77866000c9.jpg",
+          "assetId": "gen-gap-33",
+          "assetVersion": 2,
+          "sourceSha256": "fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be",
+          "sourceBytes": 38071,
+          "sha256": "fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be",
+          "bytes": 38071
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYgNgFdf7drHvzT3k4Hw2WfC37v531JoXMEoNUYbhicf0twWCvqQiadfiaAFokM4XibVRrgSfVia5BicyHTmvMdBd9OibqYkKnG6YXEzpQ/0",
+        "https://p.ipic.vip/daylight-gen-gap-33-fc77866000c93911.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-33-fc77866000c9.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-33-fc77866000c9.jpg",
+        "https://p.ipic.vip/light-gen-gap-33-fc77866000c93911377d72e64201b16e0a493e42440cdd969d949273962c32be.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-34",
+      "artifactId": "sha256:cb88cc5f6e186cd505df3fc8801e5eaa58a21d6af016c028f3ea597820766d31:71501",
+      "sha256": "cb88cc5f6e186cd505df3fc8801e5eaa58a21d6af016c028f3ea597820766d31",
+      "bytes": 71501,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYjW0aRpianYPLVwGmnaXD2iaNAqDw5H3cIogYuYjmCicqt4xiaaZTsBfZ5hqE6J57sZ2r7icicpDSajZ2zibiaeb6XibcqjN8erCPk6KiaJM/0",
+          "assetId": "gen-gap-34",
+          "assetVersion": 3,
+          "sourceSha256": "cb88cc5f6e186cd505df3fc8801e5eaa58a21d6af016c028f3ea597820766d31",
+          "sourceBytes": 71501,
+          "sha256": "cba297a30f37ff3a0a339a613d9c348724dec2c8c132010928a1a2a59f9aad9b",
+          "bytes": 42802
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-34-cb88cc5f6e186cd5.jpg",
+          "assetId": "gen-gap-34",
+          "assetVersion": 3,
+          "sourceSha256": "cb88cc5f6e186cd505df3fc8801e5eaa58a21d6af016c028f3ea597820766d31",
+          "sourceBytes": 71501,
+          "sha256": "cb88cc5f6e186cd505df3fc8801e5eaa58a21d6af016c028f3ea597820766d31",
+          "bytes": 71501
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-34-cb88cc5f6e18.jpg",
+          "assetId": "gen-gap-34",
+          "assetVersion": 3,
+          "sourceSha256": "cb88cc5f6e186cd505df3fc8801e5eaa58a21d6af016c028f3ea597820766d31",
+          "sourceBytes": 71501,
+          "sha256": "cb88cc5f6e186cd505df3fc8801e5eaa58a21d6af016c028f3ea597820766d31",
+          "bytes": 71501
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-34-cb88cc5f6e18.jpg",
+          "assetId": "gen-gap-34",
+          "assetVersion": 3,
+          "sourceSha256": "cb88cc5f6e186cd505df3fc8801e5eaa58a21d6af016c028f3ea597820766d31",
+          "sourceBytes": 71501,
+          "sha256": "cb88cc5f6e186cd505df3fc8801e5eaa58a21d6af016c028f3ea597820766d31",
+          "bytes": 71501
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYjW0aRpianYPLVwGmnaXD2iaNAqDw5H3cIogYuYjmCicqt4xiaaZTsBfZ5hqE6J57sZ2r7icicpDSajZ2zibiaeb6XibcqjN8erCPk6KiaJM/0",
+        "https://p.ipic.vip/daylight-gen-gap-34-cb88cc5f6e186cd5.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-34-cb88cc5f6e18.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-34-cb88cc5f6e18.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-35",
+      "artifactId": "sha256:ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89:37588",
+      "sha256": "ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89",
+      "bytes": 37588,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYg3MH1zQoxxWTZOUzgVX8kQx0h0mfND0cdFUuOWPz1NNppHneicozsDfUd4PNRFqono3cDAHcZyZAUCFxPbJgkX26rB7GoXyhDo/0",
+          "assetId": "gen-gap-35",
+          "assetVersion": 2,
+          "sourceSha256": "ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89",
+          "sourceBytes": 37588,
+          "sha256": "26fe09803caaafc74197d0f5d4a4723fa7a7131f665ceec6ea5400ec072e8624",
+          "bytes": 15669
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-35-ac6534b5b7913a42.jpg",
+          "assetId": "gen-gap-35",
+          "assetVersion": 2,
+          "sourceSha256": "ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89",
+          "sourceBytes": 37588,
+          "sha256": "ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89",
+          "bytes": 37588
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-35-ac6534b5b791.jpg",
+          "assetId": "gen-gap-35",
+          "assetVersion": 2,
+          "sourceSha256": "ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89",
+          "sourceBytes": 37588,
+          "sha256": "ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89",
+          "bytes": 37588
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-35-ac6534b5b791.jpg",
+          "assetId": "gen-gap-35",
+          "assetVersion": 2,
+          "sourceSha256": "ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89",
+          "sourceBytes": 37588,
+          "sha256": "ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89",
+          "bytes": 37588
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYg3MH1zQoxxWTZOUzgVX8kQx0h0mfND0cdFUuOWPz1NNppHneicozsDfUd4PNRFqono3cDAHcZyZAUCFxPbJgkX26rB7GoXyhDo/0",
+        "https://p.ipic.vip/daylight-gen-gap-35-ac6534b5b7913a42.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-35-ac6534b5b791.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-35-ac6534b5b791.jpg",
+        "https://p.ipic.vip/light-gen-gap-35-ac6534b5b7913a42851831169697af61f7224405031efc212a406e5f1228bc89.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-36",
+      "artifactId": "sha256:1ee9856fc0b519601ce1b33e17907358d4e76b6cc0c7de4a2bf86bc96f4b7091:39494",
+      "sha256": "1ee9856fc0b519601ce1b33e17907358d4e76b6cc0c7de4a2bf86bc96f4b7091",
+      "bytes": 39494,
+      "assetVersion": 2,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYhHAUiacauntQ3Sye7cdYrCicFJbsTm77eSuBDHTeMJInLxrHbDERRq19mxRAibpicuB41CQE0XjcgXx4BCShOsPDtX0W68LPuSnPY/0",
+          "assetId": "gen-gap-36",
+          "assetVersion": 2,
+          "sourceSha256": "1ee9856fc0b519601ce1b33e17907358d4e76b6cc0c7de4a2bf86bc96f4b7091",
+          "sourceBytes": 39494,
+          "sha256": "2ba21da96fb03d3e3ec954b00fa31d5ecd20b312322a3bf19517eccab41c8740",
+          "bytes": 17374
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-36-1ee9856fc0b51960.jpg",
+          "assetId": "gen-gap-36",
+          "assetVersion": 2,
+          "sourceSha256": "1ee9856fc0b519601ce1b33e17907358d4e76b6cc0c7de4a2bf86bc96f4b7091",
+          "sourceBytes": 39494,
+          "sha256": "1ee9856fc0b519601ce1b33e17907358d4e76b6cc0c7de4a2bf86bc96f4b7091",
+          "bytes": 39494
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-36-1ee9856fc0b5.jpg",
+          "assetId": "gen-gap-36",
+          "assetVersion": 2,
+          "sourceSha256": "1ee9856fc0b519601ce1b33e17907358d4e76b6cc0c7de4a2bf86bc96f4b7091",
+          "sourceBytes": 39494,
+          "sha256": "1ee9856fc0b519601ce1b33e17907358d4e76b6cc0c7de4a2bf86bc96f4b7091",
+          "bytes": 39494
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-36-1ee9856fc0b5.jpg",
+          "assetId": "gen-gap-36",
+          "assetVersion": 2,
+          "sourceSha256": "1ee9856fc0b519601ce1b33e17907358d4e76b6cc0c7de4a2bf86bc96f4b7091",
+          "sourceBytes": 39494,
+          "sha256": "1ee9856fc0b519601ce1b33e17907358d4e76b6cc0c7de4a2bf86bc96f4b7091",
+          "bytes": 39494
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYhHAUiacauntQ3Sye7cdYrCicFJbsTm77eSuBDHTeMJInLxrHbDERRq19mxRAibpicuB41CQE0XjcgXx4BCShOsPDtX0W68LPuSnPY/0",
+        "https://p.ipic.vip/daylight-gen-gap-36-1ee9856fc0b51960.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-36-1ee9856fc0b5.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-36-1ee9856fc0b5.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-37",
+      "artifactId": "sha256:36a7325b4ca78ffe9c42c7cdbfbb4f8596cfc0491bac12f76da24ea954e62f7d:63279",
+      "sha256": "36a7325b4ca78ffe9c42c7cdbfbb4f8596cfc0491bac12f76da24ea954e62f7d",
+      "bytes": 63279,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYguvlHCib4icds0FDNIRXllibhCS9oGztKo0UhMF3ndghFw0vmZTWyicP1iaeUpdEtv6IjnKdpEaCKibBmNlVaB78vzViaWIBxLv4kIAI/0",
+          "assetId": "gen-gap-37",
+          "assetVersion": 3,
+          "sourceSha256": "36a7325b4ca78ffe9c42c7cdbfbb4f8596cfc0491bac12f76da24ea954e62f7d",
+          "sourceBytes": 63279,
+          "sha256": "2e58cac2f66f935ddb8deb06c04bb79be128d250bf60368cce5be120c2e11f7e",
+          "bytes": 38007
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-37-36a7325b4ca78ffe.jpg",
+          "assetId": "gen-gap-37",
+          "assetVersion": 3,
+          "sourceSha256": "36a7325b4ca78ffe9c42c7cdbfbb4f8596cfc0491bac12f76da24ea954e62f7d",
+          "sourceBytes": 63279,
+          "sha256": "36a7325b4ca78ffe9c42c7cdbfbb4f8596cfc0491bac12f76da24ea954e62f7d",
+          "bytes": 63279
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-37-36a7325b4ca7.jpg",
+          "assetId": "gen-gap-37",
+          "assetVersion": 3,
+          "sourceSha256": "36a7325b4ca78ffe9c42c7cdbfbb4f8596cfc0491bac12f76da24ea954e62f7d",
+          "sourceBytes": 63279,
+          "sha256": "36a7325b4ca78ffe9c42c7cdbfbb4f8596cfc0491bac12f76da24ea954e62f7d",
+          "bytes": 63279
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-37-36a7325b4ca7.jpg",
+          "assetId": "gen-gap-37",
+          "assetVersion": 3,
+          "sourceSha256": "36a7325b4ca78ffe9c42c7cdbfbb4f8596cfc0491bac12f76da24ea954e62f7d",
+          "sourceBytes": 63279,
+          "sha256": "36a7325b4ca78ffe9c42c7cdbfbb4f8596cfc0491bac12f76da24ea954e62f7d",
+          "bytes": 63279
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYguvlHCib4icds0FDNIRXllibhCS9oGztKo0UhMF3ndghFw0vmZTWyicP1iaeUpdEtv6IjnKdpEaCKibBmNlVaB78vzViaWIBxLv4kIAI/0",
+        "https://p.ipic.vip/daylight-gen-gap-37-36a7325b4ca78ffe.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-37-36a7325b4ca7.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-37-36a7325b4ca7.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-38",
+      "artifactId": "sha256:331ec48e6f02d52716e3c81d8edfbe956a07cb50f2959dad1ecb6c722ab4b075:53191",
+      "sha256": "331ec48e6f02d52716e3c81d8edfbe956a07cb50f2959dad1ecb6c722ab4b075",
+      "bytes": 53191,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYhicGNNiczWiaIbibwVicQQLZ6dKphlyiaB84ZLRfQQg0ZvnyHCnno2ibibFMJaYfMPdvs8utBCib5J66AEQOJO857VEmVRtE91uUyT67cE/0",
+          "assetId": "gen-gap-38",
+          "assetVersion": 3,
+          "sourceSha256": "331ec48e6f02d52716e3c81d8edfbe956a07cb50f2959dad1ecb6c722ab4b075",
+          "sourceBytes": 53191,
+          "sha256": "c92ace62f999a2175cfabe1ae151e3fe4bc5a33faa31895b6c3d1e1e4e9d190d",
+          "bytes": 28276
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-38-331ec48e6f02d527.jpg",
+          "assetId": "gen-gap-38",
+          "assetVersion": 3,
+          "sourceSha256": "331ec48e6f02d52716e3c81d8edfbe956a07cb50f2959dad1ecb6c722ab4b075",
+          "sourceBytes": 53191,
+          "sha256": "331ec48e6f02d52716e3c81d8edfbe956a07cb50f2959dad1ecb6c722ab4b075",
+          "bytes": 53191
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-38-331ec48e6f02.jpg",
+          "assetId": "gen-gap-38",
+          "assetVersion": 3,
+          "sourceSha256": "331ec48e6f02d52716e3c81d8edfbe956a07cb50f2959dad1ecb6c722ab4b075",
+          "sourceBytes": 53191,
+          "sha256": "331ec48e6f02d52716e3c81d8edfbe956a07cb50f2959dad1ecb6c722ab4b075",
+          "bytes": 53191
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-38-331ec48e6f02.jpg",
+          "assetId": "gen-gap-38",
+          "assetVersion": 3,
+          "sourceSha256": "331ec48e6f02d52716e3c81d8edfbe956a07cb50f2959dad1ecb6c722ab4b075",
+          "sourceBytes": 53191,
+          "sha256": "331ec48e6f02d52716e3c81d8edfbe956a07cb50f2959dad1ecb6c722ab4b075",
+          "bytes": 53191
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYhicGNNiczWiaIbibwVicQQLZ6dKphlyiaB84ZLRfQQg0ZvnyHCnno2ibibFMJaYfMPdvs8utBCib5J66AEQOJO857VEmVRtE91uUyT67cE/0",
+        "https://p.ipic.vip/daylight-gen-gap-38-331ec48e6f02d527.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-38-331ec48e6f02.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-38-331ec48e6f02.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-39",
+      "artifactId": "sha256:e835a83d96298bff30127a5695314aadaea15706d063d10ac089a42ab8cb1ab2:67387",
+      "sha256": "e835a83d96298bff30127a5695314aadaea15706d063d10ac089a42ab8cb1ab2",
+      "bytes": 67387,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYhAr6wO9zcNkHCOGsuAMIGl5r5x5t0E763gbkMmqGrhGIzasJXR084gmft8eVvA54HvYt6BicUKQdwZHbywia7StHaWmibjcVn8Po/0",
+          "assetId": "gen-gap-39",
+          "assetVersion": 3,
+          "sourceSha256": "e835a83d96298bff30127a5695314aadaea15706d063d10ac089a42ab8cb1ab2",
+          "sourceBytes": 67387,
+          "sha256": "1cb164b10c9326b547b9c766cf12ab6616e32d0fc11b53a8893102457944029f",
+          "bytes": 42816
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-39-e835a83d96298bff.jpg",
+          "assetId": "gen-gap-39",
+          "assetVersion": 3,
+          "sourceSha256": "e835a83d96298bff30127a5695314aadaea15706d063d10ac089a42ab8cb1ab2",
+          "sourceBytes": 67387,
+          "sha256": "e835a83d96298bff30127a5695314aadaea15706d063d10ac089a42ab8cb1ab2",
+          "bytes": 67387
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-39-e835a83d9629.jpg",
+          "assetId": "gen-gap-39",
+          "assetVersion": 3,
+          "sourceSha256": "e835a83d96298bff30127a5695314aadaea15706d063d10ac089a42ab8cb1ab2",
+          "sourceBytes": 67387,
+          "sha256": "e835a83d96298bff30127a5695314aadaea15706d063d10ac089a42ab8cb1ab2",
+          "bytes": 67387
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-39-e835a83d9629.jpg",
+          "assetId": "gen-gap-39",
+          "assetVersion": 3,
+          "sourceSha256": "e835a83d96298bff30127a5695314aadaea15706d063d10ac089a42ab8cb1ab2",
+          "sourceBytes": 67387,
+          "sha256": "e835a83d96298bff30127a5695314aadaea15706d063d10ac089a42ab8cb1ab2",
+          "bytes": 67387
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYhAr6wO9zcNkHCOGsuAMIGl5r5x5t0E763gbkMmqGrhGIzasJXR084gmft8eVvA54HvYt6BicUKQdwZHbywia7StHaWmibjcVn8Po/0",
+        "https://p.ipic.vip/daylight-gen-gap-39-e835a83d96298bff.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-39-e835a83d9629.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-39-e835a83d9629.jpg"
+      ]
+    },
+    {
+      "id": "gen-gap-40",
+      "artifactId": "sha256:024c67954d9fcca1aed4e4014343657e20ca9e9121a8ce1d2a32495bf7c09ba4:70281",
+      "sha256": "024c67954d9fcca1aed4e4014343657e20ca9e9121a8ce1d2a32495bf7c09ba4",
+      "bytes": 70281,
+      "assetVersion": 3,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhIRQRGiaf1TaWbCafpZF5tzSKN4rKyV10n7jahzA6UesftIyq0ZMzwMhoA9xibmpFFoVJFPmaMU0q8QzqlMSzhtv4vo6HBPJL1k/0",
+          "assetId": "gen-gap-40",
+          "assetVersion": 3,
+          "sourceSha256": "024c67954d9fcca1aed4e4014343657e20ca9e9121a8ce1d2a32495bf7c09ba4",
+          "sourceBytes": 70281,
+          "sha256": "964f1e0b19e4596a3a0aec403994c7bba87bdb20c6bb9ee13c739ca82b17f85b",
+          "bytes": 45524
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-gap-40-024c67954d9fcca1.jpg",
+          "assetId": "gen-gap-40",
+          "assetVersion": 3,
+          "sourceSha256": "024c67954d9fcca1aed4e4014343657e20ca9e9121a8ce1d2a32495bf7c09ba4",
+          "sourceBytes": 70281,
+          "sha256": "024c67954d9fcca1aed4e4014343657e20ca9e9121a8ce1d2a32495bf7c09ba4",
+          "bytes": 70281
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-40-024c67954d9f.jpg",
+          "assetId": "gen-gap-40",
+          "assetVersion": 3,
+          "sourceSha256": "024c67954d9fcca1aed4e4014343657e20ca9e9121a8ce1d2a32495bf7c09ba4",
+          "sourceBytes": 70281,
+          "sha256": "024c67954d9fcca1aed4e4014343657e20ca9e9121a8ce1d2a32495bf7c09ba4",
+          "bytes": 70281
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-40-024c67954d9f.jpg",
+          "assetId": "gen-gap-40",
+          "assetVersion": 3,
+          "sourceSha256": "024c67954d9fcca1aed4e4014343657e20ca9e9121a8ce1d2a32495bf7c09ba4",
+          "sourceBytes": 70281,
+          "sha256": "024c67954d9fcca1aed4e4014343657e20ca9e9121a8ce1d2a32495bf7c09ba4",
+          "bytes": 70281
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhIRQRGiaf1TaWbCafpZF5tzSKN4rKyV10n7jahzA6UesftIyq0ZMzwMhoA9xibmpFFoVJFPmaMU0q8QzqlMSzhtv4vo6HBPJL1k/0",
+        "https://p.ipic.vip/daylight-gen-gap-40-024c67954d9fcca1.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-gap-40-024c67954d9f.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-gap-40-024c67954d9f.jpg"
+      ]
+    },
+    {
+      "id": "mountain-path",
+      "artifactId": "sha256:8f42fd7e84d19cbc5a369d6d13c7ae3a84fecc1e74dbdd254d97f3263b02e141:23007",
+      "sha256": "8f42fd7e84d19cbc5a369d6d13c7ae3a84fecc1e74dbdd254d97f3263b02e141",
+      "bytes": 23007,
+      "assetVersion": 1,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhWaylG36TDibianu5jSzSAjJicRUqYvfvO189ou5gwRrTLiaiaib2MX0l6icnKWxialltVjQovxUicFVEdxpxD4oILsVPInfNwmGcWT1YQ/0",
+          "assetId": "mountain-path",
+          "assetVersion": 1,
+          "sourceSha256": "8f42fd7e84d19cbc5a369d6d13c7ae3a84fecc1e74dbdd254d97f3263b02e141",
+          "sourceBytes": 23007,
+          "sha256": "2e4f31b4d807269565317eebe0285093a6868ef99bc4377da2fc69f62466b3dc",
+          "bytes": 16551
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-mountain-path-8f42fd7e84d19cbc.jpg",
+          "assetId": "mountain-path",
+          "assetVersion": 1,
+          "sourceSha256": "8f42fd7e84d19cbc5a369d6d13c7ae3a84fecc1e74dbdd254d97f3263b02e141",
+          "sourceBytes": 23007,
+          "sha256": "8f42fd7e84d19cbc5a369d6d13c7ae3a84fecc1e74dbdd254d97f3263b02e141",
+          "bytes": 23007
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/mountain-path-8f42fd7e84d1.jpg",
+          "assetId": "mountain-path",
+          "assetVersion": 1,
+          "sourceSha256": "8f42fd7e84d19cbc5a369d6d13c7ae3a84fecc1e74dbdd254d97f3263b02e141",
+          "sourceBytes": 23007,
+          "sha256": "8f42fd7e84d19cbc5a369d6d13c7ae3a84fecc1e74dbdd254d97f3263b02e141",
+          "bytes": 23007
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/mountain-path-8f42fd7e84d1.jpg",
+          "assetId": "mountain-path",
+          "assetVersion": 1,
+          "sourceSha256": "8f42fd7e84d19cbc5a369d6d13c7ae3a84fecc1e74dbdd254d97f3263b02e141",
+          "sourceBytes": 23007,
+          "sha256": "8f42fd7e84d19cbc5a369d6d13c7ae3a84fecc1e74dbdd254d97f3263b02e141",
+          "bytes": 23007
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYhWaylG36TDibianu5jSzSAjJicRUqYvfvO189ou5gwRrTLiaiaib2MX0l6icnKWxialltVjQovxUicFVEdxpxD4oILsVPInfNwmGcWT1YQ/0",
+        "https://p.ipic.vip/daylight-mountain-path-8f42fd7e84d19cbc.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/mountain-path-8f42fd7e84d1.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/mountain-path-8f42fd7e84d1.jpg",
+        "https://p.ipic.vip/YP5pBA.jpg"
+      ]
+    },
+    {
+      "id": "quiet-coast",
+      "artifactId": "sha256:09aa4adfcd5fb0ef887d4964f2e7fb9452ea727453632bb3d83b9f5cc9e99e7a:25240",
+      "sha256": "09aa4adfcd5fb0ef887d4964f2e7fb9452ea727453632bb3d83b9f5cc9e99e7a",
+      "bytes": 25240,
+      "assetVersion": 1,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYhSMfztk0rHFkx9dTpL1e8UEnibIkCJZwJzsgcy1lTEgD8nMTJzF1CKmJiclvKILVxnibUwyFHoibAMaVQGBZTdSLBlh4ib1nxqic8co/0",
+          "assetId": "quiet-coast",
+          "assetVersion": 1,
+          "sourceSha256": "09aa4adfcd5fb0ef887d4964f2e7fb9452ea727453632bb3d83b9f5cc9e99e7a",
+          "sourceBytes": 25240,
+          "sha256": "77d4dcd942c42e0206c94f9d7f79f6e4ca61aa60cb748468cfd5ce67534f8033",
+          "bytes": 19129
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-quiet-coast-09aa4adfcd5fb0ef.jpg",
+          "assetId": "quiet-coast",
+          "assetVersion": 1,
+          "sourceSha256": "09aa4adfcd5fb0ef887d4964f2e7fb9452ea727453632bb3d83b9f5cc9e99e7a",
+          "sourceBytes": 25240,
+          "sha256": "09aa4adfcd5fb0ef887d4964f2e7fb9452ea727453632bb3d83b9f5cc9e99e7a",
+          "bytes": 25240
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/quiet-coast-09aa4adfcd5f.jpg",
+          "assetId": "quiet-coast",
+          "assetVersion": 1,
+          "sourceSha256": "09aa4adfcd5fb0ef887d4964f2e7fb9452ea727453632bb3d83b9f5cc9e99e7a",
+          "sourceBytes": 25240,
+          "sha256": "09aa4adfcd5fb0ef887d4964f2e7fb9452ea727453632bb3d83b9f5cc9e99e7a",
+          "bytes": 25240
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/quiet-coast-09aa4adfcd5f.jpg",
+          "assetId": "quiet-coast",
+          "assetVersion": 1,
+          "sourceSha256": "09aa4adfcd5fb0ef887d4964f2e7fb9452ea727453632bb3d83b9f5cc9e99e7a",
+          "sourceBytes": 25240,
+          "sha256": "09aa4adfcd5fb0ef887d4964f2e7fb9452ea727453632bb3d83b9f5cc9e99e7a",
+          "bytes": 25240
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYhSMfztk0rHFkx9dTpL1e8UEnibIkCJZwJzsgcy1lTEgD8nMTJzF1CKmJiclvKILVxnibUwyFHoibAMaVQGBZTdSLBlh4ib1nxqic8co/0",
+        "https://p.ipic.vip/daylight-quiet-coast-09aa4adfcd5fb0ef.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/quiet-coast-09aa4adfcd5f.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/quiet-coast-09aa4adfcd5f.jpg"
+      ]
+    },
+    {
+      "id": "rain-window",
+      "artifactId": "sha256:1880d108ec479b0dbfe7b13fe4df52d04faf4b68368f6f6b0cd5358243ac1170:42922",
+      "sha256": "1880d108ec479b0dbfe7b13fe4df52d04faf4b68368f6f6b0cd5358243ac1170",
+      "bytes": 42922,
+      "assetVersion": 1,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYgRwAPouUGD01K2M8WBImKBIrjiaYIX9HGnwvzljYFibJFp8ZfOdnLR688h9BO3IciavVEUIEegy4rQqoS6tP3pzNVHRkJ4nDpFhU/0",
+          "assetId": "rain-window",
+          "assetVersion": 1,
+          "sourceSha256": "1880d108ec479b0dbfe7b13fe4df52d04faf4b68368f6f6b0cd5358243ac1170",
+          "sourceBytes": 42922,
+          "sha256": "0cf30b4fa06ed190b19bcdf8841a27735d6a410306f93c0eec13b0800fd89451",
+          "bytes": 34497
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-rain-window-1880d108ec479b0d.jpg",
+          "assetId": "rain-window",
+          "assetVersion": 1,
+          "sourceSha256": "1880d108ec479b0dbfe7b13fe4df52d04faf4b68368f6f6b0cd5358243ac1170",
+          "sourceBytes": 42922,
+          "sha256": "1880d108ec479b0dbfe7b13fe4df52d04faf4b68368f6f6b0cd5358243ac1170",
+          "bytes": 42922
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/rain-window-1880d108ec47.jpg",
+          "assetId": "rain-window",
+          "assetVersion": 1,
+          "sourceSha256": "1880d108ec479b0dbfe7b13fe4df52d04faf4b68368f6f6b0cd5358243ac1170",
+          "sourceBytes": 42922,
+          "sha256": "1880d108ec479b0dbfe7b13fe4df52d04faf4b68368f6f6b0cd5358243ac1170",
+          "bytes": 42922
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/rain-window-1880d108ec47.jpg",
+          "assetId": "rain-window",
+          "assetVersion": 1,
+          "sourceSha256": "1880d108ec479b0dbfe7b13fe4df52d04faf4b68368f6f6b0cd5358243ac1170",
+          "sourceBytes": 42922,
+          "sha256": "1880d108ec479b0dbfe7b13fe4df52d04faf4b68368f6f6b0cd5358243ac1170",
+          "bytes": 42922
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/mmbiz_jpg/MQclufiagTYgRwAPouUGD01K2M8WBImKBIrjiaYIX9HGnwvzljYFibJFp8ZfOdnLR688h9BO3IciavVEUIEegy4rQqoS6tP3pzNVHRkJ4nDpFhU/0",
+        "https://p.ipic.vip/daylight-rain-window-1880d108ec479b0d.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/rain-window-1880d108ec47.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/rain-window-1880d108ec47.jpg",
+        "https://p.ipic.vip/KWlfaQ.jpg"
+      ]
+    },
+    {
+      "id": "spring-hills",
+      "artifactId": "sha256:b45fb1070f0999860ec58b3cbd9c8d85a8667ae6e4e4cff231eb5b04dbef08e9:21076",
+      "sha256": "b45fb1070f0999860ec58b3cbd9c8d85a8667ae6e4e4cff231eb5b04dbef08e9",
+      "bytes": 21076,
+      "assetVersion": 1,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYiaW0eYCxTicqMorL6oUpG7sXvVM2ZUomFISbIR8zcMmBicLoTLkVfjZVMiaUPrPeqeSDKBHwcOS5VFXoiazf784yRiatgTrpGdiboMxA/0",
+          "assetId": "spring-hills",
+          "assetVersion": 1,
+          "sourceSha256": "b45fb1070f0999860ec58b3cbd9c8d85a8667ae6e4e4cff231eb5b04dbef08e9",
+          "sourceBytes": 21076,
+          "sha256": "3d2fffce418c832a9210847892bcafcfb2a75bc187953da49b68d5a5c3e9fa79",
+          "bytes": 15251
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-spring-hills-b45fb1070f099986.jpg",
+          "assetId": "spring-hills",
+          "assetVersion": 1,
+          "sourceSha256": "b45fb1070f0999860ec58b3cbd9c8d85a8667ae6e4e4cff231eb5b04dbef08e9",
+          "sourceBytes": 21076,
+          "sha256": "b45fb1070f0999860ec58b3cbd9c8d85a8667ae6e4e4cff231eb5b04dbef08e9",
+          "bytes": 21076
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/spring-hills-b45fb1070f09.jpg",
+          "assetId": "spring-hills",
+          "assetVersion": 1,
+          "sourceSha256": "b45fb1070f0999860ec58b3cbd9c8d85a8667ae6e4e4cff231eb5b04dbef08e9",
+          "sourceBytes": 21076,
+          "sha256": "b45fb1070f0999860ec58b3cbd9c8d85a8667ae6e4e4cff231eb5b04dbef08e9",
+          "bytes": 21076
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/spring-hills-b45fb1070f09.jpg",
+          "assetId": "spring-hills",
+          "assetVersion": 1,
+          "sourceSha256": "b45fb1070f0999860ec58b3cbd9c8d85a8667ae6e4e4cff231eb5b04dbef08e9",
+          "sourceBytes": 21076,
+          "sha256": "b45fb1070f0999860ec58b3cbd9c8d85a8667ae6e4e4cff231eb5b04dbef08e9",
+          "bytes": 21076
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYiaW0eYCxTicqMorL6oUpG7sXvVM2ZUomFISbIR8zcMmBicLoTLkVfjZVMiaUPrPeqeSDKBHwcOS5VFXoiazf784yRiatgTrpGdiboMxA/0",
+        "https://p.ipic.vip/daylight-spring-hills-b45fb1070f099986.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/spring-hills-b45fb1070f09.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/spring-hills-b45fb1070f09.jpg",
+        "https://p.ipic.vip/mAiJog.jpg"
+      ]
+    }
+  ],
+  "fonts": [
+    {
+      "id": "kuaile",
+      "artifactId": "sha256:402f0c67676caaa81ac70c1e727d9ac80ea12f9f9dd8b3efc23963c341530f66:621552",
+      "sha256": "402f0c67676caaa81ac70c1e727d9ac80ea12f9f9dd8b3efc23963c341530f66",
+      "bytes": 621552,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/kuaile-v2-067b0592ec3ac547ed4085ae.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/kuaile-v2-067b0592ec3ac547ed4085ae.ttf"
+        }
+      ]
+    },
+    {
+      "id": "liujianmaocao",
+      "artifactId": "sha256:0c30feaee1dcfbf094bc9bf249d6d9f6d597bbeedf5aae39ec7e1408f790689c:2208168",
+      "sha256": "0c30feaee1dcfbf094bc9bf249d6d9f6d597bbeedf5aae39ec7e1408f790689c",
+      "bytes": 2208168,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/liujianmaocao-v2-9cb444decb9402112f118d86.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/liujianmaocao-v2-9cb444decb9402112f118d86.ttf"
+        }
+      ]
+    },
+    {
+      "id": "longcang",
+      "artifactId": "sha256:901bc63443b70236bd4612dcbabdd850a58e583de04181e1ab142fe4da786279:2890552",
+      "sha256": "901bc63443b70236bd4612dcbabdd850a58e583de04181e1ab142fe4da786279",
+      "bytes": 2890552,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/longcang-v2-b08185299506c8c6ffc82cb7.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/longcang-v2-b08185299506c8c6ffc82cb7.ttf"
+        }
+      ]
+    },
+    {
+      "id": "lxgwmarker",
+      "artifactId": "sha256:35350ce8237b6b5b2de6f8509fd8a1dc699d6b842ea9f642bcf3e8a0720af769:559360",
+      "sha256": "35350ce8237b6b5b2de6f8509fd8a1dc699d6b842ea9f642bcf3e8a0720af769",
+      "bytes": 559360,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/lxgwmarker-v2-465df811a85666702fe0e29f.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/lxgwmarker-v2-465df811a85666702fe0e29f.ttf"
+        }
+      ]
+    },
+    {
+      "id": "mashanzheng",
+      "artifactId": "sha256:97d32f1fcd8c802123b38854e36288acf7b80e445df1997526aaf55da21d13d6:3293028",
+      "sha256": "97d32f1fcd8c802123b38854e36288acf7b80e445df1997526aaf55da21d13d6",
+      "bytes": 3293028,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/mashanzheng-v2-39e053a2cb9c9cb73acbb9a4.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/mashanzheng-v2-39e053a2cb9c9cb73acbb9a4.ttf"
+        }
+      ]
+    },
+    {
+      "id": "notosans",
+      "artifactId": "sha256:b4743786e58c8166326435e57ae3f0661da2447b63d4ee0a9adf865f60c8e2b4:1252608",
+      "sha256": "b4743786e58c8166326435e57ae3f0661da2447b63d4ee0a9adf865f60c8e2b4",
+      "bytes": 1252608,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/notosans-v2-e1159a47918347b588a77bb2.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/notosans-v2-e1159a47918347b588a77bb2.ttf"
+        }
+      ]
+    },
+    {
+      "id": "notoserif",
+      "artifactId": "sha256:217ab3b72e66b6c9be91f3712b8c77507b15fb36f942af85d9527b4486387c11:1740480",
+      "sha256": "217ab3b72e66b6c9be91f3712b8c77507b15fb36f942af85d9527b4486387c11",
+      "bytes": 1740480,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/notoserif-v2-4a6986d15a62215850bee184.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/notoserif-v2-4a6986d15a62215850bee184.ttf"
+        }
+      ]
+    },
+    {
+      "id": "qingke",
+      "artifactId": "sha256:7d13f3543081ac37cfbfaf527c2436be2f1d767974598b3044bea579a7fffd40:1717836",
+      "sha256": "7d13f3543081ac37cfbfaf527c2436be2f1d767974598b3044bea579a7fffd40",
+      "bytes": 1717836,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/qingke-v2-ab5ba0be8038a6ab5bfe779f.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/qingke-v2-ab5ba0be8038a6ab5bfe779f.ttf"
+        }
+      ]
+    },
+    {
+      "id": "wenkai",
+      "artifactId": "sha256:fa4b91756344817160e6169cb7b6fd0eb6bdbb047c22d1359f28f3722b59ef81:2431028",
+      "sha256": "fa4b91756344817160e6169cb7b6fd0eb6bdbb047c22d1359f28f3722b59ef81",
+      "bytes": 2431028,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/wenkai-v2-384fc17642b78a2efa70be3e.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/wenkai-v2-384fc17642b78a2efa70be3e.ttf"
+        }
+      ]
+    },
+    {
+      "id": "xiaowei",
+      "artifactId": "sha256:7f448680389c51f6b13da2fb73134af914ecec61ceef22746368497c42ae53bc:2200464",
+      "sha256": "7f448680389c51f6b13da2fb73134af914ecec61ceef22746368497c42ae53bc",
+      "bytes": 2200464,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/xiaowei-v2-ea30ac2e09c9c4dec5b969fb.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/xiaowei-v2-ea30ac2e09c9c4dec5b969fb.ttf"
+        }
+      ]
+    },
+    {
+      "id": "zhimangxing",
+      "artifactId": "sha256:fd8e816eae1a2478aa66dc4de38af47e9ea1f0d7634a6a64e7376130da56e0e2:1807700",
+      "sha256": "fd8e816eae1a2478aa66dc4de38af47e9ea1f0d7634a6a64e7376130da56e0e2",
+      "bytes": 1807700,
+      "destinations": [
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/fonts/zhimangxing-v2-68a43d545cdf4d7829df4be9.ttf"
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/fonts/zhimangxing-v2-68a43d545cdf4d7829df4be9.ttf"
+        }
+      ]
+    }
+  ]
+}

@@ -140,9 +140,12 @@ export function createDeliveryPages(api) {
   const aiPoolBindings = (kind, pool = aiPool()) => Object.fromEntries((kind === 'image' ? ['annotation', 'generation'] : ['annotation']).map(purpose => [purpose, pool[purpose]?.revision]));
   const taskPoolStale = task => Object.entries(task.poolBindings || { [aiPurpose(task.kind)]: task.plannedResourceRoute?.poolRevision }).some(([purpose, revision]) => !revision || revision !== aiPool()[purpose]?.revision) || task.workParameters && JSON.stringify(task.workParameters) !== JSON.stringify(aiWorkParameters(task.kind));
   const canRestoreImage = task => task?.kind === 'image' && task.state === 'postprocess_failed' && task.retainedImage?.state === 'validated';
-  const taskOutputCount = task => Math.min(task.ids.length, task.done + (task.retainedImage?.state === 'validated' ? 1 : 0));
-  const taskNeedsRepreview = task => !canRestoreImage(task) && (task.repreviewRequired || taskPoolStale(task));
+  const canRestoreAnnotation = task => task?.kind === 'annotate' && task.state === 'postprocess_failed' && task.retainedAnnotations?.state === 'saved-session';
+  const canRestoreOutput = task => canRestoreImage(task) || canRestoreAnnotation(task);
+  const taskOutputCount = task => Math.min(task.ids.length, task.done + (task.retainedImage?.state === 'validated' ? 1 : canRestoreAnnotation(task) ? task.retainedAnnotations.count : 0));
+  const taskNeedsRepreview = task => !canRestoreOutput(task) && (task.repreviewRequired || taskPoolStale(task));
   const imageImportFailure = '配图数据文件被占用或访问受限，保存未完成，请稍后重试并检查文件权限';
+  const annotationSaveFailure = 'AI 任务文件被占用，本地保存未完成；整批标签已保留在原会话';
   const aiCandidates = kind => studioAiCandidates(aiPool(), aiPurpose(kind), model().demoAiAvailability || {});
   const routeLabel = route => route ? `${route.channelName} / ${route.model}` : '暂无可用渠道与模型';
   const sameRoute = (a, b) => !!a && !!b && a.channelId === b.channelId && a.model === b.model;
@@ -249,6 +252,7 @@ export function createDeliveryPages(api) {
   const signature = dates => JSON.stringify([...dates].sort().map(date => [date, model().bindings[date], find(model().bindings[date]?.entryId)]));
   const snapshot = dates => [...dates].sort().map(date => { const row = find(model().bindings[date]?.entryId); return { date, entry: structuredClone(row), imagePath: image(row) }; });
   const problems = dates => [...dates].sort().map(date => ({ date, binding: model().bindings[date], entry: find(model().bindings[date]?.entryId) })).filter(row => !row.entry || row.entry.pool !== 'formal' || !row.entry.text?.trim() || model().assets.find(asset => asset.id === row.entry.defaults?.imageId)?.review !== '已审核');
+  const preflightProblem = row => !row ? '当天内容缺失，请先安排内容。' : row.pool !== 'formal' ? '内容尚未进入正式库。' : !row.text?.trim() ? '内容正文为空。' : '当天配图尚未保存采用。打开当天卡片的配图，等待完整预览后点击“保存配图”，再重新检查发布。';
   const batchRangeStale = () => batchRangeStart !== loadedBatchRange.start || batchRangeEnd !== loadedBatchRange.end;
   const batchAvailableDates = () => dateRows().filter(date => date >= loadedBatchRange.start && date <= loadedBatchRange.end);
   const detailAttrs = (key, initial = false) => `data-pub-details="${h(key)}" ${(publicationDetails.get(key) ?? initial) ? 'open' : ''}`;
@@ -300,7 +304,7 @@ export function createDeliveryPages(api) {
     if (['queued', 'running'].includes(task.state)) buttons += b('暂停', 'ai-pause', '', 'small', id);
     if (task.state === 'paused') buttons += b('继续', 'ai-resume', '', 'primary small', id);
     if (task.state === 'failed') buttons += b('从失败阶段恢复', 'ai-retry', '', 'primary small', id);
-    if (canRestoreImage(task)) buttons += b('恢复已有产物', 'ai-retry', '', 'primary small', id);
+    if (canRestoreOutput(task)) buttons += b('恢复已有产物', 'ai-retry', '', 'primary small', id);
     if (task.state === 'unknown') buttons += b('核对原任务', 'ai-reconcile', '', 'small', id);
     return buttons;
   }
@@ -378,29 +382,29 @@ export function createDeliveryPages(api) {
     const form = taskForm, candidates = aiCandidates(form.kind), primary = candidates[0];
     return back('新建任务', 'ai-list') + head('新建 AI 任务', '先选择准确内容范围，再核对并确认。') + taskSteps(false) + `<div class="nx-form-layout nx-ai nx-task-configuration"><section class="panel nx-form-card"><h2>任务信息</h2>${field('任务名称（选填）', `<input id="ai-name" maxlength="50" placeholder="例如：下周内容语义标注" value="${h(form.name)}">`)}${field('任务类型', select('ai-kind', [['annotate', '内容语义标注'], ['image', '内容配图']], form.kind))}
       <section class="nx-ai-plan-routing" aria-label="资源池选择"><div class="field-grid">${field('优先渠道', `<input value="${h(primary?.channelName || '暂无可用渠道')}" readonly>`)}${field('优先模型', `<input id="ai-model" value="${h(primary?.model || '暂无可用模型')}" readonly>`)}</div><p>${candidates.length} 个启用候选 · 渠道与模型优先级均为 1 最高。${primary ? '失效后保留实际请求记录，按范围切换候选。' : '请先配置并保存可用的渠道与模型。'}</p>${b('管理 AI 资源池', 'ai-resource-pool', 'settings', 'quiet small')}</section>
-      ${field('准确内容范围', `<div class="nx-selection-list">${entries().map(row => `<label class="nx-selection"><input type="checkbox" data-ai-entry="${row.id}" ${form.ids.includes(row.id) ? 'checked' : ''}><span><strong>${h(text(row))}</strong><small>${h(row.author)} · ${row.pool === 'formal' ? '正式' : row.pool === 'draft' ? '草稿' : '备选'}</small></span></label>`).join('')}</div>`)}${field(form.kind === 'image' ? '补充画面要求' : '补充标注要求', `<textarea id="ai-prompt" maxlength="300" placeholder="选填；例如：优先自然意象，保持表达克制">${h(form.prompt)}</textarea>`)}<div class="nx-check-stack">${checkbox('ai-skip', '跳过已保护的人工标签或配图', form.skip)}${checkbox('ai-protect', '保留已有结果，失败后从原阶段恢复', form.protect)}</div><details class="nx-scenario"><summary>查看异常交互</summary>${field('本次演示状态', select('ai-scenario', [['normal', '正常推进'], ['channel-quota', '渠道额度耗尽，切换下一渠道'], ['auth-invalid', '认证失效，切换下一渠道'], ['endpoint-unavailable', '接口不可用，切换下一渠道'], ['model-unavailable', '模型不可用，优先同渠道下一模型'], ['rate-limited', '渠道短暂限流，先切备用，冷却后恢复优先级'], ['failure', '请求明确失败，保留阶段'], ...(form.kind === 'image' ? [['import-busy', '配图文件占用，恢复已有产物']] : []), ['unknown', '结果未知，等待核对']], form.scenario))}</details><div class="nx-form-footer">${b('取消', 'ai-list', '', 'quiet')}${b('预演任务范围', 'ai-plan', 'arrow', 'primary', primary ? '' : 'disabled')}</div><p id="ai-form-error" class="nx-error" role="alert"></p></section><aside class="panel nx-aside-card"><span class="nx-eyebrow">任务流程</span><h3>一次发起，按原任务继续</h3><div class="steps">${[['选择范围', '只处理明确选中的内容。'], ['确认任务', '展示数量、类型、首选候选与保护策略。'], ['追踪结果', '实际渠道、模型和切换原因保留在原任务。']].map(([title, desc], index) => `<div class="step"><span class="step-number">${index + 1}</span><div><h4>${title}</h4><p>${desc}</p></div></div>`).join('')}</div>${notice('本稿不调用模型，进度和回执均为演示。')}</aside></div>`;
+      ${field('准确内容范围', `<div class="nx-selection-list">${entries().map(row => `<label class="nx-selection"><input type="checkbox" data-ai-entry="${row.id}" ${form.ids.includes(row.id) ? 'checked' : ''}><span><strong>${h(text(row))}</strong><small>${h(row.author)} · ${row.pool === 'formal' ? '正式' : row.pool === 'draft' ? '草稿' : '备选'}</small></span></label>`).join('')}</div>`)}${field(form.kind === 'image' ? '补充画面要求' : '补充标注要求', `<textarea id="ai-prompt" maxlength="300" placeholder="选填；例如：优先自然意象，保持表达克制">${h(form.prompt)}</textarea>`)}<div class="nx-check-stack">${checkbox('ai-skip', '跳过已保护的人工标签或配图', form.skip)}${checkbox('ai-protect', '保留已有结果，失败后从原阶段恢复', form.protect)}</div><details class="nx-scenario"><summary>查看异常交互</summary>${field('本次演示状态', select('ai-scenario', [['normal', '正常推进'], ['channel-quota', '渠道额度耗尽，切换下一渠道'], ['auth-invalid', '认证失效，切换下一渠道'], ['endpoint-unavailable', '接口不可用，切换下一渠道'], ['model-unavailable', '模型不可用，优先同渠道下一模型'], ['rate-limited', '渠道短暂限流，先切备用，冷却后恢复优先级'], ['failure', '请求明确失败，保留阶段'], ...(form.kind === 'image' ? [['import-busy', '配图文件占用，恢复已有产物']] : [['save-busy', '标签已返回，本地保存失败']]), ['unknown', '结果未知，等待核对']], form.scenario))}</details><div class="nx-form-footer">${b('取消', 'ai-list', '', 'quiet')}${b('预演任务范围', 'ai-plan', 'arrow', 'primary', primary ? '' : 'disabled')}</div><p id="ai-form-error" class="nx-error" role="alert"></p></section><aside class="panel nx-aside-card"><span class="nx-eyebrow">任务流程</span><h3>一次发起，按原任务继续</h3><div class="steps">${[['选择范围', '只处理明确选中的内容。'], ['确认任务', '展示数量、类型、首选候选与保护策略。'], ['追踪结果', '实际渠道、模型和切换原因保留在原任务。']].map(([title, desc], index) => `<div class="step"><span class="step-number">${index + 1}</span><div><h4>${title}</h4><p>${desc}</p></div></div>`).join('')}</div>${notice('本稿不调用模型，进度和回执均为演示。')}</aside></div>`;
   }
   function taskConfirmation() {
     const form = taskPreview, rows = form.ids.map(find).filter(Boolean);
     return back('新建任务', 'ai-list') + head('新建 AI 任务', '预演已完成，核对范围后再确认。') + taskSteps(true) + `<section class="panel nx-form-card nx-task-confirmation"><h2 id="ai-preview-heading" tabindex="-1">核对本次发送</h2><p class="nx-modal-lead">${h(form.name || '未命名任务')}</p><dl class="nx-definition"><dt>任务类型</dt><dd>${form.kind === 'image' ? '内容配图' : '语义标注'}</dd><dt>准确数量</dt><dd>${rows.length} 条内容</dd><dt>优先渠道</dt><dd>${h(form.plannedResourceRoute.channelName)}</dd><dt>优先模型</dt><dd>${h(form.plannedResourceRoute.model)}</dd><dt>候选数量</dt><dd>${form.candidateCount} 个 · 按渠道与模型优先级选择</dd><dt>保护策略</dt><dd>${form.skip ? '跳过已保护项' : '展示范围内处理'}</dd><dt>费用</dt><dd>本页内存模拟；真实费用未知</dd></dl><div class="nx-freeze-list">${rows.map(row => `<p>${h(text(row))}<small>${h(row.author)}</small></p>`).join('')}</div>${!previewRouteCurrent() ? notice('资源池已变化，请返回调整并重新预演渠道与模型。', true) : ''}${notice('只创建内存演示任务，不调用模型；演示完成不代表真实业务结果。')}${checkbox('ai-task-consent', '我已核对准确范围、任务类型与首选渠道模型，确认创建这份演示任务', false)}<div class="nx-form-footer">${b('返回调整', 'ai-preview-back', '', 'quiet')}${b('确认创建演示任务', 'ai-create', 'check', 'primary', 'id="ai-create-confirm" disabled')}</div></section>`;
   }
   function sessionDetails(task, rows, done) {
-    const failure = task.state === 'postprocess_failed' ? `${imageImportFailure}。阶段：import · 模拟；模型图片已保留。` : task.state === 'failed' ? task.log.at(-1) || '示例模型请求失败，原任务保留。' : task.state === 'unknown' ? '本次请求结果待核对，不能直接重试。' : '';
+    const failure = task.state === 'postprocess_failed' ? task.kind === 'annotate' ? `${annotationSaveFailure}。阶段：persist · 模拟。` : `${imageImportFailure}。阶段：import · 模拟；模型图片已保留。` : task.state === 'failed' ? task.log.at(-1) || '示例模型请求失败，原任务保留。' : task.state === 'unknown' ? '本次请求结果待核对，不能直接重试。' : '';
     const failureSummary = failure.length > 160 ? failure.slice(0, 160) + '…（完整内容见错误详情）' : failure;
     const request = JSON.stringify({ model: task.resourceRoute?.model || task.model, resourceRoute: task.resourceRoute, taskId: task.id, contents: rows.map(row => ({ text: text(row), author: row.author })) }, null, 2);
-    const response = task.state === 'postprocess_failed' ? '示例模型请求成功，图片已保存并通过校验；仅本地素材登记未完成。' : done ? '演示请求已完成；产物与后续处理仍需分别查看。' : task.state === 'failed' ? '示例请求被明确拒绝，没有返回新的结果。' : task.state === 'unknown' ? '响应未得到确认，保留原任务。' : '示例任务等待继续推进。';
+    const response = task.state === 'postprocess_failed' ? task.kind === 'annotate' ? '示例模型请求成功，整批标签已保留；仅本地保存未完成，恢复不会重发模型请求。' : '示例模型请求成功，图片已保存并通过校验；仅本地素材登记未完成。' : done ? '演示请求已完成；产物与后续处理仍需分别查看。' : task.state === 'failed' ? '示例请求被明确拒绝，没有返回新的结果。' : task.state === 'unknown' ? '响应未得到确认，保留原任务。' : '示例任务等待继续推进。';
     return `<div class="nx-session"><section class="nx-session-summary"><div class="nx-session-meta"><h3 id="ai-session-heading" tabindex="-1">会话概况</h3>${status(sessionResult(task), failure ? 'warn' : done ? 'good' : '')}</div>${failure ? `<p class="notice warn" role="alert">${h(failureSummary)}</p>` : '<p class="nx-tiny">本条演示未记录错误；不代表真实模型或后处理已经成功。</p>'}<dl class="nx-definition"><dt>实际渠道</dt><dd>${h(task.resourceRoute?.channelName || '尚未发起演示请求')}</dd><dt>实际模型</dt><dd>${h(task.resourceRoute?.model || '—')}</dd><dt>请求时间</dt><dd>${h(formatStudioDateTime(task.created))}</dd><dt>完成时间</dt><dd>${done ? h(formatStudioDateTime(task.created)) + ' · 演示时间' : '—'}</dd><dt>阶段</dt><dd>${task.kind === 'image' ? '图像生成' : '语义标注'} · 模拟会话</dd></dl>${b('查看原任务', 'ai-session-task', 'arrow', 'small', attrs('id', task.id))}<details class="nx-session-identifiers"><summary>任务与会话标识</summary><p>演示任务：<code>${h(task.id)}</code></p><p>所选内容：${task.ids.map(h).join('、')}</p></details></section><details class="nx-session-code" data-session-code="request"><summary>请求详情</summary><pre>${h(request)}</pre></details><details class="nx-session-code" data-session-code="response"><summary>响应详情</summary><pre>${h(response)}</pre></details><details class="nx-session-code" data-session-code="error"><summary>错误详情</summary><pre>${h(failure || '未记录错误')}</pre></details><p class="nx-tiny">示例会话只读；展开不会重放请求或下载产物。</p></div>`;
   }
   function taskDetail() {
     const task = tasks.find(row => row.id === activeTask);
     if (!task) { aiView = 'list'; return aiList(); }
     const done = task.state === 'completed', rows = task.ids.map(find).filter(Boolean), needsRepreview = !['completed', 'cancelled', 'unknown'].includes(task.state) && taskNeedsRepreview(task);
-    const controls = `${needsRepreview ? b('重新预演任务', 'ai-repreview', 'arrow', 'primary small', attrs('id', task.id)) : ['queued', 'running'].includes(task.state) ? b('推进下一阶段', 'ai-advance', 'arrow', 'primary small', attrs('id', task.id)) + b('暂停任务', 'ai-pause', '', 'small', attrs('id', task.id)) : task.state === 'paused' ? b('继续任务', 'ai-resume', 'arrow', 'primary small', attrs('id', task.id)) : canRestoreImage(task) ? b('恢复已有产物', 'ai-retry', 'arrow', 'primary small', attrs('id', task.id)) : task.state === 'failed' ? b('恢复失败阶段', 'ai-retry', 'arrow', 'primary small', attrs('id', task.id)) : task.state === 'unknown' ? b('核对原任务', 'ai-reconcile', 'check', 'primary small', attrs('id', task.id)) : ''}${!['completed', 'cancelled', 'unknown'].includes(task.state) ? b('取消任务', 'ai-cancel', '', 'quiet small', attrs('id', task.id)) : ''}`;
+    const controls = `${needsRepreview ? b('重新预演任务', 'ai-repreview', 'arrow', 'primary small', attrs('id', task.id)) : ['queued', 'running'].includes(task.state) ? b('推进下一阶段', 'ai-advance', 'arrow', 'primary small', attrs('id', task.id)) + b('暂停任务', 'ai-pause', '', 'small', attrs('id', task.id)) : task.state === 'paused' ? b('继续任务', 'ai-resume', 'arrow', 'primary small', attrs('id', task.id)) : canRestoreOutput(task) ? b('恢复已有产物', 'ai-retry', 'arrow', 'primary small', attrs('id', task.id)) : task.state === 'failed' ? b('恢复失败阶段', 'ai-retry', 'arrow', 'primary small', attrs('id', task.id)) : task.state === 'unknown' ? b('核对原任务', 'ai-reconcile', 'check', 'primary small', attrs('id', task.id)) : ''}${!['completed', 'cancelled', 'unknown'].includes(task.state) ? b('取消任务', 'ai-cancel', '', 'quiet small', attrs('id', task.id)) : ''}`;
     let body;
     if (detailTab === 'session') body = sessionDetails(task, rows, done);
     else if (detailTab === 'outputs') body = `<div class="task-list">${rows.slice(0, taskOutputCount(task)).map(row => `<div class="task-row"><span class="task-symbol">${icon(task.kind === 'image' ? 'image' : 'sparkle')}</span><div class="task-description"><h3>${h(text(row))}</h3><p>${task.kind === 'image' ? task.retainedImage?.entryId === row.id ? task.retainedImage.state === 'validated' ? '图片已保留并校验，等待本地素材登记 · 模拟' : '复用已保留图片登记为素材草稿，待审核 · 模拟' : '复用已有批准背景，不生成新图片' : `标签示意：${h(row.tags.join('、'))}`}</p></div>${b('查看内容', 'ai-open-entry', 'right', 'small', attrs('id', row.id))}</div>`).join('') || empty('暂时没有产物', '先推进任务；已有产物始终保留。')}</div>`;
     else body = `<div class="nx-detail-grid"><div><h3>准确处理范围</h3><div class="nx-selection-list">${rows.map(row => `<div class="nx-selection"><span class="nx-round">${icon('content')}</span><span><strong>${h(text(row))}</strong><small>${h(row.author)} · ${row.id}</small></span></div>`).join('')}</div></div><div><h3>任务设置</h3><dl class="nx-definition"><dt>任务类型</dt><dd>${task.kind === 'image' ? '内容配图' : '语义标注'}</dd><dt>预选模型</dt><dd>${h(task.plannedResourceRoute?.model || task.model)}</dd><dt>保护策略</dt><dd>${task.skipProtected ? '跳过人工保护项' : '展示范围内逐条处理'}</dd><dt>恢复方式</dt><dd>保留原任务及已有产物</dd></dl><h3 style="margin-top:25px">处理记录</h3><ol class="nx-timeline">${task.log.map(log => `<li>${h(log)}</li>`).join('')}</ol></div></div>`;
-    return back('任务详情', 'ai-list') + head(task.name, `${task.id} · ${task.ids.length} 条内容 · ${task.kind === 'image' ? '内容配图' : '语义标注'}`, badge(task.state)) + `<section class="panel nx-ai"><div class="panel-top">${tabs([['overview', '任务详情'], ['outputs', `产物 ${taskOutputCount(task)}`], ['session', '会话记录']], detailTab, 'ai-detail-tab')}<div class="button-row">${controls}</div></div><div class="nx-task-overview"><div class="nx-wide-progress"><span style="width:${task.ids.length ? task.done / task.ids.length * 100 : 0}%"></span></div><small>${task.done} / ${task.ids.length} 已处理</small>${canRestoreImage(task) ? notice(`${imageImportFailure}。图片已保存并校验，点击「恢复已有产物」完成本地登记，不再次调用模型。阶段：import · 模拟。`, true) : task.state === 'failed' ? notice('示例模型阶段失败；原范围和已有产物保留，可从失败阶段恢复。', true) : task.state === 'unknown' ? notice('结果未知。核对原任务前不能重试，也不能新建同一任务来覆盖结果。', true) : ''}</div>${taskRoutingPanel(task)}${body}<div class="split-note"><span>演示任务没有发起模型请求</span><span>已完成也不代表新的业务数据已写入</span></div></section>`;
+    return back('任务详情', 'ai-list') + head(task.name, `${task.id} · ${task.ids.length} 条内容 · ${task.kind === 'image' ? '内容配图' : '语义标注'}`, badge(task.state)) + `<section class="panel nx-ai"><div class="panel-top">${tabs([['overview', '任务详情'], ['outputs', `产物 ${taskOutputCount(task)}`], ['session', '会话记录']], detailTab, 'ai-detail-tab')}<div class="button-row">${controls}</div></div><div class="nx-task-overview"><div class="nx-wide-progress"><span style="width:${task.ids.length ? task.done / task.ids.length * 100 : 0}%"></span></div><small>${task.done} / ${task.ids.length} 已处理</small>${canRestoreAnnotation(task) ? notice(`${annotationSaveFailure}，点击「恢复已有产物」保存整批标签，不再次调用模型。阶段：persist · 模拟。`, true) : canRestoreImage(task) ? notice(`${imageImportFailure}。图片已保存并校验，点击「恢复已有产物」完成本地登记，不再次调用模型。阶段：import · 模拟。`, true) : task.state === 'failed' ? notice('示例模型阶段失败；原范围和已有产物保留，可从失败阶段恢复。', true) : task.state === 'unknown' ? notice('结果未知。核对原任务前不能重试，也不能新建同一任务来覆盖结果。', true) : ''}</div>${taskRoutingPanel(task)}${body}<div class="split-note"><span>演示任务没有发起模型请求</span><span>已完成也不代表新的业务数据已写入</span></div></section>`;
   }
   function captureTaskForm() {
     if (!taskForm || !$('#ai-name')) return;
@@ -412,7 +416,7 @@ export function createDeliveryPages(api) {
     const primary = aiCandidates(taskForm.kind)[0];
     const error = !taskForm.ids.length ? '请至少选择一条内容。' : !['annotate', 'image'].includes(taskForm.kind) ? '请选择有效的任务类型。' : !primary ? '当前用途没有可用的渠道与模型，请先保存 AI 资源池。' : '';
     if (error) { $('#ai-form-error').textContent = error; return; }
-    const overlapping = tasks.find(task => (task.state === 'unknown' || canRestoreImage(task) || ['queued', 'running', 'paused'].includes(task.state) && !taskNeedsRepreview(task)) && task.kind === taskForm.kind && task.ids.some(id => taskForm.ids.includes(id)));
+    const overlapping = tasks.find(task => (task.state === 'unknown' || canRestoreOutput(task) || ['queued', 'running', 'paused'].includes(task.state) && !taskNeedsRepreview(task)) && task.kind === taskForm.kind && task.ids.some(id => taskForm.ids.includes(id)));
     if (overlapping) { api.modal('已有相关任务', `<div class="nx-ai"><p>所选内容已有“${h(overlapping.name)}”在处理或等待核对。请先查看原任务，避免重复发起。</p></div>`, b('返回修改', 'ai-close', '', 'quiet') + b('查看原任务', 'ai-detail', 'arrow', 'primary', attrs('id', overlapping.id))); return; }
     taskPreview = { ...structuredClone(taskForm), plannedResourceRoute: requestRoute(primary), candidateCount: primary.candidateCount, workParameters: aiWorkParameters(taskForm.kind) };
     focusTarget = '#ai-preview-heading'; api.render();
@@ -432,6 +436,25 @@ export function createDeliveryPages(api) {
   // They never claim that remote bytes were read.
   let laneDirty = new Set(['content']);
   let laneBlock = new Map();
+  // Compare the saved, scheduled cards in the shared model, including date overrides.
+  // Drafts, internal notes and locks do not become public content changes.
+  const contentLaneSignature = () => JSON.stringify([model().schedule.start, model().schedule.end, validDates(Object.keys(model().bindings)).map(date => {
+    const binding = model().bindings[date], row = find(binding.entryId);
+    if (!row || row.pool !== 'formal') return [date, null];
+    const style = { ...row.defaults, ...binding.overrides };
+    return [date, row.text, row.author || '', row.source || '', row.category || '', ...['template', 'fontId', 'imageId', 'showDate', 'showBrand'].map(key => style[key] ?? null)];
+  })]);
+  let contentLaneBaseline = contentLaneSignature(), observedContentLane = contentLaneBaseline, scenarioContentDirty = true;
+  function syncContentLane() {
+    const current = contentLaneSignature();
+    if (current === observedContentLane) return;
+    observedContentLane = current;
+    const wasDirty = laneDirty.has('content'), changed = scenarioContentDirty || current !== contentLaneBaseline;
+    if (changed) { laneDirty.add('content'); if (!wasDirty) laneSelection.add('content'); }
+    else { laneDirty.delete('content'); laneSelection.delete('content'); }
+    resourceChecked = false;
+    if (pubPlan?.kind === 'resources') pubPlan = null;
+  }
   // These failures are explicit in-memory scenarios, not real API responses.
   const previewIssues = {
     'preview-delivery-required': { code: 'PUBLISHER_IMAGE_DELIVERY_REQUIRED', message: '批准配图缺少与当前原字节匹配的有效交付回执。', nextStep: '到配图管理补齐所需渠道的交付与核验，再重新检查本次发布。', imageryOnly: true },
@@ -600,7 +623,7 @@ export function createDeliveryPages(api) {
     const dates = validDates(resourceDates), issues = problems(dates);
     resourceCheckSignature = signature(dates);
     api.render();
-    api.modal('本地预检明细', `<div class="nx-pub"><div class="nx-mini-stats"><div><strong>${dates.length}</strong><small>准确日期</small></div><div><strong>${dates.length - issues.length}</strong><small>条件完整</small></div><div><strong>${issues.length}</strong><small>待处理</small></div></div><div class="nx-freeze-list">${dates.map(date => { const issue = issues.find(row => row.date === date), row = find(model().bindings[date]?.entryId); return `<div class="nx-preflight-row"><span><strong>${date}</strong><small>${row ? h(text(row)) : '尚未安排内容'}</small></span>${issue ? b('处理', 'pub-fix-date', 'right', 'quiet small', attrs('date', date)) : status('条件完整', 'good')}</div>`; }).join('')}</div>${notice('这里只核对演示模型中的条件，不构建文件、不验证真实字节、不连接远端。')}</div>`, (issues.length ? b('先处理问题日期', 'pub-exclude-issues', '', 'small') : '') + b('完成', 'pub-close', '', 'primary'));
+    api.modal('本地预检明细', `<div class="nx-pub"><div class="nx-mini-stats"><div><strong>${dates.length}</strong><small>准确日期</small></div><div><strong>${dates.length - issues.length}</strong><small>条件完整</small></div><div><strong>${issues.length}</strong><small>待处理</small></div></div><div class="nx-freeze-list">${dates.map(date => { const issue = issues.find(row => row.date === date), row = find(model().bindings[date]?.entryId); return `<div class="nx-preflight-row"><span><strong>${date}</strong><small>${row ? h(text(row)) : '尚未安排内容'}</small>${issue ? `<small>${h(preflightProblem(row))}</small>` : ''}</span>${issue ? b('处理', 'pub-fix-date', 'right', 'quiet small', attrs('date', date)) : status('条件完整', 'good')}</div>`; }).join('')}</div>${notice('这里只核对演示模型中的条件，不构建文件、不验证真实字节、不连接远端。')}</div>`, (issues.length ? b('先处理问题日期', 'pub-exclude-issues', '', 'small') : '') + b('完成', 'pub-close', '', 'primary'));
   }
   function canReprepareArticle(job) {
     return job?.kind === 'draft' && job.state === 'failed' && job.canRetry === true && !job.archived
@@ -652,7 +675,7 @@ export function createDeliveryPages(api) {
     const dates = validDates(batchDates), issues = problems(dates), checked = articlePreview && articleSignature === signature(dates) && !batchRangeStale();
     const issueDates = new Set(issues.map(item => item.date)), readyCount = checked ? dates.length - issues.length : 0;
     const rows = dates.filter(date => batchResultFilter === 'all' || batchResultFilter === 'attention' && issueDates.has(date) || batchResultFilter === 'ready' && checked && !issueDates.has(date));
-    return `<section class="nx-batch-results"><div class="nx-batch-summary"><h2>预检结果</h2><span>${checked ? '本页预检已完成' : '等待预检'} · 预检通过不代表草稿已保存</span>${issues.length ? b('取消勾选问题日期', 'pub-batch-exclude', '', 'quiet small', batchRangeStale() ? 'disabled' : '') : ''}</div><div class="nx-result-toolbar">${publicationFilters([['all', '全部', dates.length], ['attention', '需处理', issues.length], ['ready', '预检通过', readyCount]], batchResultFilter, 'pub-batch-filter')}<span>待预检 ${checked ? 0 : dates.length - issues.length}</span></div>${rows.length ? `<table class="nx-result-table"><thead><tr><th>准确日期</th><th>对应内容</th><th>预检结果</th><th>操作</th></tr></thead><tbody>${rows.map(date => { const row = find(model().bindings[date]?.entryId), issue = issueDates.has(date); const reason = !row ? '当天内容缺失，请先安排内容' : row.pool !== 'formal' ? '内容尚未进入正式库' : !row.text?.trim() ? '内容正文为空' : issue ? '配图尚未审核' : checked ? '条件完整，可核对提交' : articleKind === 'news' ? '保存前需要只读预检' : '提交时自动准备，也可提前预检'; return `<tr><td data-label="准确日期"><strong>${date}</strong></td><td data-label="对应内容"><span>${row ? h(text(row)) : '当天内容缺失'}</span></td><td data-label="预检结果">${status(issue ? '条件不足' : checked ? '预检通过' : '等待预检', issue ? 'warn' : checked ? 'good' : '')}<small>${h(reason)}</small></td><td data-label="操作">${b('取消选择', 'pub-batch-remove', '', 'quiet small', `${attrs('date', date)} ${batchRangeStale() ? 'disabled' : ''}`)}</td></tr>`; }).join('')}</tbody></table>` : empty(dates.length ? '此筛选下暂无结果' : '还没有选择日期', dates.length ? '切换筛选不会改变所选日期。' : '展开上方日期选择，勾选准确日期。')}</section>`;
+    return `<section class="nx-batch-results"><div class="nx-batch-summary"><h2>预检结果</h2><span>${checked ? '本页预检已完成' : '等待预检'} · 预检通过不代表草稿已保存</span>${issues.length ? b('取消勾选问题日期', 'pub-batch-exclude', '', 'quiet small', batchRangeStale() ? 'disabled' : '') : ''}</div><div class="nx-result-toolbar">${publicationFilters([['all', '全部', dates.length], ['attention', '需处理', issues.length], ['ready', '预检通过', readyCount]], batchResultFilter, 'pub-batch-filter')}<span>待预检 ${checked ? 0 : dates.length - issues.length}</span></div>${rows.length ? `<table class="nx-result-table"><thead><tr><th>准确日期</th><th>对应内容</th><th>预检结果</th><th>操作</th></tr></thead><tbody>${rows.map(date => { const row = find(model().bindings[date]?.entryId), issue = issueDates.has(date); const reason = issue ? preflightProblem(row) : checked ? '条件完整，可核对提交' : articleKind === 'news' ? '保存前需要只读预检' : '提交时自动准备，也可提前预检'; return `<tr><td data-label="准确日期"><strong>${date}</strong></td><td data-label="对应内容"><span>${row ? h(text(row)) : '当天内容缺失'}</span></td><td data-label="预检结果">${status(issue ? '条件不足' : checked ? '预检通过' : '等待预检', issue ? 'warn' : checked ? 'good' : '')}<small>${h(reason)}</small></td><td data-label="操作">${b('取消选择', 'pub-batch-remove', '', 'quiet small', `${attrs('date', date)} ${batchRangeStale() ? 'disabled' : ''}`)}</td></tr>`; }).join('')}</tbody></table>` : empty(dates.length ? '此筛选下暂无结果' : '还没有选择日期', dates.length ? '切换筛选不会改变所选日期。' : '展开上方日期选择，勾选准确日期。')}</section>`;
   }
   function captureArticle() {
     if (!$('#pub-kind')) return;
@@ -724,7 +747,7 @@ export function createDeliveryPages(api) {
     if (issues.length) { preflight(); return; }
     if (!channelState.mirror && !channelState.archive) { api.notify('请至少选择一个交付渠道。'); return; }
     const fontRoute = publicationFontRouteSnapshot();
-    pubPlan = { kind: 'resources', dates, records: snapshot(dates), signature: signature(dates), scenario: simulatedScenario, capacity: structuredClone(resourceCapacity), channels: { ...channelState }, fontRoute, scope: { fontRouting: publicationFontRouting(fontRoute) } };
+    pubPlan = { kind: 'resources', dates, records: snapshot(dates), signature: signature(dates), contentSignature: contentLaneSignature(), scenario: simulatedScenario, capacity: structuredClone(resourceCapacity), channels: { ...channelState }, fontRoute, scope: { fontRouting: publicationFontRouting(fontRoute) } };
     api.render();
     freezeModal();
   }
@@ -741,7 +764,7 @@ export function createDeliveryPages(api) {
     if (contentIssues.length) { preflight(); return; }
     if (!channelState.mirror && !channelState.archive) { api.notify('请至少选择一个交付渠道。'); return; }
     const fontRoute = publicationFontRouteSnapshot();
-    pubPlan = { kind: 'resources', lanes: lanes.map(lane => lane.id), carried: resourceLanes.filter(lane => !lanes.some(row => row.id === lane.id)).map(lane => lane.id), dates, records: snapshot(dates), signature: signature(dates), scenario: simulatedScenario, capacity: structuredClone(resourceCapacity), channels: { ...channelState }, fontRoute, scope: { fontRouting: publicationFontRouting(fontRoute) } };
+    pubPlan = { kind: 'resources', lanes: lanes.map(lane => lane.id), carried: resourceLanes.filter(lane => !lanes.some(row => row.id === lane.id)).map(lane => lane.id), dates, records: snapshot(dates), signature: signature(dates), contentSignature: contentLaneSignature(), scenario: simulatedScenario, capacity: structuredClone(resourceCapacity), channels: { ...channelState }, fontRoute, scope: { fontRouting: publicationFontRouting(fontRoute) } };
     api.render();
     freezeModal();
   }
@@ -954,6 +977,11 @@ export function createDeliveryPages(api) {
       task.log.push(`${routeFailureMessage(failure)}：${routeLabel(route)}；下一候选：${routeLabel(next)} · 模拟`);
     } else if (task.scenario === 'failure') { request.state = 'failed'; task.state = 'failed'; task.log.push('模拟请求明确被拒绝，未执行处理；保留原范围与已有产物'); }
     else if (task.scenario === 'unknown') { request.state = 'unknown'; task.state = 'unknown'; task.log.push('模拟结果未知，暂停后续阶段等待核对；不自动切换重传'); }
+    else if (task.kind === 'annotate' && task.scenario === 'save-busy') {
+      task.state = 'postprocess_failed'; task.stage = 'persist'; task.nextResourceRoute = null; task.resourceFailure = null;
+      task.retainedAnnotations = { count: task.ids.length - task.done, state: 'saved-session', requestId: request.id };
+      task.log.push(`${annotationSaveFailure}；可恢复已有产物 · 模拟`);
+    }
     else if (task.kind === 'image' && task.scenario === 'import-busy') {
       task.state = 'postprocess_failed'; task.stage = 'import'; task.nextResourceRoute = null; task.resourceFailure = null;
       task.retainedImage = { id: `${task.id}-image-${task.done}`, entryId: task.ids[task.done], state: 'validated', requestId: request.id };
@@ -991,7 +1019,7 @@ export function createDeliveryPages(api) {
       syncResourceObservation(job);
       if (job.step >= finalStep) { job.state = 'completed'; if (job.kind === 'draft') { job.draftCreated = true; job.canRetry = false; } job.log.push(job.kind === 'draft' ? '模拟草稿已保存，未发表' : job.kind === 'material' ? '仅模拟素材回执，0 草稿、0 发表' : job.lanes?.length ? `模拟完成：${laneTitle(resourceLanes.filter(lane => job.lanes.includes(lane.id)))}发布前已检查；远端整包分发，AxureShow 核验全部文件，GitHub 镜像比对所选资源` : '模拟交付与核验阶段已完成'); saveHistory(job); }
       // A completed simulation clears only the lanes it actually published.
-      if (job.kind === 'resources' && job.state === 'completed') { const done = job.lanes?.length ? job.lanes : resourceLanes.map(lane => lane.id); laneDirty = new Set([...laneDirty].filter(id => !done.includes(id))); laneSelection = new Set(); resourceChecked = false; }
+      if (job.kind === 'resources' && job.state === 'completed') { const done = job.lanes?.length ? job.lanes : resourceLanes.map(lane => lane.id); laneDirty = new Set([...laneDirty].filter(id => !done.includes(id))); laneSelection = new Set(); resourceChecked = false; if (done.includes('content')) { contentLaneBaseline = job.contentSignature; scenarioContentDirty = false; observedContentLane = null; } }
     }
     if (['failed', 'unknown'].includes(job.state)) syncResourceObservation(job);
     api.render();
@@ -1058,7 +1086,11 @@ export function createDeliveryPages(api) {
       case 'ai-advance': if (task) stepTask(task); break;
       case 'ai-pause': if (task && ['queued', 'running'].includes(task.state)) { task.state = 'paused'; task.log.push('已在阶段边界暂停 · 模拟'); api.render(); } break;
       case 'ai-resume': case 'ai-retry':
-        if (action === 'ai-retry' && canRestoreImage(task)) {
+        if (action === 'ai-retry' && canRestoreAnnotation(task)) {
+          task.done = task.ids.length; task.state = 'completed'; task.scenario = 'normal'; task.retainedAnnotations.state = 'persisted';
+          task.log.push('从原成功会话恢复整批标签，保留人工保护检查；未重发模型请求 · 模拟');
+          activeTask = task.id; aiView = 'detail'; api.render();
+        } else if (action === 'ai-retry' && canRestoreImage(task)) {
           task.retainedImage.state = 'draft'; task.done = Math.min(task.ids.length, task.done + 1); task.state = task.done === task.ids.length ? 'completed' : 'running'; task.scenario = 'normal';
           task.log.push('复用已验证图片完成本地素材登记；未重发模型请求或重复下载，素材待审核 · 模拟');
           activeTask = task.id; aiView = 'detail'; api.render();
@@ -1082,7 +1114,7 @@ export function createDeliveryPages(api) {
       case 'pub-hosting-refresh': api.render(); break;
       case 'pub-hosting-resources': pubTab = 'resources'; pubView = 'home'; api.render(); break;
       case 'pub-exclude-issues': api.notify('请修复问题日期后重新预检整包。'); break;
-      case 'pub-fix-date': close(); { const row = find(model().bindings[date]?.entryId); if (row) api.openEntry(row.id); else api.navigate('schedule'); } break;
+      case 'pub-fix-date': close(); { const row = find(model().bindings[date]?.entryId); if (row) api.openEntry(row.id, date); else api.navigate('schedule'); } break;
       case 'pub-freeze': freezeResource(); break;
       case 'pub-preview-retry': if (resourcePreviewIssue) { resourcePreviewIssue.lanes ? freezeLanes(resourcePreviewIssue.lanes) : freezeResource(); } break;
       case 'pub-lane': freezeLanes([id]); break;
@@ -1091,7 +1123,7 @@ export function createDeliveryPages(api) {
       case 'pub-channels-save': {
         channelState = { mirror: $('#pub-channel-mirror').checked, archive: $('#pub-channel-archive').checked }; simulatedScenario = $('#pub-channel-scenario').value;
         const scenario = $('#pub-channel-lanes')?.value;
-        if (scenario) { laneDirty = new Set(scenario === 'none' ? [] : scenario === 'all' ? resourceLanes.map(lane => lane.id) : scenario === 'content+imagery' ? ['content', 'imagery'] : ['content']); laneSelection = new Set(laneDirty); pubPlan = null; }
+        if (scenario) { laneDirty = new Set(scenario === 'none' ? [] : scenario === 'all' ? resourceLanes.map(lane => lane.id) : scenario === 'content+imagery' ? ['content', 'imagery'] : ['content']); laneSelection = new Set(laneDirty); contentLaneBaseline = contentLaneSignature(); observedContentLane = contentLaneBaseline; scenarioContentDirty = laneDirty.has('content'); pubPlan = null; }
         resourceChecked = false; close(); api.render(); break;
       }
       case 'pub-mode': captureArticle(); articleMode = value;  articlePreview = false; api.render(); break;
@@ -1227,6 +1259,7 @@ export function createDeliveryPages(api) {
   return {
     render(page) {
       ensureReset();
+      syncContentLane();
       const markup = page === 'ai' ? `<div class="nx-ai">${aiView === 'new' ? newTask() : aiView === 'detail' ? taskDetail() : aiList()}</div>` : page === 'release' ? pubPage() : null;
       if (page === 'release' && pubView === 'home' && pubTab === 'article' && articleMode === 'single') {
         const previous = $('[data-article-live-preview]'), key = articlePreviewKey();
@@ -1247,6 +1280,6 @@ export function createDeliveryPages(api) {
       return false;
     },
     dispose() { articlePreviewDisposed = true; articlePaintRequest++; previewMedia?.removeEventListener?.('change', previewViewportChanged); rememberedPreview = null; },
-    reset() { resourcePreviewIssue = null; resourceCapacity = null; resourceEndPlan = null; articlePreviewDisposed = false; articlePaintRequest++; articlePaintState = null; delete model().demoAiAvailability; tasks = initialTasks(); aiView = 'list'; aiTab = 'tasks'; aiFilter = 'all'; aiSearch = ''; taskForm = null; taskPreview = null; activeTask = ''; focusTarget = ''; pubTab = 'current'; pubView = 'home'; articleMode = 'single'; articleKind = 'news'; articleTarget = 'draft'; articleDate = Object.keys(model().bindings).sort()[0] || dateRows()[0]; articleTitle = ''; articleSummary = ''; articleAuthor = ''; articlePreview = false; articlePreviewOpen = null; articlePreviewRevision = 0; rememberedPreview = null; mountedPreviewKey = ''; articleLink = true; inspectedJob = null; resourceDates = new Set(Object.keys(model().bindings)); batchDates = new Set(dateRows().slice(0, 7)); batchRangeStart = model().schedule.start; batchRangeEnd = model().schedule.end; loadedBatchRange = { start: batchRangeStart, end: batchRangeEnd }; batchResultFilter = 'all'; jobResultFilter = 'all'; publicationDetails.clear(); resourceChecked = false; resourceCheckSignature = ''; hostingConnected = false; pubPlan = null; activeJob = null; articleResetPlan = null; historyRows = []; simulatedScenario = 'normal'; clearFontPlans(); fontReceipts.clear(); fontBenchmark = null; fontSelection = ''; fontScenario = 'normal'; fontSpeedScenario = 'normal'; delete model().demoFontRouting; },
+    reset() { resourcePreviewIssue = null; resourceCapacity = null; resourceEndPlan = null; articlePreviewDisposed = false; articlePaintRequest++; articlePaintState = null; delete model().demoAiAvailability; tasks = initialTasks(); aiView = 'list'; aiTab = 'tasks'; aiFilter = 'all'; aiSearch = ''; taskForm = null; taskPreview = null; activeTask = ''; focusTarget = ''; pubTab = 'current'; pubView = 'home'; articleMode = 'single'; articleKind = 'news'; articleTarget = 'draft'; articleDate = Object.keys(model().bindings).sort()[0] || dateRows()[0]; articleTitle = ''; articleSummary = ''; articleAuthor = ''; articlePreview = false; articlePreviewOpen = null; articlePreviewRevision = 0; rememberedPreview = null; mountedPreviewKey = ''; articleLink = true; inspectedJob = null; resourceDates = new Set(Object.keys(model().bindings)); batchDates = new Set(dateRows().slice(0, 7)); batchRangeStart = model().schedule.start; batchRangeEnd = model().schedule.end; loadedBatchRange = { start: batchRangeStart, end: batchRangeEnd }; batchResultFilter = 'all'; jobResultFilter = 'all'; publicationDetails.clear(); resourceChecked = false; resourceCheckSignature = ''; hostingConnected = false; pubPlan = null; activeJob = null; articleResetPlan = null; historyRows = []; simulatedScenario = 'normal'; laneDirty = new Set(['content']); laneSelection = new Set(laneDirty); laneBlock = new Map(); contentLaneBaseline = contentLaneSignature(); observedContentLane = contentLaneBaseline; scenarioContentDirty = true; clearFontPlans(); fontReceipts.clear(); fontBenchmark = null; fontSelection = ''; fontScenario = 'normal'; fontSpeedScenario = 'normal'; delete model().demoFontRouting; },
   };
 }

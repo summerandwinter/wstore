@@ -105,6 +105,7 @@ body :is(.nx-col .button,.nx-cfg .button,.nx-cfg .settings-nav button) { font-si
 .nx-cfg-font-resources{padding:20px;margin:20px 0;border:1px solid var(--line);border-radius:8px;background:var(--tint);min-width:0}
 .nx-cfg-font-resources p,.nx-cfg-font-resources li{font-size:13px;line-height:1.7;overflow-wrap:anywhere}
 .nx-cfg-font-resources .nx-cfg-section-head,.nx-cfg-font-resources .button-row{flex-wrap:wrap;gap:10px}
+.nx-cfg-font-resources>.nx-cfg-section-head+p{margin-top:12px}
 .nx-cfg-font-resources details{margin:12px 0}
 .nx-cfg-font-resources summary{cursor:pointer;min-height:32px}
 .nx-cfg-font-resources .field{max-width:340px;margin:18px 0;min-width:0}

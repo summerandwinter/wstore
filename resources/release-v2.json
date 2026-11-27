@@ -1,13 +1,13 @@
 {
   "schemaVersion": 2,
-  "version": "release-v2-061c3416b260d35b0bb56f2046eadd211ae80cd6a64392c266c8e6f987068587",
-  "contentVersion": "929c44964677",
+  "version": "release-v2-16fb460f75ee01c7f0bedf4ba6f37e2f5ce08054efaafda9c61c032f8156dd67",
+  "contentVersion": "d760fe2cb6f4",
   "manifests": {
     "content": {
-      "url": "content/manifest-b546aac2fad4d2e2202c699e6d57fcde137ce909b12d1be4e942cb4d7fac846f.json",
-      "sha256": "b546aac2fad4d2e2202c699e6d57fcde137ce909b12d1be4e942cb4d7fac846f",
+      "url": "content/manifest-fa17e147ff7632d427b373f64fb78366e6462f9a65e806573e3a6be8980c39b4.json",
+      "sha256": "fa17e147ff7632d427b373f64fb78366e6462f9a65e806573e3a6be8980c39b4",
       "bytes": 616,
-      "version": "929c44964677"
+      "version": "d760fe2cb6f4"
     },
     "fonts": {
       "url": "fonts/manifest-v5-b49e77422865d4b323e98955429f2d3c14a6a4e2496fa88ef301bd57af1cfc9f.json",
@@ -16,16 +16,16 @@
       "version": "font-v5-ec07f6ff5f835080aa945be3294a7caa7fcc591600aa88209942da6edea1e27b"
     },
     "imagery": {
-      "url": "imagery/manifest-c1ac7d6f8ff4d762c0ab86d11b5e874708b9b369303e5d619adec252ab6ad4b3.json",
-      "sha256": "c1ac7d6f8ff4d762c0ab86d11b5e874708b9b369303e5d619adec252ab6ad4b3",
-      "bytes": 12499,
-      "version": "e5ccbad5a77f"
+      "url": "imagery/manifest-19dcbf2b30fe39573eff09fa66cb3cb252f3495eb46fb9440c03196da24a724a.json",
+      "sha256": "19dcbf2b30fe39573eff09fa66cb3cb252f3495eb46fb9440c03196da24a724a",
+      "bytes": 12841,
+      "version": "251b69a2c871"
     }
   },
   "routing": {
-    "url": "resources/routing-eb6eb7068f52e96ccab3752ee4a8ae10e305f83f8d14f965295710cf623331e4.json",
-    "sha256": "eb6eb7068f52e96ccab3752ee4a8ae10e305f83f8d14f965295710cf623331e4",
-    "bytes": 145499,
-    "version": "routing-v2-cb45eeea13a4c061448c94ef0b15445c50d1cd9b94598823d063c40fc5afd4a1"
+    "url": "resources/routing-4ed6a5710eaa1b49dbee3ed1d7f31765935f1c86158fc80180339cabe3c84fc4.json",
+    "sha256": "4ed6a5710eaa1b49dbee3ed1d7f31765935f1c86158fc80180339cabe3c84fc4",
+    "bytes": 148475,
+    "version": "routing-v2-6ec18610e6cb5aa056368d39bc6694c9fd886b2ef2ad73bad396335493092ebc"
   }
 }

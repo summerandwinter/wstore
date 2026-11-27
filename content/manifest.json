@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "929c44964677",
+  "version": "d760fe2cb6f4",
   "coverageStart": "2026-09-17",
   "coverageEnd": "2026-12-26",
   "months": [
@@ -21,8 +21,8 @@
     },
     {
       "month": "2026-12",
-      "version": "7237ea5b1bb3",
-      "url": "months/2026-12.7237ea5b1bb3.json"
+      "version": "1e8ead0b6835",
+      "url": "months/2026-12.1e8ead0b6835.json"
     }
   ]
 }

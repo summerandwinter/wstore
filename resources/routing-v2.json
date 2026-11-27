@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "version": "routing-v2-cb45eeea13a4c061448c94ef0b15445c50d1cd9b94598823d063c40fc5afd4a1",
+  "version": "routing-v2-6ec18610e6cb5aa056368d39bc6694c9fd886b2ef2ad73bad396335493092ebc",
   "authorityRoot": "https://www.axxiu.cn/project/AWNgdZoT",
   "trustedOrigins": [
     "https://gh-proxy.com",
@@ -11,10 +11,10 @@
   ],
   "manifests": {
     "content": {
-      "url": "content/manifest-b546aac2fad4d2e2202c699e6d57fcde137ce909b12d1be4e942cb4d7fac846f.json",
-      "sha256": "b546aac2fad4d2e2202c699e6d57fcde137ce909b12d1be4e942cb4d7fac846f",
+      "url": "content/manifest-fa17e147ff7632d427b373f64fb78366e6462f9a65e806573e3a6be8980c39b4.json",
+      "sha256": "fa17e147ff7632d427b373f64fb78366e6462f9a65e806573e3a6be8980c39b4",
       "bytes": 616,
-      "version": "929c44964677"
+      "version": "d760fe2cb6f4"
     },
     "fonts": {
       "url": "fonts/manifest-v5-b49e77422865d4b323e98955429f2d3c14a6a4e2496fa88ef301bd57af1cfc9f.json",
@@ -23,10 +23,10 @@
       "version": "font-v5-ec07f6ff5f835080aa945be3294a7caa7fcc591600aa88209942da6edea1e27b"
     },
     "imagery": {
-      "url": "imagery/manifest-c1ac7d6f8ff4d762c0ab86d11b5e874708b9b369303e5d619adec252ab6ad4b3.json",
-      "sha256": "c1ac7d6f8ff4d762c0ab86d11b5e874708b9b369303e5d619adec252ab6ad4b3",
-      "bytes": 12499,
-      "version": "e5ccbad5a77f"
+      "url": "imagery/manifest-19dcbf2b30fe39573eff09fa66cb3cb252f3495eb46fb9440c03196da24a724a.json",
+      "sha256": "19dcbf2b30fe39573eff09fa66cb3cb252f3495eb46fb9440c03196da24a724a",
+      "bytes": 12841,
+      "version": "251b69a2c871"
     }
   },
   "channels": {
@@ -60,6 +60,61 @@
     ]
   },
   "images": [
+    {
+      "id": "gen-0e96bcf8c5ee34f7700cc3780429",
+      "artifactId": "sha256:2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7:147944",
+      "sha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+      "bytes": 147944,
+      "assetVersion": 1,
+      "destinations": [
+        {
+          "providerId": "wechat-material",
+          "url": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjvWpCHVjDPdj15kSZX3ITmiaOcuZ27Wky0wWSfv9oj5adkCkibxghCxFXX9ibibV14rpxWVXywnzDOYNEKYe7aibwVcOjwmwqt1P2Y/0",
+          "assetId": "gen-0e96bcf8c5ee34f7700cc3780429",
+          "assetVersion": 1,
+          "sourceSha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "sourceBytes": 147944,
+          "sha256": "c522b669a74c65969bf016a8d9e7716467276345ea472928c05a3fe862759428",
+          "bytes": 123895
+        },
+        {
+          "providerId": "ipic",
+          "url": "https://p.ipic.vip/daylight-gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abde8ab-8e884fad.jpg",
+          "assetId": "gen-0e96bcf8c5ee34f7700cc3780429",
+          "assetVersion": 1,
+          "sourceSha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "sourceBytes": 147944,
+          "sha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "bytes": 147944
+        },
+        {
+          "providerId": "axxiu",
+          "url": "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg",
+          "assetId": "gen-0e96bcf8c5ee34f7700cc3780429",
+          "assetVersion": 1,
+          "sourceSha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "sourceBytes": 147944,
+          "sha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "bytes": 147944
+        },
+        {
+          "providerId": "github-mirror",
+          "url": "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg",
+          "assetId": "gen-0e96bcf8c5ee34f7700cc3780429",
+          "assetVersion": 1,
+          "sourceSha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "sourceBytes": 147944,
+          "sha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+          "bytes": 147944
+        }
+      ],
+      "aliases": [
+        "https://mmbiz.qpic.cn/sz_mmbiz_jpg/MQclufiagTYjvWpCHVjDPdj15kSZX3ITmiaOcuZ27Wky0wWSfv9oj5adkCkibxghCxFXX9ibibV14rpxWVXywnzDOYNEKYe7aibwVcOjwmwqt1P2Y/0",
+        "https://p.ipic.vip/daylight-gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abde8ab-8e884fad.jpg",
+        "https://www.axxiu.cn/project/AWNgdZoT/imagery/gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg",
+        "https://gh-proxy.com/https://raw.githubusercontent.com/summerandwinter/wstore/main/imagery/gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg"
+      ]
+    },
     {
       "id": "gen-1793792546422",
       "artifactId": "sha256:c9e41a48bcfeffd5cf12c7e429efcc6d6e4c1922d3c1b97bf4d80072f9d975f8:43548",

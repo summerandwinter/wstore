@@ -224,8 +224,20 @@ body .nx-hosting-metrics .nx-definition { grid-template-columns:120px minmax(0,1
 .nx-ai-resource-requests small{display:block;font-size:12px;line-height:1.75;color:var(--secondary);margin-top:5px}
 @media(max-width:700px){.nx-ai-routing{padding:20px 16px 0}.nx-ai-routing .nx-definition{grid-template-columns:76px minmax(0,1fr)}.nx-ai-plan-routing{padding:14px}.nx-ai-plan-routing .button{min-height:44px}}
 
+/* Resource cards own one inset; their nested headings must not add a second one. */
+.nx-pub .nx-font-benchmark,.nx-pub .nx-font-upload{padding:22px 24px}
+.nx-pub .nx-font-benchmark{margin-top:22px}
+.nx-pub .nx-font-benchmark>.panel-top{padding:0 0 18px;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.nx-pub .nx-font-benchmark>.panel-top .status{white-space:normal}
+.nx-pub .nx-font-upload>h3:first-child{margin-top:0}
+.nx-pub .nx-font-resources>.release-content{padding:24px}
+@media(max-width:600px){
+  .nx-pub .nx-font-benchmark,.nx-pub .nx-font-upload{padding:18px 16px}
+  .nx-pub .nx-font-resources>.release-content{padding:20px 16px}
+}
+
 /* Font destinations describe a bound publication snapshot, independently of upload stages. */
-.nx-publication-font-routing{margin:22px 0;padding:22px;border:1px solid var(--line);border-radius:9px;background:var(--panel,#fff);min-width:0}
+.nx-publication-font-routing{margin:22px 0;padding:22px 24px;border:1px solid var(--line);border-radius:9px;background:var(--panel,#fff);min-width:0}
 .nx-font-routing-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .nx-font-routing-heading h3{margin:0;font-size:16px;font-weight:600;color:var(--ink)}
 .nx-font-routing-heading .status{white-space:normal}
@@ -239,7 +251,8 @@ body .nx-hosting-metrics .nx-definition { grid-template-columns:120px minmax(0,1
 .nx-font-routing-channels p{grid-column:1/-1;margin:0}
 .nx-publication-stage-hint{margin:0;padding:0 24px 16px}
 .modal .nx-publication-font-routing{padding:17px;margin:18px 0}
-@media(max-width:800px){.nx-font-routing-channels{grid-template-columns:minmax(0,1fr)}.nx-publication-font-routing{padding:18px 16px}.nx-publication-stage-hint{padding-inline:16px}}
+@media(max-width:800px){.nx-font-routing-channels{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.nx-publication-font-routing{padding:18px 16px}.nx-publication-stage-hint{padding-inline:16px}}
 
 /* Resource lanes: one card per publishable resource, each with its own entry point. */
 .nx-lanes{min-width:0;overflow:visible}

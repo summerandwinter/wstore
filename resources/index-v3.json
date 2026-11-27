@@ -1,13 +1,13 @@
 {
   "schemaVersion": 3,
-  "version": "resources-v3-c197f2305c8ec5164cc901092eb5a518793e61fe8beb175e8c8a8cdca9f6a69a",
-  "contentVersion": "929c44964677",
+  "version": "resources-v3-96858fefe052523682719d5cd5005eab89dde8e15c0804fe6e18df4592d43c52",
+  "contentVersion": "d760fe2cb6f4",
   "manifests": {
     "content": {
-      "url": "content/manifest-b546aac2fad4d2e2202c699e6d57fcde137ce909b12d1be4e942cb4d7fac846f.json",
-      "sha256": "b546aac2fad4d2e2202c699e6d57fcde137ce909b12d1be4e942cb4d7fac846f",
+      "url": "content/manifest-fa17e147ff7632d427b373f64fb78366e6462f9a65e806573e3a6be8980c39b4.json",
+      "sha256": "fa17e147ff7632d427b373f64fb78366e6462f9a65e806573e3a6be8980c39b4",
       "bytes": 616,
-      "version": "929c44964677"
+      "version": "d760fe2cb6f4"
     },
     "fonts": {
       "url": "fonts/manifest-v5-b49e77422865d4b323e98955429f2d3c14a6a4e2496fa88ef301bd57af1cfc9f.json",
@@ -16,10 +16,10 @@
       "version": "font-v5-ec07f6ff5f835080aa945be3294a7caa7fcc591600aa88209942da6edea1e27b"
     },
     "imagery": {
-      "url": "imagery/manifest-c1ac7d6f8ff4d762c0ab86d11b5e874708b9b369303e5d619adec252ab6ad4b3.json",
-      "sha256": "c1ac7d6f8ff4d762c0ab86d11b5e874708b9b369303e5d619adec252ab6ad4b3",
-      "bytes": 12499,
-      "version": "e5ccbad5a77f"
+      "url": "imagery/manifest-19dcbf2b30fe39573eff09fa66cb3cb252f3495eb46fb9440c03196da24a724a.json",
+      "sha256": "19dcbf2b30fe39573eff09fa66cb3cb252f3495eb46fb9440c03196da24a724a",
+      "bytes": 12841,
+      "version": "251b69a2c871"
     }
   }
 }

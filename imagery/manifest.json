@@ -1,7 +1,15 @@
 {
   "schemaVersion": 1,
-  "version": "e5ccbad5a77f",
+  "version": "251b69a2c871",
   "assets": [
+    {
+      "id": "gen-0e96bcf8c5ee34f7700cc3780429",
+      "label": "生成 · 一条狗其实不孤单，想一条狗才会孤单。",
+      "file": "gen-0e96bcf8c5ee34f7700cc3780429-2e3e895c2abd.jpg",
+      "sha256": "2e3e895c2abde8aba897748468dc9eb678f5bd16391b8bfdf1f189bd82f0f1e7",
+      "bytes": 147944,
+      "deliveryUrl": ""
+    },
     {
       "id": "gen-1793792546422",
       "label": "专属配图 · 变弱变强 22",

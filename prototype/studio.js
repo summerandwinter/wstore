@@ -44,7 +44,7 @@ const query = new URLSearchParams(location.search);
 const state = { page: Object.hasOwn(pages, query.get('page')) ? query.get('page') : 'review', pool: 'all', search: '', category: '', imageState: '', from: '', view: 'list', selected: new Set(), week: 0, pageIndex: 0, limit: 6, releasePreview: false };
 let draft = null, draftTab = 'content', draftOriginal = '', toastTimer, newSequence = 0;
 let pendingClose = false;
-let undo = null, draftScope = 'default', draftDate = '', moveScope = null, activeDay = '';
+let undo = null, draftScope = 'default', draftDate = '', moveScope = null, activeDay = '', scheduleAssignment = null;
 let detailPreviewCollapsed = false, detailReturnPosition, drawerState;
 let contentImport = null, contentImportRead = 0;
 let pendingDetailEntry = null, detailPaintKey = '', scheduleChoice = null, detailQueueActive = '', detailQueueSearch = '', detailQueueReturn = null, detailSaveError = '';
@@ -74,9 +74,31 @@ async function paintPreview(canvas, card, options, node) {
   return result;
 }
 function assetFor(row) { return model.assets.find(asset => asset.id === row.defaults?.imageId); }
-function imageReviewStatus(row) {
-  const asset = assetFor(row);
-  return status(asset?.review === '已审核' ? '配图已核对' : asset ? '需复核' : '缺配图', asset?.review === '已审核' ? 'good' : 'warn');
+function imageUnavailableReason(asset, entryId) {
+  if (!asset) return '素材不可用';
+  if (asset.review !== '已审核') return asset.review === '已停用' ? '素材已停用' : '素材未启用';
+  if (asset.scope === '本句专属' ? asset.owner !== entryId : asset.scope !== '共享素材' || asset.owner) return '素材归属已变化';
+  if (!asset.previewUrl && !['mist', 'sea', 'dusk'].includes(asset.art)) return '素材文件不可用';
+  return '';
+}
+function imageAdoptionState(row) {
+  if (!row.defaults?.imageId) return { label: '未选配图', tone: 'warn' };
+  const reason = imageUnavailableReason(assetFor(row), row.id);
+  if (reason) return { label: reason, tone: 'warn' };
+  if (row === draft) {
+    const saved = entry(row.id), dates = draftScope === 'current' ? [draftDate] : draft.scopedDates || [];
+    const savedIds = draftScope === 'default' ? [saved?.defaults?.imageId] : dates.map(date => model.bindings[date]?.entryId === row.id ? cardSettings(model, row.id, date).imageId : '');
+    if (!saved || !savedIds.length || savedIds.some(id => id !== row.defaults.imageId)) return { label: '待保存', tone: 'warn' };
+  }
+  return { label: '已采用', tone: 'good' };
+}
+function imageAdoptionStatus(row) {
+  const { label, tone } = imageAdoptionState(row);
+  return status(label, tone);
+}
+function selectDraftImage(id) {
+  if (!draft || imageUnavailableReason(model.assets.find(row => row.id === id), draft.id)) return false;
+  draft.defaults.imageId = id; detailSaveError = ''; renderDetail(); return true;
 }
 function imageFor(row) { return assetFor(row)?.previewUrl || backgroundImage(assetFor(row)?.art || 'mist'); }
 function entry(id) { return model.entries.find(row => row.id === id); }
@@ -158,7 +180,7 @@ function renderNavigation() {
   $('#breadcrumb').textContent = pages[state.page]; hydrateIcons();
 }
 function filteredEntries() {
-  return model.entries.filter(row => (state.pool === 'all' ? row.pool !== 'trash' : row.pool === state.pool) && (!state.search || `${row.text}${row.author}${row.source}${row.tags.join('')}`.toLowerCase().includes(state.search.toLowerCase())) && (!state.category || row.category === state.category) && (!state.imageState || (assetFor(row)?.review === '已审核' ? 'ready' : 'pending') === state.imageState) && (!state.from || boundDates(model, row.id).some(date => date >= state.from)));
+  return model.entries.filter(row => (state.pool === 'all' ? row.pool !== 'trash' : row.pool === state.pool) && (!state.search || `${row.text}${row.author}${row.source}${row.tags.join('')}`.toLowerCase().includes(state.search.toLowerCase())) && (!state.category || row.category === state.category) && (!state.imageState || (!imageUnavailableReason(assetFor(row), row.id) ? 'ready' : 'pending') === state.imageState) && (!state.from || boundDates(model, row.id).some(date => date >= state.from)));
 }
 function statsMarkup() {
   const draftCount = model.entries.filter(row => row.pool === 'draft').length;
@@ -169,7 +191,7 @@ function statsMarkup() {
 function contentRows(rows) {
   return rows.map(row => {
     const dates = boundDates(model, row.id);
-    return `<tr class="${state.selected.has(row.id) ? 'selected' : ''}"><td><label class="table-select"><input type="checkbox" data-select="${row.id}" aria-label="选择${h(displayText(row))}" ${state.selected.has(row.id) ? 'checked' : ''}></label></td><td><div class="content-cell"><img class="content-thumb" src="${h(imageFor(row))}" alt="" loading="lazy"><button class="content-open" data-action="edit" data-id="${row.id}"><span class="quote-text">${h(displayText(row))}</span><span class="attribution"><b>${h(row.author || '未填写作者')}</b><span>·</span><span>${h(row.source || '出处待补充')}</span></span></button></div></td><td>${tags(row.tags.slice(0, 2))}${row.tags.length > 2 ? `<span class="tag" title="${h(row.tags.slice(2).join('、'))}" aria-label="另有 ${row.tags.length - 2} 个标签，编辑详情可查看">+${row.tags.length - 2}</span>` : ''}</td><td>${rowStatus(row)}<div class="content-image-state">${imageReviewStatus(row)}</div><div class="cell-meta">${row.pool === 'formal' ? '可用于排期' : row.pool === 'draft' ? '继续完善' : row.pool === 'reserve' ? '等待安排' : '已移除'}</div></td><td class="content-date">${dates.length ? `<time datetime="${dates[0]}">${dates[0]}</time><div class="cell-meta">${dates.length > 1 ? `关联 ${dates.length} 个日期` : '已安排'}</div>` : '<span class="muted">暂未安排</span>'}</td><td><button class="row-edit" data-action="edit" data-id="${row.id}">编辑</button></td></tr>`;
+    return `<tr class="${state.selected.has(row.id) ? 'selected' : ''}"><td><label class="table-select"><input type="checkbox" data-select="${row.id}" aria-label="选择${h(displayText(row))}" ${state.selected.has(row.id) ? 'checked' : ''}></label></td><td><div class="content-cell"><img class="content-thumb" src="${h(imageFor(row))}" alt="" loading="lazy"><button class="content-open" data-action="edit" data-id="${row.id}"><span class="quote-text">${h(displayText(row))}</span><span class="attribution"><b>${h(row.author || '未填写作者')}</b><span>·</span><span>${h(row.source || '出处待补充')}</span></span></button></div></td><td>${tags(row.tags.slice(0, 2))}${row.tags.length > 2 ? `<span class="tag" title="${h(row.tags.slice(2).join('、'))}" aria-label="另有 ${row.tags.length - 2} 个标签，编辑详情可查看">+${row.tags.length - 2}</span>` : ''}</td><td>${rowStatus(row)}<div class="content-image-state">${imageAdoptionStatus(row)}</div><div class="cell-meta">${row.pool === 'formal' ? '可用于排期' : row.pool === 'draft' ? '继续完善' : row.pool === 'reserve' ? '等待安排' : '已移除'}</div></td><td class="content-date">${dates.length ? `<time datetime="${dates[0]}">${dates[0]}</time><div class="cell-meta">${dates.length > 1 ? `关联 ${dates.length} 个日期` : '已安排'}</div>` : '<span class="muted">暂未安排</span>'}</td><td><button class="row-edit" data-action="edit" data-id="${row.id}">编辑</button></td></tr>`;
   }).join('');
 }
 function reviewPage() {
@@ -320,7 +342,7 @@ function openEntry(id = '', date = '') {
     detailReturnPosition = { x: window.scrollX || 0, y: window.scrollY || 0, id, date };
     detailPreviewCollapsed = detailMobileMedia.matches;
   }
-  draft = source ? structuredClone(source) : { id: `proposal-${++newSequence}`, text: '', author: '', source: '', pool: 'draft', category: '诗词', tags: [], note: '', created: '2026-11-02', defaults: { template: 'paper', fontId: 'wenkai', imageId: 'sample-mist', showDate: true, showBrand: true } };
+  draft = source ? structuredClone(source) : { id: `proposal-${++newSequence}`, text: '', author: '', source: '', pool: 'draft', category: '诗词', tags: [], note: '', created: '2026-11-02', defaults: { template: 'paper', fontId: 'wenkai', imageId: model.assets.find(row => row.scope === '共享素材' && !imageUnavailableReason(row, ''))?.id || '', showDate: true, showBrand: true } };
   modal.close(); draftDate = date; draftScope = date ? 'current' : 'default';
   if (date && model.bindings[date]?.entryId === id) draft.defaults = cardSettings(model, id, date);
   if (!source && model.templateDefaults?.paper) Object.assign(draft.defaults, model.templateDefaults.paper);
@@ -330,8 +352,8 @@ function openEntry(id = '', date = '') {
 }
 function editorMarkup() {
   if (draftTab === 'content') return `<label class="field"><span>正文 <small id="text-count">${Array.from(draft.text).length} / 240</small></span><textarea id="edit-text" data-editor-autogrow maxlength="480" placeholder="把值得留下的文字，写在这里…">${h(draft.text)}</textarea></label><div class="field-grid"><label class="field"><span>作者</span><input id="edit-author" maxlength="60" value="${h(draft.author)}" placeholder="如：王维"></label><label class="field"><span>出处</span><input id="edit-source" maxlength="100" value="${h(draft.source)}" placeholder="如：终南别业"></label></div><label class="field"><span>内容类型</span><select id="edit-category">${[...new Set([draft.category, '诗词', '散文', '小说', '语录', '台词', '歌词', '动漫', '游戏'].filter(Boolean))].map(value => `<option ${draft.category === value ? 'selected' : ''}>${h(value)}</option>`).join('')}</select></label>`;
-  if (draftTab === 'style') return `<label class="field"><span>选择版式 <small>共享正式目录</small></span></label><div class="template-choices">${catalog.templates.map(row => `<button class="template-choice" data-action="draft-template" data-value="${row.id}" aria-pressed="${draft.defaults.template === row.id}">${h(row.name)}<small>${h(row.description)}</small></button>`).join('')}</div><label class="field"><span>卡片字体</span><select id="edit-font">${catalog.fonts.map(row => `<option value="${row.id}" ${row.id === draft.defaults.fontId ? 'selected' : ''}>${h(row.name)}</option>`).join('')}</select></label><div class="button-row"><label class="label-option"><input id="edit-show-date" type="checkbox" ${draft.defaults.showDate ? 'checked' : ''}>显示日期</label><label class="label-option"><input id="edit-show-brand" type="checkbox" ${draft.defaults.showBrand ? 'checked' : ''}>显示品牌</label></div>`;
-  if (draftTab === 'image') return `<label class="field"><span>选择配图 <small>仅展示已审核样例</small></span></label><div class="image-choices">${model.assets.filter(row => row.review === '已审核').map(row => `<button class="image-choice" data-action="draft-image" data-value="${row.id}" aria-pressed="${row.id === draft.defaults.imageId}"><img src="${h(backgroundImage(row.art))}" alt=""><span>${h(row.name)}</span></button>`).join('')}</div><div class="editor-hint">预览使用现有批准背景；素材状态来自共享演示模型。</div>`;
+  if (draftTab === 'style') return `<label class="field"><span>选择版式 <small>共享正式目录</small></span></label><div class="template-choices">${catalog.templates.map(row => `<button class="template-choice" data-action="draft-template" data-value="${row.id}" aria-pressed="${draft.defaults.template === row.id}">${h(row.name)}<small>${h(row.description)}</small></button>`).join('')}</div><label class="field"><span>卡片字体</span><select id="edit-font">${catalog.fonts.map(row => `<option value="${row.id}" ${row.id === draft.defaults.fontId ? 'selected' : ''}>${h(row.name)}</option>`).join('')}</select><small class="muted" role="status">${catalog.fonts.filter(row => row.id !== 'system').length} 款已安装字体 · 按选择加载</small></label><div class="button-row"><label class="label-option"><input id="edit-show-date" type="checkbox" ${draft.defaults.showDate ? 'checked' : ''}>显示日期</label><label class="label-option"><input id="edit-show-brand" type="checkbox" ${draft.defaults.showBrand ? 'checked' : ''}>显示品牌</label></div>`;
+  if (draftTab === 'image') return `<div class="field"><span>选择配图 <small>已启用的共享素材与本句专属素材</small></span><div class="button-row" role="status" data-image-adoption>${imageAdoptionStatus(draft)}<span>${h(assetFor(draft)?.name || '尚未选择配图')}</span></div></div><div class="image-choices">${model.assets.filter(row => !imageUnavailableReason(row, draft.id)).map(row => `<button class="image-choice" data-action="draft-image" data-value="${row.id}" aria-pressed="${row.id === draft.defaults.imageId}"><img src="${h(row.previewUrl || backgroundImage(row.art))}" alt=""><span>${h(row.name)}</span></button>`).join('') || '<p class="muted">暂无本句可用的已启用素材。</p>'}</div><div class="editor-hint">选择后可查看卡片效果，点击保存后按当前样式范围采用。所有变化仅保留在本页演示内存中。</div>`;
   const options = [...new Set([...draft.tags, ...initialModel.entries.flatMap(row => row.tags)])];
   return `<label class="field"><span>主题与意象</span></label><div>${options.map(tag => `<label class="label-option"><input type="checkbox" data-tag="${h(tag)}" ${draft.tags.includes(tag) ? 'checked' : ''}>${h(tag)}</label>`).join('')}</div><label class="field" style="margin-top:20px"><span>补充标签</span><input id="new-tag" placeholder="输入标签，点击添加" maxlength="20"></label>${button('添加标签', 'add-tag', 'plus', 'small')}<label class="field" style="margin-top:20px"><span>内容备注</span><textarea id="edit-note" data-editor-autogrow maxlength="300" placeholder="记录需要进一步核对的信息…">${h(draft.note || '')}</textarea></label><div class="editor-hint">${draft.annotationConfirmed ? '已确认人工标签 · 演示记录' : '标签仍为草稿，可在内容操作中确认。'}</div>`;
 }
@@ -410,7 +432,7 @@ function openDetailQueue(resume = null) {
 }
 function detailSavePanelMarkup() {
   const dirty = JSON.stringify(draft) !== draftOriginal;
-  return `<p>正文、版式、配图和标签修改，只在点击保存后应用。</p><dl><dt>正文与版式</dt><dd>${dirty ? '当前编辑尚未保存' : '本次未修改'}</dd><dt>配图</dt><dd>${assetFor(draft)?.review === '已审核' ? '选用已审核样例，卡面加载单独核对' : '配图仍需核对'}</dd><dt>语义标签</dt><dd>${draft.tags.length ? `${draft.tags.length} 个演示标签` : '尚未添加标签'}</dd></dl>`;
+  return `<p>正文、版式、配图和标签修改，只在点击保存后应用。</p><dl><dt>正文与版式</dt><dd>${dirty ? '当前编辑尚未保存' : '本次未修改'}</dd><dt>配图</dt><dd>${h(imageAdoptionState(draft).label)}${assetFor(draft) ? ` · ${h(assetFor(draft).name)}` : ''}</dd><dt>语义标签</dt><dd>${draft.tags.length ? `${draft.tags.length} 个演示标签` : '尚未添加标签'}</dd></dl>`;
 }
 function detailSaveMarkup() {
   const dirty = JSON.stringify(draft) !== draftOriginal;
@@ -478,6 +500,12 @@ function saveDraft() {
     modal.close(); pendingClose = false; pendingDetailEntry = null; detailQueueReturn = null; draftTab = 'content'; renderDetail();
     $(`#edit-${invalid.field}`)?.focus(); announce(invalid.message + '。', { tone: 'error' }); return;
   }
+  const imageIssue = draft.defaults.imageId && imageUnavailableReason(assetFor(draft), draft.id);
+  if (imageIssue) {
+    detailSaveError = `${imageIssue}，请选择本句可用的已启用素材后保存。`;
+    modal.close(); pendingClose = false; pendingDetailEntry = null; detailQueueReturn = null; draftTab = 'image'; renderDetail();
+    announce(detailSaveError, { tone: 'error' }); return;
+  }
   const index = model.entries.findIndex(row => row.id === draft.id);
   const next = structuredClone(draft); next.text = cleanText; next.author = next.author.trim(); next.source = next.source.trim();
   const before = structuredClone(model);
@@ -527,7 +555,7 @@ function searchScheduleChoices() {
   scheduleChoice.query = $('#schedule-search').value.trim(); scheduleChoice.selected = ''; renderScheduleChoices(); $('#schedule-search')?.focus();
 }
 function filterModal() {
-  showModal('筛选内容', `<form id="filter-form" class="filter-form"><label class="field"><span>内容类型</span><select id="filter-category"><option value="">全部类型</option>${['诗词', '散文', '小说', '语录', '台词'].map(value => `<option${state.category === value ? ' selected' : ''}>${value}</option>`).join('')}</select></label><label class="field"><span>配图状态</span><select id="filter-image"><option value="">全部状态</option><option value="ready" ${state.imageState === 'ready' ? 'selected' : ''}>配图已审核</option><option value="pending" ${state.imageState === 'pending' ? 'selected' : ''}>配图待处理</option></select></label><label class="field"><span>已安排日期，从这天开始</span><input type="date" id="filter-from" value="${h(state.from)}" min="${model.schedule.start}" max="${model.schedule.end}"></label></form>`, button('重置条件', 'reset-filter', '', 'quiet') + button('应用筛选', 'apply-filter', 'check', 'primary'));
+  showModal('筛选内容', `<form id="filter-form" class="filter-form"><label class="field"><span>内容类型</span><select id="filter-category"><option value="">全部类型</option>${['诗词', '散文', '小说', '语录', '台词'].map(value => `<option${state.category === value ? ' selected' : ''}>${value}</option>`).join('')}</select></label><label class="field"><span>配图状态</span><select id="filter-image"><option value="">全部状态</option><option value="ready" ${state.imageState === 'ready' ? 'selected' : ''}>配图已采用</option><option value="pending" ${state.imageState === 'pending' ? 'selected' : ''}>配图需更换或补充</option></select></label><label class="field"><span>已安排日期，从这天开始</span><input type="date" id="filter-from" value="${h(state.from)}" min="${model.schedule.start}" max="${model.schedule.end}"></label></form>`, button('重置条件', 'reset-filter', '', 'quiet') + button('应用筛选', 'apply-filter', 'check', 'primary'));
 }
 function bulkMove(pool) {
   if (!state.selected.size) return;
@@ -539,7 +567,7 @@ function bulkMove(pool) {
 }
 function operationMap() {
   showModal('原型操作总览', `<div class="operation-map">${[
-    ['review', 'content', '内容管理', '新增编辑 · 四池与回收站 · 跨页批量 · 标签确认 · 图文复核 · 保护与撤销'],
+    ['review', 'content', '内容管理', '新增编辑 · 四池与回收站 · 跨页批量 · 标签确认 · 选图预览与保存 · 保护与撤销'],
     ['collect', 'collect', '采集候选', '来源与采集表单 · 任务进度 · 候选核对 · 去重整理 · 异常修正与撤销'],
     ['schedule', 'calendar', '内容排期', '空日安排 · 多日选择 · 替换与移除 · 日期样式 · 锁定 · 自动补齐'],
     ['assets', 'image', '素材中心', '新增编辑 · 来源许可 · 审核驳回 · 关联选用 · 渠道交付与异常'],
@@ -554,8 +582,8 @@ function moreList() {
 }
 function entryMenu(id) {
   const row = draft?.id === id ? draft : entry(id); if (!row) return;
-  if (!entry(id)) { showModal('先保存这条内容', '<p>保存后可调整状态、安排日期与记录人工复核。当前输入已保留在编辑表单中。</p>', button('继续编辑', 'close-modal', '', 'quiet') + button('保存内容', 'save', 'check', 'primary')); return; }
-  showModal('内容操作', `<div class="choice-list">${[['confirm-tags', 'check', '确认人工标签', row.annotationConfirmed ? '已有演示签核，再次确认当前标签' : '确认标签与理由，保留人工证据'], ['review-card', 'image', '图文复核', '检查正文、来源、配图与字体预览'], ['entry-protect', 'settings', row.protected ? '取消人工保护' : '启用人工保护', '保护人工标签与配图，自动任务跳过'], ['move', 'content', '调整内容状态', '正式 / 备选 / 草稿 / 回收站'], ['entry-history', 'clock', '内容记录', '关联日期、修改与审核记录']].map(([action, symbol, title, text]) => `<button class="choice-row" data-action="${action}" data-id="${id}">${icon(symbol)}<span><strong>${title}</strong><small>${text}</small></span></button>`).join('')}</div>`);
+  if (!entry(id)) { showModal('先保存这条内容', '<p>保存后可调整状态、安排日期。当前输入已保留在编辑表单中。</p>', button('继续编辑', 'close-modal', '', 'quiet') + button('保存内容', 'save', 'check', 'primary')); return; }
+  showModal('内容操作', `<div class="choice-list">${[['confirm-tags', 'check', '确认人工标签', row.annotationConfirmed ? '已有演示签核，再次确认当前标签' : '确认标签与理由，保留人工证据'], ['entry-protect', 'settings', row.protected ? '取消人工保护' : '启用人工保护', '保护人工标签与配图，自动任务跳过'], ['move', 'content', '调整内容状态', '正式 / 备选 / 草稿 / 回收站'], ['entry-history', 'clock', '内容记录', '关联日期、配图采用与标签记录']].map(([action, symbol, title, text]) => `<button class="choice-row" data-action="${action}" data-id="${id}">${icon(symbol)}<span><strong>${title}</strong><small>${text}</small></span></button>`).join('')}</div>`);
 }
 function moveForm(ids) {
   const rows = ids.map(entry).filter(Boolean); if (!rows.length) return;
@@ -579,11 +607,6 @@ function scopeForm() {
   if (!draft) return;
   const dates = boundDates(model, draft.id);
   showModal('样式应用范围', `<div class="notice">正文、作者与标签属于句子；版式、字体和配图可只用于指定日期。日期锁定保护内容绑定，替换前须先解锁。</div><div class="scope-dates">${[['default', '本句默认样式', '仅更新本句默认，已保存日期保留独立样式'], ['current', '仅当前日期', draftDate || '请从排期进入当前日期'], ['dates', '选择关联日期', `${dates.length} 个本句关联日期`]].map(([id, title, text]) => `<label class="choice-row"><input name="draft-scope" type="radio" value="${id}" ${draftScope === id ? 'checked' : ''} ${id === 'current' && !draftDate ? 'disabled' : ''}><span><strong>${title}</strong><small>${text}</small></span></label>`).join('')}</div><div class="scope-date-grid">${dates.map(date => `<label class="label-option"><input type="checkbox" data-scope-date="${date}" ${draft.scopedDates?.includes(date) ? 'checked' : ''}>${date}</label>`).join('')}</div>`, button('取消', 'close-modal', '', 'quiet') + button('应用范围', 'apply-scope', 'check', 'primary'));
-}
-function reviewCard(id) {
-  const row = draft?.id === id ? draft : entry(id); if (!row) return;
-  const checks = [{ text: '正文 1–240 字', ok: row.text.trim() && Array.from(row.text).length <= 240 }, { text: '作者与出处已填写', ok: row.author.trim() && row.source.trim() }, { text: '配图已经审核', ok: assetFor(row)?.review === '已审核' }, { text: '同源卡片字体与图像预览', ok: false, preview: true }];
-  showModal('图文复核', `<div class="checklist">${checks.map(check => `<div class="check-row">${icon(check.ok ? 'check' : 'clock')}<span>${check.text}</span>${status(check.ok ? '通过' : check.preview ? '请查看预览' : '待补齐', check.ok ? 'good' : 'warn')}</div>`).join('')}</div><p>系统检查与人工审阅分别记录，不将规则检查当作人工签核。</p><label class="label-option" style="margin-top:18px"><input id="human-card-review" type="checkbox">我已查看完整卡面并核对正文与配图</label>`, button('返回编辑', 'close-modal', '', 'quiet') + button('记录人工复核', 'confirm-review', 'check', 'primary', `data-id="${id}"`));
 }
 function dayDetail(date) {
   activeDay = date;
@@ -613,8 +636,60 @@ function exportContent() {
 function scheduleForm() {
   const candidates = activeEntries().filter(row => ['formal', 'reserve'].includes(row.pool));
   const dates = allDates().filter(date => !model.bindings[date]);
-  showModal('安排内容到日期', `<label class="field"><span>选择内容</span><select id="schedule-entry"><option value="">选择正式或备选内容</option>${candidates.map(row => `<option value="${row.id}">${h(Array.from(displayText(row)).slice(0, 45).join(''))} · ${h(row.author)}</option>`).join('')}</select></label><div id="schedule-selected-review">${candidateReviewMarkup(null)}</div><div class="field"><span>空白日期 <small>可选多个，明确应用同一句内容</small></span><div class="scope-date-grid">${dates.map(date => `<label class="label-option"><input type="checkbox" data-assign-date="${date}">${date}</label>`).join('') || '<p>当前有效范围没有空白日期。</p>'}</div></div><div class="notice">仅安排选定空日，已有内容和锁定日期保留。自动补齐会使用不同备选句。</div><p class="form-error" id="schedule-error" role="alert"></p>`, button('取消', 'close-modal', '', 'quiet') + button('安排选中日期', 'schedule-confirm', 'check', 'primary', !dates.length || !candidates.length ? 'disabled' : ''));
-  moveScope = { signature: JSON.stringify(model) };
+  showModal('安排内容到日期', `<label class="field"><span>选择内容</span><select id="schedule-entry"><option value="">选择正式或备选内容</option>${candidates.map(row => `<option value="${row.id}">${h(Array.from(displayText(row)).slice(0, 45).join(''))} · ${h(row.author)}</option>`).join('')}</select></label><div id="schedule-selected-review">${candidateReviewMarkup(null)}</div><div class="schedule-search-form"><label class="field"><span>选择日期</span><input id="schedule-new-date" type="date" min="${model.schedule.start}" max="${model.schedule.end}"></label>${button('添加日期', 'schedule-add-date', 'plus')}</div><p>选好日期可直接预演；安排多日可先添加日期，或勾选下方空白日期。</p><div class="field"><span>空白日期 <small>可选多个，明确应用同一句内容</small></span><div class="scope-date-grid">${dates.map(date => `<label class="label-option"><input type="checkbox" data-assign-date="${date}">${date}</label>`).join('') || '<p>当前有效范围没有空白日期。</p>'}</div></div><div class="notice">仅安排选定空日，已有内容和锁定日期保留。自动补齐会使用不同备选句。</div><div id="schedule-preview" aria-live="polite"></div><label class="label-option"><input id="schedule-confirm-scope" type="checkbox" disabled>已核对内容和日期</label><p class="form-error" id="schedule-error" role="alert"></p>`, button('取消', 'close-modal', '', 'quiet') + button('预演选中日期', 'schedule-preview', '', '', !dates.length || !candidates.length ? 'disabled' : '') + button('确认安排', 'schedule-confirm', 'check', 'primary', 'disabled'));
+  scheduleAssignment = { signature: JSON.stringify(model), preview: null };
+}
+function selectedScheduleDates() {
+  return [...new Set([...modal.querySelectorAll('[data-assign-date]:checked')].map(node => node.dataset.assignDate))].sort();
+}
+function invalidateSchedulePreview() {
+  if (!scheduleAssignment) return;
+  scheduleAssignment.preview = null;
+  $('#schedule-preview').innerHTML = '';
+  $('#schedule-error').textContent = '';
+  const confirm = $('#schedule-confirm-scope'); confirm.checked = false; confirm.disabled = true;
+  modal.querySelector('[data-action="schedule-confirm"]').disabled = true;
+}
+function includePendingScheduleDate(required = false) {
+  const input = $('#schedule-new-date'), date = input.value;
+  if (!date && !input.validity?.badInput && !required) return true;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || input.validity?.badInput || !allDates().includes(date)) {
+    $('#schedule-error').textContent = '请选择有效范围内的准确日期。'; return false;
+  }
+  const choice = modal.querySelector(`[data-assign-date="${date}"]`);
+  if (model.bindings[date] || !choice) { $('#schedule-error').textContent = '这个日期已有安排，请选择空白日期。'; return false; }
+  choice.checked = true;
+  input.value = '';
+  return true;
+}
+function addScheduleDate() {
+  invalidateSchedulePreview();
+  includePendingScheduleDate(true);
+}
+function previewScheduleAssignment() {
+  invalidateSchedulePreview();
+  if (scheduleAssignment?.signature !== JSON.stringify(model)) { $('#schedule-error').textContent = '排期已变化，请重新打开安排表单。'; return; }
+  const id = $('#schedule-entry').value;
+  if (!['formal', 'reserve'].includes(entry(id)?.pool)) { $('#schedule-error').textContent = '请选择正式或备选内容。'; return; }
+  if (!includePendingScheduleDate()) return;
+  const dates = selectedScheduleDates();
+  if (!dates.length) { $('#schedule-error').textContent = '请选择至少一个空白日期。'; return; }
+  if (dates.some(date => model.bindings[date] || !allDates().includes(date))) { $('#schedule-error').textContent = '排期已变化，请重新打开安排表单。'; return; }
+  scheduleAssignment.preview = { id, dates };
+  $('#schedule-preview').innerHTML = `<div class="form-summary"><p>即将安排 ${dates.length} 个空白日期：${dates.map(h).join('、')}</p><p>${h(displayText(entry(id)))}</p><p>确认后所选内容进入正式池，以上日期使用这条内容。</p></div>`;
+  $('#schedule-confirm-scope').disabled = false;
+}
+function confirmScheduleAssignment() {
+  const preview = scheduleAssignment?.preview, input = $('#schedule-new-date');
+  if (!preview || !$('#schedule-confirm-scope').checked || input.value || input.validity?.badInput || preview.id !== $('#schedule-entry').value || JSON.stringify(preview.dates) !== JSON.stringify(selectedScheduleDates())) {
+    invalidateSchedulePreview(); $('#schedule-error').textContent = '请先预演当前内容和日期，并确认核对结果。'; return;
+  }
+  if (scheduleAssignment.signature !== JSON.stringify(model)) { invalidateSchedulePreview(); $('#schedule-error').textContent = '排期已变化，请重新打开安排表单。'; return; }
+  const before = structuredClone(model);
+  model = moveEntry(model, preview.id, 'formal');
+  preview.dates.forEach(date => { model.bindings[date] = { entryId: preview.id, overrides: {}, confirmed: false, locked: false }; });
+  undo = { label: `安排 ${preview.dates.length} 个日期`, before, after: JSON.stringify(model) };
+  state.releasePreview = false; scheduleAssignment = null; modal.close(); render(); announce(`已安排 ${preview.dates.length} 个准确日期。`);
 }
 document.addEventListener('click', async event => {
   if (!catalog) {
@@ -660,7 +735,7 @@ document.addEventListener('click', async event => {
     case 'detail-queue-preview': detailMobileMedia.matches ? chooseDetailQueue(id) : previewDetailQueue(id); break;
     case 'detail-choose': chooseDetailQueue(id); break;
     case 'draft-template': { const row = catalog.templates.find(row => row.id === value); if (!row || !draft) return; draft.defaults.template = row.id; draft.defaults.fontId = row.recommendedFont; if (model.templateDefaults?.[row.id]) Object.assign(draft.defaults, model.templateDefaults[row.id]); renderDetail(); break; }
-    case 'draft-image': if (draft && model.assets.some(row => row.id === value && row.review === '已审核')) { draft.defaults.imageId = value; renderDetail(); } break;
+    case 'draft-image': selectDraftImage(value); break;
     case 'pool': state.pool = value; state.selected.clear(); render(); break;
     case 'stat-draft': state.pool = 'draft'; state.selected.clear(); render(); break;
     case 'stat-ready': state.pool = 'all'; state.search = ''; state.category = ''; state.imageState = ''; state.from = ''; state.pageIndex = 0; render(); announce('可用内容包括正式与备选，可用状态筛选查看。'); break;
@@ -683,7 +758,9 @@ document.addEventListener('click', async event => {
     case 'day': dayDetail(date); break;
     case 'select-schedule-day': activeDay = date; main.querySelectorAll('.schedule-date-strip [data-date]').forEach(node => node.setAttribute('aria-pressed', String(node.dataset.date === date))); main.querySelectorAll('[data-calendar-date]').forEach(node => node.classList.toggle('active', node.dataset.calendarDate === date)); main.querySelector(`[data-calendar-date="${date}"]`)?.scrollIntoView({ block: 'nearest', inline: 'center' }); break;
     case 'pick-day': scheduleForm(); break;
-    case 'schedule-confirm': { const id = $('#schedule-entry').value, dates = [...modal.querySelectorAll('[data-assign-date]:checked')].map(node => node.dataset.assignDate); if (!id || !dates.length) { $('#schedule-error').textContent = '请选择内容和至少一个空白日期。'; return; } if (moveScope?.signature !== JSON.stringify(model) || dates.some(date => model.bindings[date] || !allDates().includes(date))) { $('#schedule-error').textContent = '排期已变化，请重新打开安排表单。'; return; } const before = structuredClone(model); model = moveEntry(model, id, 'formal'); dates.forEach(date => { model.bindings[date] = { entryId: id, overrides: {}, confirmed: false, locked: false }; }); undo = { label: `安排 ${dates.length} 个日期`, before, after: JSON.stringify(model) }; modal.close(); render(); announce(`已安排 ${dates.length} 个准确日期。`); break; }
+    case 'schedule-add-date': addScheduleDate(); break;
+    case 'schedule-preview': previewScheduleAssignment(); break;
+    case 'schedule-confirm': confirmScheduleAssignment(); break;
     case 'choose-date': modal.close(); pickDate(date); break;
     case 'schedule-choose': if (scheduleChoice) { scheduleChoice.selected = id; renderScheduleChoices(); const review = modal.querySelector('.schedule-candidate-review'); review?.focus({ preventScroll: true }); review?.scrollIntoView({ block: 'nearest' }); } break;
     case 'assign': if (scheduleChoice?.signature !== JSON.stringify(model)) { announce('排期已变化，请重新核对候选。', { tone: 'error' }); break; } if (allDates().includes(date) && (!model.bindings[date] || modal.querySelector('[data-replace-date]')) && !model.bindings[date]?.locked && ['formal', 'reserve'].includes(entry(id)?.pool)) { const before = structuredClone(model); model = moveEntry(model, id, 'formal'); model.bindings[date] = { entryId: id, overrides: {}, confirmed: false, locked: false }; undo = { label: '安排日期', before, after: JSON.stringify(model) }; state.releasePreview = false; scheduleChoice = null; modal.close(); render(); announce(`已安排 ${date} 的演示内容。`); } break;
@@ -700,9 +777,7 @@ document.addEventListener('click', async event => {
     case 'entry-protect': { const row = draft?.id === id ? draft : entry(id); row.protected = !row.protected; modal.close(); if (draft?.id === id) renderDetail(); else render(); announce(row.protected ? '人工保护已开启。' : '人工保护已取消。'); break; }
     case 'confirm-tags': { const row = draft?.id === id ? draft : entry(id); showModal('确认人工标签', `<p>核对正文：${h(displayText(row))}</p><div style="margin:17px 0">${tags(row.tags)}</div><label class="field"><span>核对说明</span><textarea id="tag-reason" placeholder="记录标签适合这段内容的理由…">${h(row.note || '')}</textarea></label><label class="label-option"><input id="tags-agree" type="checkbox">我已核对这些标签与当前正文</label><p class="form-error" id="tags-error"></p>`, button('取消', 'close-modal', '', 'quiet') + button('确认标签', 'save-tags', 'check', 'primary', `data-id="${id}"`)); break; }
     case 'save-tags': { if (!$('#tags-agree').checked) { $('#tags-error').textContent = '请先确认已经核对标签。'; return; } const row = draft?.id === id ? draft : entry(id); row.note = $('#tag-reason').value; row.annotationConfirmed = true; row.protected = true; modal.close(); if (draft?.id === id) renderDetail(); else render(); announce('已记录本次演示人工标签确认。', { tone: 'success' }); break; }
-    case 'review-card': reviewCard(id); break;
-    case 'confirm-review': { const row = draft?.id === id ? draft : entry(id); if (!$('#human-card-review').checked || !row.text.trim() || !row.author.trim() || !row.source.trim() || assetFor(row)?.review !== '已审核') { announce('请先补齐正文、出处和已审核配图，并确认完整卡面。'); return; } row.humanReview = { confirmed: true, text: row.text }; modal.close(); announce('已记录演示人工复核；保存内容后保留。', { tone: 'success' }); break; }
-    case 'entry-history': { const row = entry(id) || draft; showModal('内容记录', `<p>${h(displayText(row))}</p><div class="record-lines"><p>内容状态：${POOLS[row.pool]}</p><p>关联日期：${boundDates(model, row.id).join('、') || '无'}</p><p>人工标签：${row.annotationConfirmed ? '已确认' : '未确认'}</p><p>人工保护：${row.protected ? '已开启' : '未开启'}</p><p>图文复核：${row.humanReview?.confirmed ? '已有人工演示记录' : '尚未确认'}</p></div><div class="notice">本页只保留当前内存状态；正式记录在真实后台独立保存。</div>`); break; }
+    case 'entry-history': { const row = entry(id) || draft; showModal('内容记录', `<p>${h(displayText(row))}</p><div class="record-lines"><p>内容状态：${POOLS[row.pool]}</p><p>关联日期：${boundDates(model, row.id).join('、') || '无'}</p><p>人工标签：${row.annotationConfirmed ? '已确认' : '未确认'}</p><p>人工保护：${row.protected ? '已开启' : '未开启'}</p><p>配图：${h(imageAdoptionState(row).label)}</p></div><div class="notice">本页只保留当前内存状态；正式记录在真实后台独立保存。</div>`); break; }
     case 'draft-scope': scopeForm(); break;
     case 'apply-scope': { const scope = modal.querySelector('[name="draft-scope"]:checked')?.value; const dates = [...modal.querySelectorAll('[data-scope-date]:checked')].map(node => node.dataset.scopeDate); if (scope === 'dates' && !dates.length) { announce('请选择至少一个关联日期。'); return; } draftScope = scope; draft.scopedDates = dates; modal.close(); renderDetail(); break; }
     case 'add-tag': { const value = $('#new-tag').value.trim(); if (!value) { announce('请输入标签。'); return; } draft.tags = [...new Set([...draft.tags, value])]; renderDetail(); break; }
@@ -725,6 +800,7 @@ document.addEventListener('input', event => {
   const target = event.target;
   if (target.id === 'content-import-text') { setContentImportText(target.value); return; }
   if (target.id === 'detail-queue-search') { searchDetailQueue(target.value); return; }
+  if (target.id === 'schedule-new-date' || target.dataset.assignDate || target.id === 'schedule-entry') { invalidateSchedulePreview(); return; }
   if (target.id === 'content-search') {
     state.search = target.value; state.selected.clear(); state.pageIndex = 0; const start = target.selectionStart; render(); $('#content-search').focus();
     // Search fields may not support a selection range in every browser.
@@ -745,11 +821,13 @@ document.addEventListener('change', event => {
   const target = event.target;
   if (target.id === 'content-import-file') { void readContentImportFile(target.files?.[0]); return; }
   if (target.id === 'content-import-format') { if (contentImport && !contentImport.finished && ['csv', 'tsv'].includes(target.value)) { contentImport.pasteFormat = target.value; setContentImportText(contentImport.tsv); } return; }
+  if (target.id === 'schedule-new-date' || target.dataset.assignDate) { invalidateSchedulePreview(); return; }
+  if (target.id === 'schedule-confirm-scope') { modal.querySelector('[data-action="schedule-confirm"]').disabled = !target.checked || !scheduleAssignment?.preview; return; }
   if (target.dataset.select) { target.checked ? state.selected.add(target.dataset.select) : state.selected.delete(target.dataset.select); render(); }
   else if (target.id === 'select-all') { for (const row of filteredEntries().slice(state.pageIndex * state.limit, (state.pageIndex + 1) * state.limit)) target.checked ? state.selected.add(row.id) : state.selected.delete(row.id); render(); }
   else if (target.id === 'category') { state.category = target.value; state.selected.clear(); state.pageIndex = 0; render(); }
   else if (target.id === 'page-size') { state.limit = Number(target.value); state.pageIndex = 0; render(); }
-  else if (target.id === 'schedule-entry') { $('#schedule-selected-review').innerHTML = candidateReviewMarkup(entry(target.value)); }
+  else if (target.id === 'schedule-entry') { invalidateSchedulePreview(); $('#schedule-selected-review').innerHTML = candidateReviewMarkup(entry(target.value)); }
   else if (target.id === 'edit-category' && draft) draft.category = target.value;
   else if (target.id === 'edit-font' && draft) { draft.defaults.fontId = target.value; void paintDraft(); }
   else if (target.id === 'edit-show-date' && draft) { draft.defaults.showDate = target.checked; void paintDraft(); }
